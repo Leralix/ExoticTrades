@@ -1,0 +1,4 @@
+name: ExoticTrades
+version: '${version}'
+main: org.leralix.exotictrades.ExoticTrades
+api-version: '1.20'

@@ -1,0 +1,5 @@
+name: ExoticTrades
+version: '${version}'
+main: org.leralix.exotictrades.ExoticTrades
+depend: [Vault]
+api-version: '1.19'

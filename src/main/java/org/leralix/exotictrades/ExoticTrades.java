@@ -18,7 +18,7 @@ public final class ExoticTrades extends JavaPlugin {
 
 
 
-
+        DropChances.load();
 
 
 

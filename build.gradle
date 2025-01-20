@@ -5,6 +5,8 @@ plugins {
 group = 'org.leralix'
 version = '0.1'
 
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     mavenCentral()
     maven {

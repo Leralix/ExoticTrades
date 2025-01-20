@@ -18,6 +18,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.leralix.exotictrades.data.RareItem;
+import org.leralix.exotictrades.util.DropChances;
 
 public class RareItemDrops implements Listener {
 
@@ -38,11 +40,7 @@ public class RareItemDrops implements Listener {
 
         //used to avoid spam breaking crops
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.get(block.getChunk());
 
-        if(!claimedChunk.canPlayerDo(player, ChunkPermissionType.BREAK_BLOCK, block.getLocation())){
-            return;
-        }
 
         if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {
             BlockData data = block.getBlockData();

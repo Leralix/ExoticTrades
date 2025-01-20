@@ -1,9 +1,10 @@
 package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.entity.Player;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.util.DropChances;
+import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.lib.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +51,10 @@ public class GetRareItem extends SubCommand {
             case "raresoul" ->  player.getInventory().addItem(DropChances.getRareSoul());
             case "rarefish" ->  player.getInventory().addItem(DropChances.getRareFish());
             default -> {
-                player.sendMessage(TanChatUtils.getTANString() + Lang.SYNTAX_ERROR.get());
+                player.sendMessage(StringUtil.getPluginString() + Lang.SYNTAX_ERROR.get());
                 return;
             }
         }
-        player.sendMessage(TanChatUtils.getTANString() + Lang.COMMAND_GENERIC_SUCCESS.get());
+        player.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

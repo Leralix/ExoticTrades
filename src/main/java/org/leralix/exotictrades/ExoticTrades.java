@@ -1,6 +1,7 @@
 package org.leralix.exotictrades;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.leralix.exotictrades.util.DropChances;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

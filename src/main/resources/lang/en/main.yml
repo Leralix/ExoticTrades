@@ -1,0 +1,19 @@
+language:
+  #General
+  EXOTIC_TRADE_STRING: "§5[ExoticTrade]"
+
+  #Common errors
+  SYNTAX_ERROR: "Syntax error"
+
+  #Commands
+  COMMAND_GENERIC_SUCCESS: "Command executed successfully"
+  ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
+
+  #Rare item
+  ITEM_RARE_STONE: "Precious stone"
+  ITEM_RARE_WOOD: "Exotic wood"
+  ITEM_RARE_CROP: "Exotic crop"
+  ITEM_RARE_SOUL: "Soul"
+  ITEM_RARE_FISH: "Exotic fish"
+  RARE_ITEM_DESC_1: "Can be sell to a trader"
+

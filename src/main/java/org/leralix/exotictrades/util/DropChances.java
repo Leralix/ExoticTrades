@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.data.RareItem;
-import org.leralix.lib.lang.Lang;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.lib.utils.CustomNBT;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -110,9 +110,9 @@ public class DropChances {
         ItemMeta rareStoneItemMeta = rareItem.getItemMeta();
         if(rareStoneItemMeta != null){
             rareStoneItemMeta.setCustomModelData(101);
-            rareStoneItemMeta.setDisplayName(name.getWithoutPlaceholder());
+            rareStoneItemMeta.setDisplayName(name.get());
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.RARE_ITEM_DESC_1.getWithoutPlaceholder());
+            lore.add(Lang.RARE_ITEM_DESC_1.get());
             rareStoneItemMeta.setLore(lore);
             rareItem.setItemMeta(rareStoneItemMeta);
         }

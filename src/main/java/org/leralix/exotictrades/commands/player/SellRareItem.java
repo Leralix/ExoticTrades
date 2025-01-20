@@ -5,13 +5,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.util.RareItemUtil;
+import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.utils.CustomNBT;
 
 import java.util.Collections;
 import java.util.List;
-
+/*
 public class SellRareItem extends SubCommand {
     @Override
     public String getName() {
@@ -19,7 +21,7 @@ public class SellRareItem extends SubCommand {
     }
     @Override
     public String getDescription() {
-        return Lang.SELL_RARE_ITEM_COMMAND_DESC.get();
+        return ""
     }
     public int getArguments(){ return 1;}
     @Override
@@ -32,14 +34,14 @@ public class SellRareItem extends SubCommand {
     @Override
     public void perform(Player player, String[] args){
         if (args.length != 1){
-            player.sendMessage(TanChatUtils.getTANString() +  Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
+            player.sendMessage(StringUtil.getPluginString() +  Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
         ItemStack itemStack = player.getInventory().getItemInMainHand();
 
         if (itemStack.getType() == Material.AIR){
-            player.sendMessage(TanChatUtils.getTANString() + Lang.NO_ITEM_IN_HAND.get());
+            player.sendMessage(StringUtil.getPluginString() + Lang.NO_ITEM_IN_HAND.get());
             return;
         }
 
@@ -69,4 +71,4 @@ public class SellRareItem extends SubCommand {
     }
 }
 
-
+*/

@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
+import org.bukkit.entity.Villager;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.position.Vector3D;
@@ -12,6 +13,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class TraderStorage {
 
@@ -29,6 +31,11 @@ public class TraderStorage {
 
     public static Trader get(String id) {
         return traders.get(id);
+    }
+
+    public static Trader get(Villager villager) {
+        Optional<String> id = villager.getScoreboardTags().stream().filter(tag -> tag.startsWith("exoticTrade_")).findFirst();
+        return id.map(s -> traders.get(s)).orElse(null);
     }
 
     public static void load(){

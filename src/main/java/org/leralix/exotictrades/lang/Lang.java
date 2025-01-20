@@ -21,6 +21,11 @@ public enum Lang {
     ITEM_RARE_SOUL,
     ITEM_RARE_FISH,
     RARE_ITEM_DESC_1,
+    GUI_PREVIOUS_PAGE,
+    GUI_NEXT_PAGE,
+    GUI_BACK_ARROW,
+    NEW_TRADER,
+    CLICK_TO_CREATE,
 
     ;
 

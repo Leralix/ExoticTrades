@@ -9,7 +9,7 @@ import org.leralix.lib.commands.PlayerSubCommand;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetRareItem extends PlayerSubCommand {
+public class OpenGui extends PlayerSubCommand {
 
     @Override
     public String getName() {

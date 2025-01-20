@@ -1,8 +1,7 @@
 package org.leralix.exotictrades.traders;
 
 import org.bukkit.entity.Villager;
-import org.leralix.exotictrades.storage.TraderStorage;
-import org.leralix.lib.data.position.Vector3D;
+import org.leralix.lib.position.Vector3D;
 
 public class Trader {
 

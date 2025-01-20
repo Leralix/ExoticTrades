@@ -17,3 +17,11 @@ language:
   ITEM_RARE_FISH: "Exotic fish"
   RARE_ITEM_DESC_1: "Can be sell to a trader"
 
+  #Gui item
+  ##Common
+  GUI_PREVIOUS_PAGE: "Previous page"
+  GUI_NEXT_PAGE: "Next page"
+  GUI_BACK_ARROW: "Back"
+  ##Main menu
+  NEW_TRADER: "New trader"
+  CLICK_TO_CREATE: "Click to create"

@@ -38,10 +38,6 @@ public class RareItemDrops implements Listener {
         Block block = event.getBlock();
         Material type = block.getType();
 
-        //used to avoid spam breaking crops
-
-
-
         if(type == Material.WHEAT || type == Material.BEETROOTS || type == Material.POTATOES || type == Material.CARROTS) {
             BlockData data = block.getBlockData();
             if(data instanceof Ageable ageable && ageable.getAge() < ageable.getMaximumAge()) {

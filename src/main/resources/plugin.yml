@@ -3,3 +3,8 @@ version: '${version}'
 main: org.leralix.exotictrades.ExoticTrades
 depend: [Vault]
 api-version: '1.19'
+commands:
+  exotictradeadmin:
+    description: admin command of exotictrades
+    permission: tan.exotic_trade.admin.command.*
+    usage: /<command>

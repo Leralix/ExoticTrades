@@ -15,6 +15,7 @@ public class Trader {
     public Trader(String id, Vector3D position){
         this.id = id;
         this.position = position;
+        this.type = Villager.Type.PLAINS;
         this.entity = position.getLocation().getWorld().spawn(position.getLocation(), Villager.class);
 
 

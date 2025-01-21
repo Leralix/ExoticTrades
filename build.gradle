@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.1"
 }
 
 group = 'org.leralix'
@@ -23,9 +24,17 @@ repositories {
     }
 }
 
+tasks.shadowJar {
+    archiveClassifier.set('')
+    relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
+    relocate 'org.bstats', 'org.leralix.tan.bstat'
+}
+
 dependencies {
-    implementation 'org.leralix:SphereLib:0.1.6'
     compileOnly "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
+    implementation 'org.bstats:bstats-bukkit:3.1.0'
+    implementation 'org.leralix:SphereLib:0.1.6'
+    implementation("dev.triumphteam:triumph-gui:+")
 }
 
 def targetJavaVersion = 17

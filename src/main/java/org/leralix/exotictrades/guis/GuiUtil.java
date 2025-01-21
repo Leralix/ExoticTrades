@@ -1,13 +1,13 @@
 package org.leralix.exotictrades.guis;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.lang.Lang;
-import org.leralix.lib.gui.builder.item.ItemBuilder;
-import org.leralix.lib.gui.guis.Gui;
-import org.leralix.lib.gui.guis.GuiItem;
 import org.leralix.lib.utils.HeadUtils;
 
 import java.util.List;

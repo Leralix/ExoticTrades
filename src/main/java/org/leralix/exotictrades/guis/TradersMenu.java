@@ -1,14 +1,14 @@
 package org.leralix.exotictrades.guis;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.gui.builder.item.ItemBuilder;
-import org.leralix.lib.gui.guis.Gui;
-import org.leralix.lib.gui.guis.GuiItem;
 import org.leralix.lib.utils.HeadUtils;
 
 public class TradersMenu {
@@ -39,9 +39,7 @@ public class TradersMenu {
         GuiItem item = ItemBuilder.from(addItem).asGuiItem(event -> TraderStorage.register(player.getLocation()));
 
         gui.setItem(6,3, item);
-
         gui.setItem(0, IGUI.createBackArrow(player, HumanEntity::closeInventory));
-        gui.open(player);
     }
 
     public void open(){

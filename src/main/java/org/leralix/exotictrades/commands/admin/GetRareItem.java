@@ -28,7 +28,7 @@ public class GetRareItem extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tanadmin getrareitem";
+        return "/exotictradeadmin getrareitem";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
 

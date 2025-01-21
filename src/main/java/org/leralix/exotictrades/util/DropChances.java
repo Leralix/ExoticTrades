@@ -36,7 +36,7 @@ public class DropChances {
     public static void load(){
 
 
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         if(!config.getBoolean("RARE_RESOURCES_SPAWN", true)){
             return;

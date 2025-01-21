@@ -15,7 +15,7 @@ public class RareItemUtil {
      * @return              The price of the rare item
      */
     public static int getPrice(String rareItemTag) {
-        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.TAN);
+        FileConfiguration config = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         return switch (rareItemTag) {
             case "rareStone" -> config.getInt("rareStoneValue");
             case "rareWood" -> config.getInt("rareWoodValue");

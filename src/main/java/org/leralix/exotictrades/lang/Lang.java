@@ -12,6 +12,7 @@ import java.util.EnumMap;
 public enum Lang {
 
     EXOTIC_TRADE_STRING,
+    LANGUAGE_SUCCESSFULLY_LOADED,
     SYNTAX_ERROR,
     COMMAND_GENERIC_SUCCESS,
     ADMIN_SPAWN_RARE_ITEM,
@@ -47,7 +48,7 @@ public enum Lang {
 
         File file = new File(specificLangFolder, "main.yml");
 
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.TAN_LANG).getBoolean("autoUpdateLangFiles",true);
+        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
 
 
         if(!file.exists() || replace) {

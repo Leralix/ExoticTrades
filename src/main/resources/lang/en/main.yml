@@ -1,7 +1,7 @@
 language:
   #General
   EXOTIC_TRADE_STRING: "§5[ExoticTrade]"
-
+  LANGUAGE_SUCCESSFULLY_LOADED: "Language successfully loaded"
   #Common errors
   SYNTAX_ERROR: "Syntax error"
 

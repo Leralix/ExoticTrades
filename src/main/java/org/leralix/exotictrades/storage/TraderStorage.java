@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
+import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.position.Vector3D;
@@ -17,7 +18,12 @@ public class TraderStorage {
 
     private static Map<String, Trader> traders = new HashMap<>();
     private static int nextID = 0;
-    private static final String PATH = SphereLib.getPlugin().getDataFolder().getAbsolutePath() + "storage/json/traders.json";
+    private static String path;
+
+    public static void init(){
+        path = ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "storage/json/traders.json";
+    }
+
 
         public static void register(Location location) {
         String id = "L" + nextID;
@@ -43,31 +49,33 @@ public class TraderStorage {
     public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(PATH);
-        if (file.exists()){
-            Reader reader;
-            try {
-                reader = new FileReader(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
-            traders = gson.fromJson(reader, type);
+        File file = new File(path);
+        if (!file.exists())
+            return;
 
-            int id = 0;
-            for (String ids: traders.keySet()) {
-                int newID =  Integer.parseInt(ids.substring(1));
-                if(newID > id)
-                    id = newID;
-            }
-            nextID = id+1;
+        Reader reader;
+        try {
+            reader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
+        Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
+        traders = gson.fromJson(reader, type);
+
+        int id = 0;
+        for (String ids: traders.keySet()) {
+            int newID =  Integer.parseInt(ids.substring(1));
+            if(newID > id)
+                id = newID;
+        }
+        nextID = id+1;
+
     }
 
     public static void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(PATH);
+        File file = new File(path);
         file.getParentFile().mkdir();
 
         try {

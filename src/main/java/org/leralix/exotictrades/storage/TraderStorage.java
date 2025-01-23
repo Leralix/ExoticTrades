@@ -7,8 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.SphereLib;
-import org.leralix.lib.position.Vector3D;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -18,16 +16,11 @@ public class TraderStorage {
 
     private static Map<String, Trader> traders = new HashMap<>();
     private static int nextID = 0;
-    private static String path;
-
-    public static void init(){
-        path = ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "storage/json/traders.json";
-    }
 
 
-        public static void register(Location location) {
-        String id = "L" + nextID;
-        Trader trader = new Trader(id, new Vector3D(location));
+    public static void register(Location location) {
+        String id = "T" + nextID;
+        Trader trader = new Trader(id, location);
         traders.put(trader.getID(), trader);
         nextID++;
         save();
@@ -49,7 +42,7 @@ public class TraderStorage {
     public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(path);
+        File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "storage/json/traders.json");
         if (!file.exists())
             return;
 
@@ -75,8 +68,11 @@ public class TraderStorage {
     public static void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(path);
-        file.getParentFile().mkdir();
+        File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
+        storageFolder.mkdir();
+        File jsonFile = new File(storageFolder.getAbsolutePath() + "/json");
+        jsonFile.mkdir();
+        File file = new File(jsonFile.getAbsolutePath() + "/traders.json");
 
         try {
             file.createNewFile();

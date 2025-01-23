@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.storage.TraderStorage;
+import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.exotictrades.util.DropChances;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
 
 public final class ExoticTrades extends JavaPlugin {
 
-    public static ExoticTrades plugin;
+    private static ExoticTrades plugin;
 
     @Override
     public void onEnable() {
@@ -36,9 +37,8 @@ public final class ExoticTrades extends JavaPlugin {
         getCommand("exotictradeadmin").setExecutor(new AdminCommandManager());
 
         DropChances.load();
-
-        TraderStorage.init();
         TraderStorage.load();
+        VillagerHeadStorage.init();
 
         logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
         getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");

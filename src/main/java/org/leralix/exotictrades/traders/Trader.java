@@ -1,25 +1,30 @@
 package org.leralix.exotictrades.traders;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Villager;
-import org.leralix.lib.position.Vector3D;
+import org.bukkit.inventory.ItemStack;
+import org.leralix.exotictrades.storage.VillagerHeadStorage;
+import org.leralix.lib.position.Vector3DWithOrientation;
+import org.leralix.lib.utils.HeadUtils;
+
+import java.util.Optional;
 
 public class Trader {
 
     private final String id;
     private String name;
-    private final Vector3D position;
-    private Villager.Type type;
-    private Villager entity;
+    private final Vector3DWithOrientation position;
+    private TraderBiome biomeType;
+    private TraderWork workType;
 
 
-    public Trader(String id, Vector3D position){
+    public Trader(String id, Location position){
         this.id = id;
-        this.position = position;
-        this.type = Villager.Type.PLAINS;
-        this.entity = position.getLocation().getWorld().spawn(position.getLocation(), Villager.class);
-
-
-        updateTrader();
+        this.position = new Vector3DWithOrientation(position);
+        this.biomeType = TraderBiome.PLAINS;
+        this.workType = TraderWork.FARMER;
+        spawnTrader();
     }
 
     public void setName(String newName){
@@ -27,26 +32,73 @@ public class Trader {
         updateTrader();
     }
 
-    public void updateTrader(){
-        entity.setVillagerType(type);
-        if(name != null){
-            entity.setCustomName(name);
-            this.entity.setCustomNameVisible(true);
+    public void updateTrader() {
+
+        Optional<Villager> optionalEntity = getVillager();
+        if (optionalEntity.isEmpty()) {
+            spawnTrader();
+            return;
         }
-        this.entity.setAI(false);
-        this.entity.setInvulnerable(true);
+        updateTrader(optionalEntity.get());
+    }
+
+    public void setBiomeType(TraderBiome biomeType) {
+        this.biomeType = biomeType;
+        updateTrader();
+    }
+    public void setWorkType(TraderWork workType) {
+        this.workType = workType;
+        updateTrader();
+    }
+
+    public void updateTrader(Villager villager){
+        villager.setVillagerType(biomeType.getType());
+        villager.setProfession(workType.getProfession());
+        if(name != null){
+            villager.setCustomName(name);
+            villager.setCustomNameVisible(true);
+        }
+        villager.setAI(false);
+        villager.setInvulnerable(true);
+        villager.setPersistent(false);
+    }
+
+
+
+    private Optional<Villager> getVillager() {
+        for(Villager villager : Bukkit.getWorld("world").getEntitiesByClass(Villager.class)){
+            if (villager.getScoreboardTags().contains("exoticTrade_" + id)){
+                return Optional.of(villager);
+            }
+        }
+        return Optional.empty();
     }
 
     public void spawnTrader(){
-        entity = position.getLocation().getWorld().spawn(position.getLocation(), Villager.class);
-        updateTrader();
-    }
-    public void removeTrader(){
-        entity.remove();
+        Villager villager = position.getLocation().getWorld().spawn(position.getLocation(), Villager.class);
+        villager.addScoreboardTag("exoticTrade_" + id);
+        updateTrader(villager);
     }
 
+    public ItemStack getIcon(){
+        String url = VillagerHeadStorage.getURL(biomeType, workType);
+        return HeadUtils.makeSkullURL(id, url);
+
+    }
 
     public String getID() {
         return id;
+    }
+
+    public Location getLocation() {
+        return position.getLocation();
+    }
+
+    public TraderBiome getBiomeType() {
+        return biomeType;
+    }
+
+    public TraderWork getWorkType() {
+        return workType;
     }
 }

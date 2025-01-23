@@ -25,3 +25,6 @@ language:
   ##Main menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"
+  LEFT_CLICK_TO_MANAGE: "Left click to manage"
+  RIGHT_CLICK_TO_TELEPORT: "Right click to teleport"
+

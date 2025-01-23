@@ -27,6 +27,8 @@ public enum Lang {
     GUI_BACK_ARROW,
     NEW_TRADER,
     CLICK_TO_CREATE,
+    LEFT_CLICK_TO_MANAGE,
+    RIGHT_CLICK_TO_TELEPORT,
 
     ;
 

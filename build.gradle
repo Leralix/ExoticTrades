@@ -22,6 +22,8 @@ repositories {
         name = "local"
         url = uri(project.projectDir.getAbsolutePath() + "/../SphereLib/build/repo")
     }
+    maven { url 'https://jitpack.io' } //Vault
+
 }
 
 tasks.shadowJar {
@@ -31,6 +33,7 @@ tasks.shadowJar {
 }
 
 dependencies {
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'org.leralix:SphereLib:0.1.6'

@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.lib.utils.HeadUtils;
 
@@ -92,6 +93,12 @@ public class Trader {
 
     public Location getLocation() {
         return position.getLocation();
+    }
+
+    public Vector2D getChunkLocation() {
+        int x = position.getLocation().getBlockX() >> 4;
+        int z = position.getLocation().getBlockZ() >> 4;
+        return new Vector2D(x, z, position.getWorldID().toString());
     }
 
     public TraderBiome getBiomeType() {

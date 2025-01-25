@@ -1,8 +1,12 @@
 package org.leralix.exotictrades;
 
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.SpawnTraders;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.exotictrades.util.DropChances;
@@ -15,6 +19,7 @@ import java.util.logging.Logger;
 public final class ExoticTrades extends JavaPlugin {
 
     private static ExoticTrades plugin;
+    private Economy economy;
 
     @Override
     public void onEnable() {
@@ -31,23 +36,36 @@ public final class ExoticTrades extends JavaPlugin {
         Lang.loadTranslations(lang);
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
+        logger.warning("[ExoticTrade] -Loading data");
         ConfigUtil.saveAndUpdateResource(this, "config.yml");
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
-
-        getCommand("exotictradeadmin").setExecutor(new AdminCommandManager());
 
         DropChances.load();
         TraderStorage.load();
         VillagerHeadStorage.init();
 
+        getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
+
+        logger.warning("[ExoticTrade] -Loading economy");
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+        if(rsp == null){
+            logger.warning("[ExoticTrade] -No economy plugin found. Disabling plugin");
+            this.setEnabled(false);
+            return;
+        }
+        economy = rsp.getProvider();
+
+        logger.warning("[ExoticTrade] -Loading listeners");
+        getCommand("exotictradeadmin").setExecutor(new AdminCommandManager());
+
+
         logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
         getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
-
     }
 
     @Override
     public void onDisable() {
-
+        TraderStorage.save();
     }
 
     public static ExoticTrades getPlugin() {

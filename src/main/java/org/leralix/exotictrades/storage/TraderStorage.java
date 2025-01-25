@@ -3,10 +3,12 @@ package org.leralix.exotictrades.storage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.lib.position.Vector2D;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -15,6 +17,7 @@ import java.util.*;
 public class TraderStorage {
 
     private static Map<String, Trader> traders = new HashMap<>();
+    private static final Map<Vector2D, List<Trader>> traderPosition = new HashMap<>();
     private static int nextID = 0;
 
 
@@ -23,6 +26,7 @@ public class TraderStorage {
         Trader trader = new Trader(id, location);
         traders.put(trader.getID(), trader);
         nextID++;
+        updateTraderPosition();
         save();
     }
 
@@ -42,7 +46,7 @@ public class TraderStorage {
     public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "storage/json/traders.json");
+        File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/traders.json");
         if (!file.exists())
             return;
 
@@ -54,7 +58,6 @@ public class TraderStorage {
         }
         Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
         traders = gson.fromJson(reader, type);
-
         int id = 0;
         for (String ids: traders.keySet()) {
             int newID =  Integer.parseInt(ids.substring(1));
@@ -63,6 +66,20 @@ public class TraderStorage {
         }
         nextID = id+1;
 
+        updateTraderPosition();
+    }
+
+    private static void updateTraderPosition() {
+        for(Trader trader : traders.values()){
+            Vector2D chunkVector = trader.getChunkLocation();
+            if(traderPosition.containsKey(chunkVector)){
+                traderPosition.get(chunkVector).add(trader);
+            }else{
+                List<Trader> list = new ArrayList<>();
+                list.add(trader);
+                traderPosition.put(chunkVector, list);
+            }
+        }
     }
 
     public static void save() {
@@ -97,6 +114,16 @@ public class TraderStorage {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public static List<Trader> getTradersInChunk(Chunk chunk){
+
+
+        if(!traderPosition.containsKey(new Vector2D(chunk)))
+            return Collections.emptyList();
+        else
+            System.out.println("trader at : " + chunk.getX() + " " + chunk.getZ());
+        return traderPosition.get(new Vector2D(chunk));
     }
 
 }

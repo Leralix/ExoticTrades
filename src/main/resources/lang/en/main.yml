@@ -17,14 +17,43 @@ language:
   ITEM_RARE_FISH: "Exotic fish"
   RARE_ITEM_DESC_1: "Can be sell to a trader"
 
+  #Biomes :
+  PLAINS: "Plains"
+  DESERT: "Desert"
+  SAVANNA: "Savanna"
+  SNOW: "Snow"
+  TAIGA: "Taiga"
+  JUNGLE: "Jungle"
+  SWAMP: "Swamp"
+
+  #Professions
+  NONE: "No Job"
+  FARMER: "Farmer"
+  LIBRARIAN: "Librarian"
+  BUTCHER: "Butcher"
+  NITWIT: "Nitwit"
+  ARMORER: "Armorer"
+  CARTOGRAPHER: "Cartographer"
+  CLERIC: "Cleric"
+  FISHERMAN: "Fisherman"
+  FLETCHER: "Fletcher"
+  LEATHERWORKER: "Leatherworker"
+  MASON: "Mason"
+  SHEPHERD: "Shepherd"
+  TOOLSMITH: "Toolsmith"
+  WEAPONSMITH: "Weaponsmith"
+
   #Gui item
   ##Common
   GUI_PREVIOUS_PAGE: "Previous page"
   GUI_NEXT_PAGE: "Next page"
   GUI_BACK_ARROW: "Back"
+  CLICK_TO_SELECT: "Click to select"
   ##Main menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"
   LEFT_CLICK_TO_MANAGE: "Left click to manage"
   RIGHT_CLICK_TO_TELEPORT: "Right click to teleport"
+  CURRENT_BIOME: "Current biome : {0}"
+  CURRENT_PROFESSION: "Current profession : {0}"
 

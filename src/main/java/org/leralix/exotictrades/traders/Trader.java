@@ -101,4 +101,9 @@ public class Trader {
     public TraderWork getWorkType() {
         return workType;
     }
+
+    public void setWork(TraderWork work) {
+        this.workType = work;
+        updateTrader();
+    }
 }

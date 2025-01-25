@@ -38,7 +38,6 @@ public class VillagerHeadStorage {
     }
 
     public static String getURL(TraderBiome biome, TraderWork work) {
-        System.out.println(heads.toString());
         return heads.get(biome).get(work);
     }
 

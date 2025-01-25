@@ -20,7 +20,7 @@ repositories {
     }
     maven {
         name = "local"
-        url = uri("D:/github/Sphere/SphereLib/build/repo")
+        url = uri(project.projectDir.getAbsolutePath() + "/../SphereLib/build/repo")
     }
 }
 

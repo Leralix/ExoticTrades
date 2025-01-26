@@ -21,12 +21,8 @@ public class OpenTraderMenu extends GUImenu{
     public OpenTraderMenu(Player player, Trader trader) {
         super(player, "Trader", 4);
 
+        setupGui();
 
-        gui.setDefaultTopClickAction(event -> event.setCancelled(true));
-        gui.setDefaultClickAction(event -> {
-            if(event.isShiftClick())
-                event.setCancelled(true);}
-        );
         ItemStack pane = HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE,"");
         GuiItem filler = ItemBuilder.from(pane).asGuiItem();
         gui.getFiller().fill(filler);
@@ -54,45 +50,43 @@ public class OpenTraderMenu extends GUImenu{
         gui.setItem(4,1, IGUI.createBackArrow(player, event -> player.closeInventory()));
     }
 
-    private void updateItems(InventoryClickEvent event) {
-        event.setCancelled(false);
-        player.sendMessage("You clicked the slot : " + event.getSlot());
+    private void setupGui() {
+        gui.setDefaultTopClickAction(event -> event.setCancelled(true));
+        gui.setDefaultClickAction(event -> {
+            if(event.isShiftClick())
+                event.setCancelled(true);}
+        );
 
-        ItemStack currentItem = event.getCurrentItem();
-        if(currentItem != null && items.containsKey(currentItem.getType())) {
-            int amount = items.get(currentItem.getType());
-            if(amount - currentItem.getAmount() <= 0) {
-                items.remove(currentItem.getType());
-            }
-            else{
-                items.put(currentItem.getType(), amount - currentItem.getAmount());
-            }
-        }
-
-        ItemStack cursor = event.getCursor();
-        if(items.containsKey(cursor.getType())) {
-            int amount = items.get(cursor.getType());
-            items.put(cursor.getType(), amount + cursor.getAmount());
-        }
-        else {
-            items.put(cursor.getType(), cursor.getAmount());
-        }
-
-        gui.setItem(event.getSlot(), ItemBuilder.from(cursor).asGuiItem());
-        items.clear();
-
-        for(int i = 1; i < 3; i++){
-            for(int j = 1; j < 4; j++){
-                GuiItem guiItem = gui.getGuiItem(i * 9 + j);
-                System.out.println(guiItem.getItemStack());
-            }
-        }
-        
         gui.setCloseGuiAction(closeEvent -> {
+            System.out.println("Closing the GUI");
             for(Map.Entry<Material, Integer> entry : items.entrySet()){
-                player.getInventory().addItem(new ItemStack(entry.getKey(), entry.getValue()));
+                //player.getInventory().addItem(new ItemStack(entry.getKey(), entry.getValue()));
             }
         });
-        open();
+    }
+
+    private void updateItems(InventoryClickEvent event) {
+        event.setCancelled(false);
+
+        items.clear();
+        for(int i = 1; i < 3; i++){
+            for(int j = 1; j < 4; j++){
+                ItemStack item;
+                if(event.getSlot() == i * 9 + j) { // Skip the clicked slot, add what is on the cursor
+                    item = event.getCursor();
+                    if(event.isRightClick()){
+                        item.setAmount(1);
+                    }
+                }
+                else {
+                    item = gui.getInventory().getItem(i * 9 + j);
+                }
+
+                if(item == null || item.getType() == Material.AIR)
+                    continue;
+                items.put(item.getType(), items.getOrDefault(item.getType(), 0) + item.getAmount());
+            }
+        }
+        System.out.println(items);
     }
 }

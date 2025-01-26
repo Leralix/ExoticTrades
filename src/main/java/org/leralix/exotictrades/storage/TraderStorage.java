@@ -117,8 +117,6 @@ public class TraderStorage {
     }
 
     public static List<Trader> getTradersInChunk(Chunk chunk){
-
-
         if(!traderPosition.containsKey(new Vector2D(chunk)))
             return Collections.emptyList();
         return traderPosition.get(new Vector2D(chunk));

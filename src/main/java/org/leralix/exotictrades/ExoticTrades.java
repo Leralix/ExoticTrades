@@ -6,6 +6,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.EconomyInitialiser;
+import org.leralix.exotictrades.listener.InteractWithTrader;
 import org.leralix.exotictrades.listener.SpawnTraders;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
@@ -45,15 +47,8 @@ public final class ExoticTrades extends JavaPlugin {
         VillagerHeadStorage.init();
 
         getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
+        getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
 
-        logger.warning("[ExoticTrade] -Loading economy");
-        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-        if(rsp == null){
-            logger.warning("[ExoticTrade] -No economy plugin found. Disabling plugin");
-            this.setEnabled(false);
-            return;
-        }
-        economy = rsp.getProvider();
 
         logger.warning("[ExoticTrade] -Loading listeners");
         getCommand("exotictradeadmin").setExecutor(new AdminCommandManager());

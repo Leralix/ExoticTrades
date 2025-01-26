@@ -121,8 +121,6 @@ public class TraderStorage {
 
         if(!traderPosition.containsKey(new Vector2D(chunk)))
             return Collections.emptyList();
-        else
-            System.out.println("trader at : " + chunk.getX() + " " + chunk.getZ());
         return traderPosition.get(new Vector2D(chunk));
     }
 

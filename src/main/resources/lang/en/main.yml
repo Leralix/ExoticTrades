@@ -50,6 +50,8 @@ language:
   GUI_BACK_ARROW: "Back"
   CLICK_TO_SELECT: "Click to select"
   SELL_BUTTON: "Sell"
+  CONFIRM_BUTTON: "Confirm"
+  NO_ITEM_OR_WRONG: "No item or wrong item"
   ##Main menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"

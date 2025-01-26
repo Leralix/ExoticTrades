@@ -47,6 +47,7 @@ public final class ExoticTrades extends JavaPlugin {
         VillagerHeadStorage.init();
 
         getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
+        getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
 
 

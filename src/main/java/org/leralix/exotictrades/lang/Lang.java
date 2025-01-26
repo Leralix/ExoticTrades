@@ -26,6 +26,7 @@ public enum Lang {
     GUI_NEXT_PAGE,
     GUI_BACK_ARROW,
     CLICK_TO_SELECT,
+    SELL_BUTTON,
     NEW_TRADER,
     CLICK_TO_CREATE,
     LEFT_CLICK_TO_MANAGE,

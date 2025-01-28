@@ -9,6 +9,8 @@ import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.EconomyInitialiser;
 import org.leralix.exotictrades.listener.InteractWithTrader;
 import org.leralix.exotictrades.listener.SpawnTraders;
+import org.leralix.exotictrades.storage.EconomyManager;
+import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.exotictrades.util.DropChances;
@@ -42,6 +44,7 @@ public final class ExoticTrades extends JavaPlugin {
         ConfigUtil.saveAndUpdateResource(this, "config.yml");
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 
+        RareItemStorage.init();
         DropChances.load();
         TraderStorage.load();
         VillagerHeadStorage.init();

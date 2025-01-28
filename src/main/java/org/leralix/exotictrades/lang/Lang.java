@@ -93,8 +93,7 @@ public enum Lang {
             }
         }
     }
-    static final String MESSAGE_NOT_FOUND_FOR = "Message not found for ";
-    static final String IN_THIS_LANGUAGE_FILE = " in this language file.";
+
 
 
     public String get() {
@@ -102,7 +101,7 @@ public enum Lang {
         if (translation != null) {
             return ChatColor.translateAlternateColorCodes('§', translation);
         }
-        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+        return this.name();
     }
 
     public String get(Object... placeholders) {
@@ -115,7 +114,7 @@ public enum Lang {
             }
             return translation;
         }
-        return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
+        return this.name();
     }
 
 

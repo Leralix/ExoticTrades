@@ -19,11 +19,11 @@
 #baseChance [default 0]: the base chance of the rare ressource to drop when breaking the block.
 #FortuneModifier [default 0] : the fortune modifier of the rare ressource. Each level of fortune will multiply the base chance by this value.
 #allowSilkTouch [default true] : if true, the rare ressource can be obtained with a silk touch pickaxe.
-#rememberBlock [default false] : if true, the rare ressource can only be obtained by blocks that have not been placed by a player. Storage will only start after the value is set to true.
 
 #Rare ressources are new items that will be added to the base loot of a block, entity or fishing. They will have a custom name and a custom model data can be applied.
-RARES_RESSOURCES:
+rareRessources:
   rareStone :
+    id : 1
     enabled: true
     name : "Rare Stone"
     material: "EMERALD"
@@ -69,6 +69,7 @@ RARES_RESSOURCES:
           FortuneModifier: 1
           allowSilkTouch: false
   rareWood:
+    id : 2
     enabled: true
     name : "Rare Wood"
     material: "STICK"
@@ -80,28 +81,23 @@ RARES_RESSOURCES:
         ACACIA_LOG:
           baseChance: 5
           FortuneModifier: 1
-          rememberBlock: true
         BIRCH_LOG:
           baseChance: 5
           FortuneModifier: 1
-          rememberBlock: true
         DARK_OAK_LOG:
           baseChance: 5
           FortuneModifier: 1
-          rememberBlock: true
         JUNGLE_LOG:
           baseChance: 2
           FortuneModifier: 1
-          rememberBlock: true
         OAK_LOG:
           baseChance: 3
           FortuneModifier: 1
-          rememberBlock: true
         SPRUCE_LOG:
           baseChance: 2
           FortuneModifier: 1
-          rememberBlock: true
   rareCrops:
+    id : 3
     enabled: true
     name : "Rare Crops"
     material: "WHEAT"
@@ -129,6 +125,7 @@ RARES_RESSOURCES:
           baseChance: 5
           FortuneModifier: 1
   rareSoul:
+    id : 4
     enabled: true
     name : "Rare Soul"
     material: "FLINT"
@@ -168,6 +165,7 @@ RARES_RESSOURCES:
         GHAST:
           baseChance: 75
   rareFish:
+    id : 5
     enabled: true
     name : "Rare Fish"
     material: "RAW_COD"

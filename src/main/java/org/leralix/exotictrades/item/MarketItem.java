@@ -6,22 +6,24 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class MarketItem {
 
-    String id;
-    String name;
-    Material material;
-    int modelData;
-    int basePrice;
+    private final int id;
+    private final String name;
+    private final Material material;
+    private final int modelData;
+    private final double basePrice;
+    private final double volatility;
 
-    public MarketItem(String id, String name, Material material, int modelData, int basePrice) {
+    public MarketItem(int id, String name, Material material, int modelData, double basePrice, double volatility) {
         this.id = id;
         this.name = name;
         this.material = material;
         this.modelData = modelData;
         this.basePrice = basePrice;
+        this.volatility = volatility;
     }
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -29,7 +31,7 @@ public class MarketItem {
         return name;
     }
 
-    public int getBasePrice() {
+    public double getBasePrice() {
         return basePrice;
     }
 

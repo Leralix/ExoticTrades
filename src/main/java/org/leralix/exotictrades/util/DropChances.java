@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.ExoticTrades;
-import org.leralix.exotictrades.data.RareItem;
+import org.leralix.exotictrades.data.OldRareItem;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.lib.utils.CustomNBT;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -28,7 +28,7 @@ public class DropChances {
     /**
      * Storing every different rareItem in a map
      */
-    private static final Map<String, RareItem> dropChancesData = new HashMap<>();
+    private static final Map<String, OldRareItem> dropChancesData = new HashMap<>();
 
     /**
      * Load the class and fill up the drop chances.
@@ -49,43 +49,43 @@ public class DropChances {
     }
 
     /**
-     * Get the {@link RareItem} from a {@link Block}
+     * Get the {@link OldRareItem} from a {@link Block}
      * @param block     The block
-     * @return          The {@link RareItem} dropped from the block or null if the {@link Block} is not giving {@link RareItem}
+     * @return          The {@link OldRareItem} dropped from the block or null if the {@link Block} is not giving {@link OldRareItem}
      */
-    public static RareItem getRareItem(Block block) {
+    public static OldRareItem getRareItem(Block block) {
         return dropChancesData.get(block.getType().name());
     }
     /**
-     * Get the {@link RareItem} from a {@link Entity}
+     * Get the {@link OldRareItem} from a {@link Entity}
      * @param entity    The {@link Entity}
-     * @return          The {@link RareItem} dropped from the block or null if the {@link Entity} not giving {@link RareItem}
+     * @return          The {@link OldRareItem} dropped from the block or null if the {@link Entity} not giving {@link OldRareItem}
      */
-    public static RareItem getRareItem(Entity entity) {
+    public static OldRareItem getRareItem(Entity entity) {
         return getRareItem(entity.getType());
     }
     /**
-     * Get the {@link RareItem} from a {@link EntityType}
+     * Get the {@link OldRareItem} from a {@link EntityType}
      * @param entityType    The {@link EntityType}
-     * @return              The {@link RareItem} dropped from the block or null if the {@link EntityType} is not giving {@link RareItem}
+     * @return              The {@link OldRareItem} dropped from the block or null if the {@link EntityType} is not giving {@link OldRareItem}
      */
-    public static RareItem getRareItem(EntityType entityType) {
+    public static OldRareItem getRareItem(EntityType entityType) {
         return dropChancesData.get(entityType.name());
     }
     /**
-     * Get the {@link RareItem} from a {@link EntityType}
+     * Get the {@link OldRareItem} from a {@link EntityType}
      * @param name      The name of the rare item
-     * @return          The {@link RareItem} dropped from the block or null if the name is not giving {@link RareItem}
+     * @return          The {@link OldRareItem} dropped from the block or null if the name is not giving {@link OldRareItem}
      */
-    public static RareItem getRareItem(String name) {
+    public static OldRareItem getRareItem(String name) {
         return dropChancesData.get(name);
     }
 
     /**
      * get the map storing every rare items
-     * @return the map storing all {@link RareItem}
+     * @return the map storing all {@link OldRareItem}
      */
-    public static Map<String, RareItem> getDropChancesData() {
+    public static Map<String, OldRareItem> getDropChancesData() {
         return dropChancesData;
     }
 
@@ -101,7 +101,7 @@ public class DropChances {
             return;
         for (String key : confSec.getKeys(false)) {
             int dropChance = config.getInt(section + "." + key);
-            dropChancesData.put(key, new RareItem(dropChance, item));
+            dropChancesData.put(key, new OldRareItem(dropChance, item));
         }
     }
 

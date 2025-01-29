@@ -6,11 +6,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.RandomUtil;
 
-public class RareItem {
+public class OldRareItem {
     private final int dropChance;
     private final ItemStack item;
 
-    public RareItem(int dropChance, ItemStack rareMaterial) {
+    public OldRareItem(int dropChance, ItemStack rareMaterial) {
         this.dropChance = dropChance;
         this.item = rareMaterial;
     }

@@ -22,6 +22,13 @@ public class KillProbability implements LootProbability {
     public RareItem shouldDrop(ItemStack itemUsed) {
         int randInt = RandomUtil.getRandom().nextInt(1, 100);
 
+        if(itemUsed == null || !itemUsed.hasItemMeta()){
+            if(randInt <= dropChance){
+                return RareItemStorage.getRareItem(rareItemID);
+            }
+            return null;
+        }
+
         int lootingLevel = itemUsed.getItemMeta().getEnchantLevel(Enchantment.LOOT_BONUS_MOBS);
         double chanceCap = dropChance + (fortuneModifier * lootingLevel);
 

@@ -8,6 +8,7 @@ import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.EconomyInitialiser;
 import org.leralix.exotictrades.listener.InteractWithTrader;
+import org.leralix.exotictrades.listener.RareItemDrops;
 import org.leralix.exotictrades.listener.SpawnTraders;
 import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.RareItemStorage;
@@ -24,6 +25,7 @@ public final class ExoticTrades extends JavaPlugin {
 
     private static ExoticTrades plugin;
     private Economy economy;
+    long dateOfStart = System.currentTimeMillis();
 
     @Override
     public void onEnable() {
@@ -52,6 +54,7 @@ public final class ExoticTrades extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
         getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
+        getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
 
 
         logger.warning("[ExoticTrade] -Loading listeners");
@@ -64,6 +67,11 @@ public final class ExoticTrades extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if(System.currentTimeMillis() - dateOfStart < 30000){
+            getLogger().info("[TaN] Not saving data because plugin was closed less than 30s after launch");
+            getLogger().info("[TaN] Plugin disabled");
+            return;
+        }
         TraderStorage.save();
     }
 

@@ -2,14 +2,10 @@ package org.leralix.exotictrades.listener;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -52,16 +48,18 @@ public class RareItemDrops implements Listener {
         }
 
     }
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onKillingMobs(EntityDeathEvent event){
+        Player killer = event.getEntity().getKiller();
 
-        LivingEntity killer = event.getEntity().getKiller();
+        if(killer == null)
+            return;
 
-        if(killer != null){
-
-            OldRareItem rareItem = DropChances.getRareItem(event.getEntity());
-            if(rareItem != null)
-                rareItem.spawn(event.getEntity().getWorld(), event.getEntity().getLocation());
+        EntityType type = event.getEntityType();
+        ItemStack item = killer.getInventory().getItem(killer.getInventory().getHeldItemSlot());
+        List<RareItem> rareItems = RareItemStorage.getRareItemsDropped(type,item);
+        for(RareItem rareItem : rareItems){
+            event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rareItem.getItemStack(1));
         }
     }
 

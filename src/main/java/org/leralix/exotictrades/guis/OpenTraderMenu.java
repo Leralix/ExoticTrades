@@ -10,18 +10,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.item.DisplayMarketItem;
+import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.storage.MarketItemKey;
+import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OpenTraderMenu extends GUImenu{
 
-    private final Map<Material, Integer> items = new EnumMap<>(Material.class);
+    private final Map<Integer, Integer> items = new HashMap<>();
 
     public OpenTraderMenu(Player player, Trader trader) {
         super(player, "Trader", 4);
@@ -65,7 +66,7 @@ public class OpenTraderMenu extends GUImenu{
         );
 
         gui.setCloseGuiAction(closeEvent -> {
-            for(ItemStack item : getAllItems()){
+            for(ItemStack item : getAllItemStack()){
                 player.getInventory().addItem(item);
             }
         });
@@ -78,7 +79,12 @@ public class OpenTraderMenu extends GUImenu{
                 ItemStack item = gui.getInventory().getItem(i * 9 + j);
                 if(item == null || item.getType() == Material.AIR)
                     continue;
-                items.put(item.getType(), items.getOrDefault(item.getType(), 0) + item.getAmount());
+
+                MarketItemKey key = new MarketItemKey(item);
+                MarketItem marketItem = RareItemStorage.getMarketItem(key);
+                if(marketItem == null)
+                    continue;
+                items.put(marketItem.getId(),items.getOrDefault(marketItem.getId(),0) + item.getAmount());
             }
         }
         GuiItem sellButton = getConfirmButton();
@@ -94,7 +100,7 @@ public class OpenTraderMenu extends GUImenu{
         }
         else {
             List<String> description = new ArrayList<>();
-            getAllItems().forEach(item -> description.add(item.getAmount() + "x " + item.getType().name()));
+            getAllMarketItem().forEach(item -> description.add(item.getLine()));
 
 
 
@@ -105,11 +111,20 @@ public class OpenTraderMenu extends GUImenu{
         return confirmButton;
     }
 
-    private List<ItemStack> getAllItems(){
+    private List<ItemStack> getAllItemStack(){
         List<ItemStack> allItems = new ArrayList<>();
-        for(Map.Entry<Material, Integer> entry : items.entrySet()){
-            ItemStack item = new ItemStack(entry.getKey(), entry.getValue());
-            allItems.add(item);
+        for(Map.Entry<Integer, Integer> entry : items.entrySet()){
+            MarketItem marketItem = RareItemStorage.getRareItem(entry.getKey());
+            allItems.add(marketItem.getItemStack(entry.getValue()));
+        }
+        return allItems;
+    }
+
+    private List<DisplayMarketItem> getAllMarketItem(){
+        List<DisplayMarketItem> allItems = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry : items.entrySet()){
+            DisplayMarketItem marketItem = new DisplayMarketItem(RareItemStorage.getRareItem(entry.getKey()), entry.getValue());
+            allItems.add(marketItem);
         }
         return allItems;
     }

@@ -48,6 +48,7 @@ public class MarketItem {
         item.setAmount(quantity);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(name);
+        meta.setCustomModelData(modelData);
         item.setItemMeta(meta);
         return item;
     }

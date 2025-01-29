@@ -2,13 +2,11 @@ package org.leralix.exotictrades.storage;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.A;
 import org.leralix.exotictrades.item.DropProbability;
 import org.leralix.exotictrades.item.KillProbability;
-import org.leralix.exotictrades.item.LootProbability;
+import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.RareItem;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
@@ -18,10 +16,11 @@ import java.util.*;
 public class RareItemStorage {
 
 
-    private static final Map<MarketItemKey, String> marketItemById = new HashMap<>();
 
     private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
     private static final Map<EntityType, List<KillProbability>> entityDropProbability = new EnumMap<>(EntityType.class);
+
+    private static final Map<MarketItemKey, Integer> marketItemById = new HashMap<>();
     private static final Map<Integer, RareItem> rareItems = new HashMap<>();
 
 
@@ -92,6 +91,7 @@ public class RareItemStorage {
                 }
             }
             rareItems.put(id, rareItem);
+            marketItemById.put(new MarketItemKey(rareItem), id);
         }
 
     }
@@ -114,4 +114,26 @@ public class RareItemStorage {
         }
         return items;
     }
+
+    public static List<RareItem> getRareItemsDropped(EntityType entityType, ItemStack itemUsed){
+        List<RareItem> items = new ArrayList<>();
+
+
+        if(entityDropProbability.containsKey(entityType)){
+            entityDropProbability.get(entityType).forEach(killProbability -> {
+                RareItem item = killProbability.shouldDrop(itemUsed);
+                if(item != null){
+                    items.add(item);
+                }
+            });
+        }
+        return items;
+    }
+
+    public static MarketItem getMarketItem(MarketItemKey key) {
+        Integer id = marketItemById.get(key);
+        if (id == null) return null;
+        return getRareItem(id);
+    }
+
 }

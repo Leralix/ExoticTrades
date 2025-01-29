@@ -17,6 +17,10 @@ public class MarketItemKey {
         this.material = item.getType();
         this.modelData = item.getItemMeta().hasCustomModelData() ? item.getItemMeta().getCustomModelData() : 0;
     }
+    @Override
+    public String toString() {
+        return material + ":" + modelData;
+    }
 
     @Override
     public boolean equals(Object obj) {

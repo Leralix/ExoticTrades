@@ -53,6 +53,7 @@ language:
   CONFIRM_BUTTON: "Confirm"
   NO_ITEM_OR_WRONG: "No item or wrong item"
   QUANTITY_ITEM_TO_SELL: "§5{0} §f: §5{1} (§5{2} x §f{3})"
+  SOLD_MARKET_ITEM_SUCCESS: "Items sold successfully for {0}"
   ##Main menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"

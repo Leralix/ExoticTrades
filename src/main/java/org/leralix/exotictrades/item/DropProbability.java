@@ -3,7 +3,6 @@ package org.leralix.exotictrades.item;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.storage.RareItemStorage;
-import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.RandomUtil;
 
 public class DropProbability implements LootProbability {

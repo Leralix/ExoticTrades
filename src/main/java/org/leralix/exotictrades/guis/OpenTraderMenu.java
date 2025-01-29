@@ -13,6 +13,7 @@ import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.DisplayMarketItem;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.traders.Trader;
@@ -22,7 +23,8 @@ import java.util.*;
 
 public class OpenTraderMenu extends GUImenu{
 
-    private final Map<Integer, Integer> items = new HashMap<>();
+    private final List<ItemStack> allItems = new ArrayList<>();
+    private final Map<Integer, Integer> RareItemsID = new HashMap<>();
 
     public OpenTraderMenu(Player player, Trader trader) {
         super(player, "Trader", 4);
@@ -66,25 +68,27 @@ public class OpenTraderMenu extends GUImenu{
         );
 
         gui.setCloseGuiAction(closeEvent -> {
-            for(ItemStack item : getAllItemStack()){
+            for(ItemStack item : allItems){
                 player.getInventory().addItem(item);
             }
         });
     }
 
     private void updateItems() {
-        items.clear();
+        RareItemsID.clear();
+        allItems.clear();
         for(int i = 1; i < 3; i++){
             for(int j = 1; j < 4; j++){
                 ItemStack item = gui.getInventory().getItem(i * 9 + j);
                 if(item == null || item.getType() == Material.AIR)
                     continue;
 
+                allItems.add(item);
                 MarketItemKey key = new MarketItemKey(item);
                 MarketItem marketItem = RareItemStorage.getMarketItem(key);
                 if(marketItem == null)
                     continue;
-                items.put(marketItem.getId(),items.getOrDefault(marketItem.getId(),0) + item.getAmount());
+                RareItemsID.put(marketItem.getId(), RareItemsID.getOrDefault(marketItem.getId(),0) + item.getAmount());
             }
         }
         GuiItem sellButton = getConfirmButton();
@@ -93,7 +97,7 @@ public class OpenTraderMenu extends GUImenu{
 
     private GuiItem getConfirmButton(){
         GuiItem confirmButton;
-        if(items.isEmpty()){
+        if(RareItemsID.isEmpty()){
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065",
                     Lang.NO_ITEM_OR_WRONG.get());
             confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> event.setCancelled(true));
@@ -102,18 +106,28 @@ public class OpenTraderMenu extends GUImenu{
             List<String> description = new ArrayList<>();
             getAllMarketItem().forEach(item -> description.add(item.getLine()));
 
-
-
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756",
                     description);
-            confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> event.setCancelled(true));
+            confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> {
+                double total = 0;
+                for(Map.Entry<Integer, Integer> entry : RareItemsID.entrySet()){
+                    MarketItem marketItem = RareItemStorage.getRareItem(entry.getKey());
+                    total += marketItem.getBasePrice() * entry.getValue();
+                }
+
+                player.sendMessage(Lang.SOLD_MARKET_ITEM_SUCCESS.get(total));
+                EconomyManager.getEconomy().depositPlayer(player, total);
+                gui.setCloseGuiAction(null);
+                event.setCancelled(true);
+                player.closeInventory();
+            });
         }
         return confirmButton;
     }
 
     private List<ItemStack> getAllItemStack(){
         List<ItemStack> allItems = new ArrayList<>();
-        for(Map.Entry<Integer, Integer> entry : items.entrySet()){
+        for(Map.Entry<Integer, Integer> entry : RareItemsID.entrySet()){
             MarketItem marketItem = RareItemStorage.getRareItem(entry.getKey());
             allItems.add(marketItem.getItemStack(entry.getValue()));
         }
@@ -122,7 +136,7 @@ public class OpenTraderMenu extends GUImenu{
 
     private List<DisplayMarketItem> getAllMarketItem(){
         List<DisplayMarketItem> allItems = new ArrayList<>();
-        for(Map.Entry<Integer, Integer> entry : items.entrySet()){
+        for(Map.Entry<Integer, Integer> entry : RareItemsID.entrySet()){
             DisplayMarketItem marketItem = new DisplayMarketItem(RareItemStorage.getRareItem(entry.getKey()), entry.getValue());
             allItems.add(marketItem);
         }

@@ -28,7 +28,6 @@ rareRessources:
     name : "Rare Stone"
     material: "EMERALD"
     customModelData: 1
-    basePrice: 5
     volatility: 0.5
     dropChance:
       blocks:
@@ -74,7 +73,6 @@ rareRessources:
     name : "Rare Wood"
     material: "STICK"
     customModelData: 2
-    basePrice: 3
     volatility: 1
     dropChance:
       blocks:
@@ -102,7 +100,6 @@ rareRessources:
     name : "Rare Crops"
     material: "WHEAT"
     customModelData: 3
-    basePrice: 2
     volatility: 2.5
     dropChance:
       blocks:
@@ -130,7 +127,6 @@ rareRessources:
     name : "Rare Soul"
     material: "FLINT"
     customModelData: 4
-    basePrice: 10
     volatility: 1
     dropChance:
       entities:
@@ -170,7 +166,6 @@ rareRessources:
     name : "Rare Fish"
     material: "RAW_COD"
     customModelData: 5
-    basePrice: 20
     volatility: 1
     dropChance:
       fishing:

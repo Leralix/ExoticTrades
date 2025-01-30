@@ -9,7 +9,7 @@ public abstract class GUImenu {
     protected final Player player;
 
     protected GUImenu(Player player, String title, int rows){
-        gui = IGUI.createChestGui(title, rows);
+        gui = GuiUtil.createChestGui(title, rows);
         this.player = player;
     }
 

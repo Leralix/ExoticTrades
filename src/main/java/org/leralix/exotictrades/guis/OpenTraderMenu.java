@@ -57,7 +57,7 @@ public class OpenTraderMenu extends GUImenu{
         GuiItem sellButton = getConfirmButton();
         gui.setItem(2,6, sellButton);
 
-        gui.setItem(4,1, IGUI.createBackArrow(player, event -> player.closeInventory()));
+        gui.setItem(4,1, GuiUtil.createBackArrow(player, event -> player.closeInventory()));
     }
 
     private void setupGui() {

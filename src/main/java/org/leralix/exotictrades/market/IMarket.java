@@ -1,6 +1,15 @@
 package org.leralix.exotictrades.market;
 
+
+import org.leralix.exotictrades.item.MarketItemStack;
+
+import java.util.List;
+
 public interface IMarket {
 
-        int computeNewPrice(int actualPrice, int quantityWanted, int quantitySold, int maxPrice, int minPrice, float variation);
+
+
+
+        double sellMarketItems(List<MarketItemStack> marketItems);
+
 }

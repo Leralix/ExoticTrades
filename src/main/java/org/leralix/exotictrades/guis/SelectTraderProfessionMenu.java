@@ -24,6 +24,6 @@ public class SelectTraderProfessionMenu extends GUImenu {
             gui.addItem(guiItem);
         }
 
-        gui.setItem(3,1, IGUI.createBackArrow(player, event -> new ManageTraderMenu(player, trader).open()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTraderMenu(player, trader).open()));
     }
 }

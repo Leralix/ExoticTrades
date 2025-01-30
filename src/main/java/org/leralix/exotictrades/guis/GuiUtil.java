@@ -1,8 +1,10 @@
 package org.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -94,7 +96,7 @@ public class GuiUtil {
 
         int lastRow = gui.getRows();
 
-        gui.setItem(lastRow,1, IGUI.createBackArrow(player, backArrowAction));
+        gui.setItem(lastRow,1, createBackArrow(player, backArrowAction));
         gui.setItem(lastRow,2, panel);
         gui.setItem(lastRow,3, panel);
         gui.setItem(lastRow,4, panel);
@@ -103,5 +105,20 @@ public class GuiUtil {
         gui.setItem(lastRow,7, previousButton);
         gui.setItem(lastRow,8, nextButton);
         gui.setItem(lastRow,9, panel);
+    }
+
+    public static Gui createChestGui(String name, int nRow) {
+        return Gui.gui()
+                .title(Component.text(name))
+                .type(GuiType.CHEST)
+                .rows(nRow)
+                .create();
+    }
+    public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
+        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get());
+        return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
+            event.setCancelled(true);
+            openMenuAction.accept(player);
+        });
     }
 }

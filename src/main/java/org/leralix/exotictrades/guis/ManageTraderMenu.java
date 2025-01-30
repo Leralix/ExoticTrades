@@ -32,7 +32,7 @@ public class ManageTraderMenu extends GUImenu {
         gui.setItem(2, 2, biomeGuiItem);
         gui.setItem(2, 4, workGuiItem);
 
-        gui.setItem(3, 1, IGUI.createBackArrow(player, event -> new TradersMenu(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new TradersMenu(player).open()));
     }
 
 }

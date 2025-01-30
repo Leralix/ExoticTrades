@@ -17,7 +17,7 @@ import java.util.*;
 public class TraderStorage {
 
     private TraderStorage() {
-
+        throw new IllegalStateException("Utility class");
     }
 
     private static Map<String, Trader> traders = new HashMap<>();

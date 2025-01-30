@@ -45,7 +45,7 @@ public class TradersMenu extends GUImenu {
         });
 
         gui.setItem(6,3, addButton);
-        gui.setItem(6,1, IGUI.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
     }
 
 }

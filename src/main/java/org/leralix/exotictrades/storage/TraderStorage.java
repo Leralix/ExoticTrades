@@ -16,6 +16,10 @@ import java.util.*;
 
 public class TraderStorage {
 
+    private TraderStorage() {
+
+    }
+
     private static Map<String, Trader> traders = new HashMap<>();
     private static final Map<Vector2D, List<Trader>> traderPosition = new HashMap<>();
     private static int nextID = 0;

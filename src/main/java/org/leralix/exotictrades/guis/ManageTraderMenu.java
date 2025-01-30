@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.utils.HeadUtils;
 
 public class ManageTraderMenu extends GUImenu {
 
@@ -21,14 +20,10 @@ public class ManageTraderMenu extends GUImenu {
 
 
         ItemStack biomeItem = trader.getBiomeType().getIcon(Lang.CURRENT_BIOME.get(trader.getBiomeType().getName()));
-        GuiItem biomeGuiItem = ItemBuilder.from(biomeItem).asGuiItem(event -> {
-            new SelectTraderBiomeMenu(player, trader).open();
-        });
+        GuiItem biomeGuiItem = ItemBuilder.from(biomeItem).asGuiItem(event -> new SelectTraderBiomeMenu(player, trader).open());
 
         ItemStack workItem = trader.getWorkType().getIcon(Lang.CURRENT_PROFESSION.get(trader.getWorkType().getName()));
-        GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> {
-            new SelectTraderProfessionMenu(player, trader).open();
-        });
+        GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> new SelectTraderProfessionMenu(player, trader).open());
 
 
 

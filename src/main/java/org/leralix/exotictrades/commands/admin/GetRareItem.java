@@ -1,8 +1,10 @@
 package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.entity.Player;
+import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.lang.Lang;
-import org.leralix.exotictrades.util.DropChances;
+import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.PlayerSubCommand;
 
@@ -13,7 +15,7 @@ public class GetRareItem extends PlayerSubCommand {
 
     @Override
     public String getName() {
-        return "getrareitem";
+        return "get";
     }
 
     @Override
@@ -28,32 +30,43 @@ public class GetRareItem extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/exotictradeadmin getrareitem";
+        return "/exotictradeadmin get";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
-            suggestions.add("rarestone");
-            suggestions.add("rarewood");
-            suggestions.add("rarecrop");
-            suggestions.add("raresoul");
-            suggestions.add("rarefish");
+            List<RareItem> rareItemList = RareItemStorage.getAllRareItems();
+            for (RareItem rareItem : rareItemList) {
+                suggestions.add(rareItem.getName().replace(" ", "_"));
+            }
+        }
+        if(args.length == 3){
+            suggestions.add("1");
+            suggestions.add("64");
         }
         return suggestions;
     }
     @Override
     public void perform(Player player, String[] args) {
-        switch (args[1]) {
-            case "rarestone" -> player.getInventory().addItem(DropChances.getRareStone());
-            case "rarewood" ->  player.getInventory().addItem(DropChances.getRareWood());
-            case "rarecrop" ->  player.getInventory().addItem(DropChances.getRareCrops());
-            case "raresoul" ->  player.getInventory().addItem(DropChances.getRareSoul());
-            case "rarefish" ->  player.getInventory().addItem(DropChances.getRareFish());
-            default -> {
-                player.sendMessage(StringUtil.getPluginString() + Lang.SYNTAX_ERROR.get());
-                return;
-            }
+
+        if(args.length < 2 || args.length > 3) {
+            return;
+        }
+
+        String itemName = args[1].replace("_", " ");
+        MarketItem marketItem = RareItemStorage.getMarketItem(itemName);
+
+        if (marketItem == null) {
+            player.sendMessage(StringUtil.getPluginString() + Lang.ITEM_NOT_FOUND.get());
+            return;
+        }
+
+        if (args.length == 3) {
+            int amount = Integer.parseInt(args[2]);
+            player.getInventory().addItem(marketItem.getItemStack(amount));
+        } else {
+            player.getInventory().addItem(marketItem.getItemStack(1));
         }
         player.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }

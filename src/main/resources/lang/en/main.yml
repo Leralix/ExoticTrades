@@ -8,6 +8,7 @@ language:
   #Commands
   COMMAND_GENERIC_SUCCESS: "Command executed successfully"
   ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
+  ITEM_NOT_FOUND: "Item not found"
 
   #Rare item
   ITEM_RARE_STONE: "Precious stone"

@@ -14,10 +14,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.leralix.exotictrades.data.OldRareItem;
 import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.storage.RareItemStorage;
-import org.leralix.exotictrades.util.DropChances;
 
 import java.util.List;
 
@@ -67,11 +65,8 @@ public class RareItemDrops implements Listener {
     public void onFishing(PlayerFishEvent event){
         Player player = event.getPlayer();
 
-        //Later add a check for fishing rod enchantment
-        //ItemStack item = player.getInventory().getItemInMainHand();
-
-        //if(player.getGameMode() != GameMode.SURVIVAL)
-        //    return;
+        if(player.getGameMode() != GameMode.SURVIVAL)
+            return;
 
         if(!event.getHook().isInOpenWater())
             return;
@@ -87,24 +82,19 @@ public class RareItemDrops implements Listener {
             return;
 
         Item fish = (Item)event.getCaught();
-        ItemStack fishStack = fish.getItemStack();
-        OldRareItem rareItem = DropChances.getRareItem(fishStack.getType().name());
 
-        if(rareItem != null){
-            Item spawnedEntity = rareItem.spawn(event.getCaught().getWorld(), event.getCaught().getLocation());
+        List<RareItem> rareItems = RareItemStorage.getRareItemsDropped(fish.getType(),event.getPlayer().getInventory().getItemInMainHand());
+        for(RareItem rareItem : rareItems){
 
-            if (spawnedEntity != null) {
-                Vector playerPos = player.getLocation().toVector();
-                Vector caughtItemPos = caughtEntity.getLocation().toVector();
+            Item rareFish = event.getCaught().getWorld().dropItem(event.getCaught().getLocation(), rareItem.getItemStack(1));
 
-                Vector velocity = playerPos.subtract(caughtItemPos).multiply(0.1);
-                velocity.add(new Vector(0, 0.15, 0));
+            Vector playerPos = player.getLocation().toVector();
+            Vector caughtItemPos = caughtEntity.getLocation().toVector();
 
-                spawnedEntity.setVelocity(velocity);
-            }
+            Vector velocity = playerPos.subtract(caughtItemPos).multiply(0.1);
+            velocity.add(new Vector(0, 0.15, 0));
 
+            rareFish.setVelocity(velocity);
         }
-
-
     }
 }

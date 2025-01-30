@@ -1,12 +1,10 @@
 package org.leralix.exotictrades.listener;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.guis.ManageTraderMenu;
 import org.leralix.exotictrades.guis.OpenTraderMenu;
 import org.leralix.exotictrades.storage.TraderStorage;
@@ -26,8 +24,6 @@ public class InteractWithTrader implements Listener {
                 }
             }
         }
-
-
     }
 
     private static void handleTraderInteraction(PlayerInteractEntityEvent event, Villager villager, String tag, Player player) {

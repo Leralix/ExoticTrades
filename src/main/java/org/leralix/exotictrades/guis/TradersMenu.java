@@ -25,11 +25,10 @@ public class TradersMenu extends GUImenu {
                 if(event.isLeftClick()){
                     new ManageTraderMenu(player, trader).open();
                 }
-                if(event.isRightClick()){
+                else if(event.isRightClick()){
                     player.teleport(trader.getLocation());
                     player.closeInventory();
                 }
-                return;
             });
 
             gui.addItem(guiItem);

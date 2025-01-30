@@ -15,11 +15,15 @@ import java.util.*;
 
 public class RareItemStorage {
 
+    private RareItemStorage() {
 
+    }
 
     private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
     private static final Map<EntityType, List<KillProbability>> entityDropProbability = new EnumMap<>(EntityType.class);
 
+
+    private static final Map<String, Integer> marketItemByName = new HashMap<>();
     private static final Map<MarketItemKey, Integer> marketItemById = new HashMap<>();
     private static final Map<Integer, RareItem> rareItems = new HashMap<>();
 
@@ -90,8 +94,9 @@ public class RareItemStorage {
                     });
                 }
             }
-            rareItems.put(id, rareItem);
             marketItemById.put(new MarketItemKey(rareItem), id);
+            marketItemByName.put(name, id);
+            rareItems.put(id, rareItem);
         }
 
     }
@@ -136,4 +141,12 @@ public class RareItemStorage {
         return getRareItem(id);
     }
 
+    public static List<RareItem> getAllRareItems() {
+        return new ArrayList<>(rareItems.values());
+    }
+    public static MarketItem getMarketItem(String name) {
+        Integer id = marketItemByName.get(name);
+        if (id == null) return null;
+        return getRareItem(id);
+    }
 }

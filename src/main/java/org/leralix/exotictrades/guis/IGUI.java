@@ -16,6 +16,9 @@ import java.util.function.Consumer;
 
 public class IGUI {
 
+    private IGUI() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static Gui createChestGui(String name, int nRow) {
         return Gui.gui()

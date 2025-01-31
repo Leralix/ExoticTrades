@@ -14,9 +14,6 @@ public class StockMarketManager{
 
     private static HashMap<MarketItemKey, StockMarket> marketItems = new HashMap<>();
 
-
-
-
     public static void newConnection(UUID playerID){
         if(playersConnections.containsKey(playerID)){
             playersConnections.replace(playerID, System.currentTimeMillis());
@@ -49,10 +46,14 @@ public class StockMarketManager{
     public double sellMarketItems(List<MarketItemStack> marketItemStackList) {
         double total = 0;
         for(MarketItemStack marketItemStack : marketItemStackList){
-            StockMarket specificMarket = marketItems.get(new MarketItemKey(marketItemStack));
+            StockMarket specificMarket = getStockMarket(new MarketItemKey(marketItemStack));
             total += specificMarket.sell(marketItemStack.getQuantity());
         }
 
         return total;
+    }
+
+    private StockMarket getStockMarket(MarketItemKey marketItemKey) {
+        return marketItems.computeIfAbsent(marketItemKey, k -> new StockMarket(24,100,10,50,5,5));
     }
 }

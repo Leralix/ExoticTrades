@@ -1,6 +1,10 @@
 package org.leralix.exotictrades.market;
 
-import org.bukkit.entity.Player;
+
+import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -18,8 +22,9 @@ public class StockMarket {
     private int expectedSells;
     private float currentPrice;
     private float lastPrice;
-    private List<Integer> amountOfSells;
-    private List<Set<UUID>> playersConnections;
+    private final List<Integer> amountOfSells;
+
+
 
     // Constructor
     public StockMarket(int timeLength, float maxPrice, float minPrice, float midPrice, float Kprice, float KexpectedSells) {
@@ -36,100 +41,20 @@ public class StockMarket {
         this.currentPrice = 0;
         this.lastPrice = 0;
         this.amountOfSells = new ArrayList<>(timeLength);
-        this.playersConnections = new ArrayList<>(timeLength);
 
         // Initialize the amountOfSells list with zeros
         for (int i = 0; i < timeLength; i++) {
             this.amountOfSells.add(0);
         }
-
-        // Initialize the playersConnections list with zeros
-        for (int i = 0; i < timeLength; i++) {
-            Set<UUID> playerList = new HashSet<>();
-            this.playersConnections.add(playerList);
-        }
     }
 
-    // Getters and Setters (optional, depending on your needs)
-    public int getTimeLength() {
-        return timeLength;
+    public void updateToNextCursor() {
+        cursor = updateCursor();
+        amountOfSells.set(cursor, 0);
     }
 
-    public float getMaxPrice() {
-        return maxPrice;
-    }
-
-    public float getMinPrice() {
-        return minPrice;
-    }
-
-    public float getMidPrice() {
-        return midPrice;
-    }
-
-    public float getKprice() {
-        return Kprice;
-    }
-
-    public float getKexpectedSells() {
-        return KexpectedSells;
-    }
-
-    public int getCursor() {
-        return cursor;
-    }
-
-    public void setCursor(int cursor) {
-        this.cursor = cursor;
-    }
-
-    public int getExpectedSells() {
-        return expectedSells;
-    }
-
-    public void setExpectedSells(int expectedSells) {
-        this.expectedSells = expectedSells;
-    }
-
-    public float getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(float currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public float getLastPrice() {
-        return lastPrice;
-    }
-
-    public void setLastPrice(float lastPrice) {
-        this.lastPrice = lastPrice;
-    }
-
-    public List<Integer> getAmountOfSells() {
-        return amountOfSells;
-    }
-
-    public void setAmountOfSells(List<Integer> amountOfSells) {
-        this.amountOfSells = amountOfSells;
-    }
-
-    public List<Set<UUID>> getPlayersConnections() {
-        return playersConnections;
-    }
-
-    public void setPlayersConnections(List<Set<UUID>> playersConnections) {
-        this.playersConnections = playersConnections;
-    }
-
-    // Method to update the amount of sells at the current cursor position
-    public void updateAmountOfSells(int sells) {
-        if (cursor >= 0 && cursor < timeLength) {
-            amountOfSells.set(cursor, sells);
-        } else {
-            throw new IndexOutOfBoundsException("Cursor is out of bounds.");
-        }
+    private int updateCursor() {
+        return cursor + 1 >= timeLength ? 0 : cursor + 1;
     }
 
     // Method to add an amount to the amount of sells at the current cursor position
@@ -141,28 +66,9 @@ public class StockMarket {
         }
     }
 
-    // Method to add a player to the player list at the current cursor position
-    public void addPlayersConnections(UUID playerUuid) {
-        if (cursor >= 0 && cursor < timeLength) {
-            playersConnections.get(cursor).add(playerUuid);
-        } else {
-            throw new IndexOutOfBoundsException("Cursor is out of bounds.");
-        }
-    }
-
     // Updating the expected selling price mainly based on the amount of players that joined the server
     public void updateExpectedSells() {
-        Set<UUID> uniquePlayers = new HashSet<>();
-
-        // Collect unique players
-        for (Set<UUID> connectionGroup : playersConnections) {
-            if (connectionGroup != null) {
-                uniquePlayers.addAll(connectionGroup);
-            }
-        }
-
-        // Calculate expected sells using unique player count, midPrice, and KexpectedSells
-        int uniquePlayerCount = uniquePlayers.size();
+        int uniquePlayerCount = StockMarketManager.getNumberOfConnections();
         this.expectedSells = (int) (uniquePlayerCount * midPrice * KexpectedSells);
     }
     
@@ -209,18 +115,30 @@ public class StockMarket {
                 currentPrice = Math.max(currentPrice - deltaPrice, minPrice);
             }
         }
-
-        // 5. Update tracking variables
-        cursor = (cursor + 1) % timeLength; // Circular buffer behavior
     }
 
-//    // Full iteration processor
-//    public List<Float> processPriceUpdates(int iterations) {
-//        List<Float> priceHistory = new ArrayList<>();
-//        for (int i = 0; i < iterations; i++) {
-//            updatePrice();
-//            priceHistory.add(currentPrice);
-//        }
-//        return priceHistory;
-//    }
+    public double sell(int amount){
+        double total = 0;
+        for(int i = 0; i < amount; i++){
+            total += currentPrice;
+        }
+
+        addAmountOfSells(amount);
+
+        return total;
+    }
+
+
+    public void updateMovingAverage() {
+        updatePrice();
+        updateToNextCursor();
+    }
+
+    public int getNumberOfSoldItems() {
+        int total = 0;
+        for(int i : amountOfSells){
+            total += i;
+        }
+        return total;
+    }
 }

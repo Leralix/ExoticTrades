@@ -9,7 +9,7 @@ import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.TraderWork;
 import org.leralix.lib.utils.HeadUtils;
 
-public class SelectTraderProfessionMenu extends GUImenu {
+public class SelectTraderProfessionMenu extends basicGUI {
     public SelectTraderProfessionMenu(Player player, Trader trader) {
         super(player, "Select Profession", 3);
 

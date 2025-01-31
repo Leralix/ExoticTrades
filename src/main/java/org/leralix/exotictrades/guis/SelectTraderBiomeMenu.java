@@ -9,7 +9,7 @@ import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.TraderBiome;
 import org.leralix.lib.utils.HeadUtils;
 
-public class SelectTraderBiomeMenu extends GUImenu {
+public class SelectTraderBiomeMenu extends basicGUI {
     public SelectTraderBiomeMenu(Player player, Trader trader) {
         super(player, "Select Biome", 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));

@@ -55,7 +55,13 @@ language:
   NO_ITEM_OR_WRONG: "No item or wrong item"
   QUANTITY_ITEM_TO_SELL: "§5{0} §f: §5{1} (§5{2} x §f{3})"
   SOLD_MARKET_ITEM_SUCCESS: "Items sold successfully for {0}"
+  CLICK_TO_OPEN: "Click to open"
   ##Main menu
+  TRADER_MENU: "Trader menu"
+  MARKET_MENU: "Market menu"
+
+
+  ##Trader menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"
   LEFT_CLICK_TO_MANAGE: "Left click to manage"

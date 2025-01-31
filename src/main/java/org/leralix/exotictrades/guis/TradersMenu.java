@@ -2,7 +2,6 @@ package org.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
@@ -10,7 +9,7 @@ import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
-public class TradersMenu extends GUImenu {
+public class TradersMenu extends basicGUI {
 
 
     public TradersMenu(Player player) {
@@ -45,7 +44,7 @@ public class TradersMenu extends GUImenu {
         });
 
         gui.setItem(6,3, addButton);
-        gui.setItem(6,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
     }
 
 }

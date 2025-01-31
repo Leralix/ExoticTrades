@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.Trader;
 
-public class ManageTraderMenu extends GUImenu {
+public class ManageTraderMenu extends basicGUI {
 
 
     public ManageTraderMenu(Player player, Trader trader) {

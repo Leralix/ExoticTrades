@@ -3,12 +3,12 @@ package org.leralix.exotictrades.guis;
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 
-public abstract class GUImenu {
+public abstract class basicGUI {
 
     protected final Gui gui;
     protected final Player player;
 
-    protected GUImenu(Player player, String title, int rows){
+    protected basicGUI(Player player, String title, int rows){
         gui = GuiUtil.createChestGui(title, rows);
         this.player = player;
     }

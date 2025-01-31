@@ -3,6 +3,7 @@ package org.leralix.exotictrades.storage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.MarketItemStack;
 
 public class MarketItemKey {
     private final Material material;
@@ -11,6 +12,10 @@ public class MarketItemKey {
     public MarketItemKey(MarketItem item) {
         this.material = item.getMaterial();
         this.modelData = item.getModelData();
+    }
+
+    public MarketItemKey(MarketItemStack item) {
+        this(item.getItem());
     }
 
     public MarketItemKey(ItemStack item) {

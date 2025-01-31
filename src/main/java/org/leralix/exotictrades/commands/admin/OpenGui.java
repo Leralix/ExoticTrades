@@ -1,6 +1,7 @@
 package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.entity.Player;
+import org.leralix.exotictrades.guis.MainMenu;
 import org.leralix.exotictrades.guis.TradersMenu;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.lib.commands.PlayerSubCommand;
@@ -28,7 +29,7 @@ public class OpenGui extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/exotictradeadmin gui";
+        return "/extrade gui";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
 
@@ -40,6 +41,6 @@ public class OpenGui extends PlayerSubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        new TradersMenu(player).open();
+        new MainMenu(player).open();
     }
 }

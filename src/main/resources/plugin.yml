@@ -5,7 +5,7 @@ depend: [Vault]
 api-version: '1.19'
 load: STARTUP
 commands:
-  exotictradeadmin:
+  extrade:
     description: admin command of exotictrades
     permission: tan.exotic_trade.admin.command.*
     usage: /<command>

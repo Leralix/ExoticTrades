@@ -21,7 +21,7 @@ import org.leralix.lib.utils.HeadUtils;
 
 import java.util.*;
 
-public class OpenTraderMenu extends GUImenu{
+public class OpenTraderMenu extends basicGUI {
 
     private final List<ItemStack> allItems = new ArrayList<>();
     private final Map<Integer, Integer> rareItems = new HashMap<>();

@@ -7,6 +7,7 @@ import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.EconomyInitialiser;
 import org.leralix.exotictrades.listener.InteractWithTrader;
 import org.leralix.exotictrades.listener.RareItemDrops;
+import org.leralix.exotictrades.listener.SpawnTraders;
 import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
@@ -47,14 +48,22 @@ public final class ExoticTrades extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
         getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
+        getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
 
+
+        initTasks();
 
         logger.warning("[ExoticTrade] -Loading listeners");
-        getCommand("exotictradeadmin").setExecutor(new AdminCommandManager());
+        getCommand("extrade").setExecutor(new AdminCommandManager());
 
 
         logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
         getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
+    }
+
+    private void initTasks() {
+        int movingSlider = 20 * 60 * 5;
+
     }
 
     @Override

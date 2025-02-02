@@ -6,6 +6,9 @@ import org.leralix.exotictrades.ExoticTrades;
 
 public class TemporalMarketTask {
 
+    private TemporalMarketTask() {
+    }
+
     public static void scheduleMovingAverageTask(){
         new BukkitRunnable() {
             @Override

@@ -1,13 +1,17 @@
 package org.leralix.exotictrades.storage;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.DropProbability;
 import org.leralix.exotictrades.item.KillProbability;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.RareItem;
+import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -34,21 +38,40 @@ public class RareItemStorage {
         blockDropProbability.clear();
         entityDropProbability.clear();
 
+
+        Configuration defaultConfiguration = new MemoryConfiguration();
+
+        ConfigUtil.getCustomConfig(ConfigTag.MAIN).setDefaults(defaultConfiguration);
+
         ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("rareRessources");
         for (String resourceKey : section.getKeys(false)) {
             ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
-            if (resourceSection == null) continue;
 
+            if (resourceSection == null) continue;
             if(!resourceSection.getBoolean("enabled")) continue;
+
+            resourceSection.addDefault("movingAverage", defaultConfiguration.getInt("defaultMovingAverage", 24));
+            resourceSection.addDefault("minPrice", defaultConfiguration.getDouble("defaultMinPrice", 0));
+            resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 1000));
+            resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 100));
+            resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
 
             int id = resourceSection.getInt("id");
             String name = resourceSection.getString("name");
             Material material = Material.matchMaterial(resourceSection.getString("material"));
+            if(material == null){
+                throw new IllegalStateException("Material " + resourceSection.getString("material") + " not found.");
+            }
             int customModelData = resourceSection.getInt("customModelData");
-            double basePrice = resourceSection.getDouble("basePrice");
+
+            int movingAverage = resourceSection.getInt("movingAverage");
+            double maxPrice = resourceSection.getDouble("maxPrice");
+            double minPrice = resourceSection.getDouble("minPrice");
             double volatility = resourceSection.getDouble("volatility");
+            double basePrice = resourceSection.getDouble("basePrice");
 
             RareItem rareItem = new RareItem(id, name, material, customModelData, basePrice, volatility);
+
 
 
             ConfigurationSection dropChanceSection = resourceSection.getConfigurationSection("dropChance");
@@ -94,6 +117,9 @@ public class RareItemStorage {
                     });
                 }
             }
+
+            StockMarketManager.registerOrUpdateMarketItem(rareItem, movingAverage, maxPrice, minPrice, volatility, basePrice);
+
             marketItemById.put(new MarketItemKey(rareItem), id);
             marketItemByName.put(name, id);
             rareItems.put(id, rareItem);

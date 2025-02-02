@@ -7,14 +7,37 @@
 
 
 ########################
+##       MARKET       ##
+########################
+
+#Set the number of hours sold items are kept in memory for every market item.
+defaultMovingAverage: 24
+#Set the default minimum price for the market.
+defaultMinPrice: 0
+#Set the default maximum price for the market.
+defaultMaxPrice: 1000
+#Set the default market price for the market.
+defaultBasePrice: 100
+#Set the default market volatility for the market.
+#A higher volatility means that the market price will fluctuate more.
+defaultMarketVolatility: 1
+
+
+
+########################
 ##  RARES RESSOURCES  ##
 ########################
 
 #enable : enable the rare ressource.
 #name : the name of the rare ressource.
 #customModelData [default none]: the custom model data of the rare ressource. If set to none, only items with NO custom model data will be used.
+
+#movingAverage [default "defaultMovingAverage"]: the number of hours sold items are kept in memory for the rare ressource market.
+#minPrice [default "defaultMinPrice"]: the minimum price of the rare ressource.
+#maxPrice [default "defaultMaxPrice"]: the maximum price of the rare ressource.
 #basePrice : the base price of the rare ressource at day 1.
 #volatility : the volatility of the rare ressource. This is used as a multiplier of the base market price update.
+
 #blocks : the blocks that can drop the rare ressource when broken.
 #baseChance [default 0]: the base chance of the rare ressource to drop when breaking the block.
 #FortuneModifier [default 0] : the fortune modifier of the rare ressource. Each level of fortune will multiply the base chance by this value.
@@ -164,7 +187,7 @@ rareRessources:
     id : 5
     enabled: true
     name : "Rare Fish"
-    material: "RAW_COD"
+    material: "COD"
     customModelData: 5
     volatility: 1
     dropChance:

@@ -1,69 +1,50 @@
 package org.leralix.exotictrades.market;
 
 
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.lang.Lang;
 
 import java.util.*;
 
 public class StockMarket {
     // Initialization parameters
-    private final int timeLength;
-    private final float maxPrice;
-    private final float minPrice;
-    private final float midPrice;
-    private final float Kprice; // Coefficient for the price increase after sells
-    private final float KexpectedSells; // Coefficient for 
+    private final MarketItem marketItem;
+    private final double maxPrice;
+    private final double minPrice;
+    private final double midPrice;
+    private final double Kprice; // Coefficient for the price increase after sells
+    private final float KexpectedSells; // Coefficient for
 
     // Internal private variables
-    private int cursor;
     private int expectedSells;
-    private float currentPrice;
-    private float lastPrice;
-    private final List<Integer> amountOfSells;
-
-
+    private double currentPrice;
+    private final SellHistory sellHistory;
 
     // Constructor
-    public StockMarket(int timeLength, float maxPrice, float minPrice, float midPrice, float Kprice, float KexpectedSells) {
-        this.timeLength = timeLength;
+    public StockMarket(MarketItem marketItem, int timeLength, double maxPrice, double minPrice, double midPrice, double Kprice) {
+        this.marketItem = marketItem;
         this.maxPrice = maxPrice;
         this.minPrice = minPrice;
         this.midPrice = midPrice;
         this.Kprice = Kprice;
-        this.KexpectedSells = KexpectedSells;
+        this.KexpectedSells = 1;
+        this.sellHistory = new SellHistory(timeLength);
 
         // Initialize internal variables
-        this.cursor = 0;
         this.expectedSells = 0;
         this.currentPrice = 0;
-        this.lastPrice = 0;
-        this.amountOfSells = new ArrayList<>(timeLength);
-
-        // Initialize the amountOfSells list with zeros
-        for (int i = 0; i < timeLength; i++) {
-            this.amountOfSells.add(0);
-        }
     }
 
     public void updateToNextCursor() {
-        cursor = updateCursor();
-        amountOfSells.set(cursor, 0);
-    }
-
-    private int updateCursor() {
-        return cursor + 1 >= timeLength ? 0 : cursor + 1;
+        sellHistory.updateToNextCursor();
     }
 
     // Method to add an amount to the amount of sells at the current cursor position
     public void addAmountOfSells(int sells) {
-        if (cursor >= 0 && cursor < timeLength) {
-            amountOfSells.set(cursor, amountOfSells.get(cursor) + sells);
-        } else {
-            throw new IndexOutOfBoundsException("Cursor is out of bounds.");
-        }
+        sellHistory.addSell(sells);
     }
 
     // Updating the expected selling price mainly based on the amount of players that joined the server
@@ -75,45 +56,48 @@ public class StockMarket {
     // Core price update logic
     public void updatePrice() {
         // Get sells data from current cursor position
-        int soldAmount = amountOfSells.get(cursor);
-        // Update the las price to the old current price
-        lastPrice = currentPrice;
+        int soldAmount = sellHistory.getAmount();
         // Update the expected sells value
         updateExpectedSells();
 
+        System.out.printf("currentPrice : " + currentPrice);
+
         // 1. Calculate normalized price
-        float Cprice;
-        float normalizedPrice;
+        double cPrice;
+        double normalizedPrice;
 
         if (currentPrice <= midPrice) {
             // Normalize between minPrice and midPrice
             normalizedPrice = (currentPrice - minPrice) / (midPrice - minPrice);
             // Scale to range [0.5, 1]
-            Cprice = 0.5f + 0.5f * normalizedPrice;
+            cPrice = 0.5f + 0.5f * normalizedPrice;
         } else {
             // Normalize between midPrice and maxPrice
             normalizedPrice = (currentPrice - midPrice) / (maxPrice - midPrice);
             // Scale to range [1, 0.5]
-            Cprice = 1.0f - 0.5f * normalizedPrice;
+            cPrice = 1.0f - 0.5f * normalizedPrice;
         }
 
         // 3. Calculate sales difference
-        int difference = Math.abs(expectedSells - soldAmount);
+        double difference = Math.abs(expectedSells - soldAmount);
+
+        System.out.println("difference : " + difference);
 
         // 4. Determine price change direction
-        float deltaPrice = 0;
+        double deltaPrice;
         if (soldAmount != expectedSells) {
             if (soldAmount < expectedSells) {
                 deltaPrice = currentPrice > midPrice ?
-                        (difference / (float) expectedSells) * Cprice * Kprice :
-                        (difference / (float) expectedSells) * (2 - Cprice) * Kprice;
+                        (difference / expectedSells) * cPrice * Kprice :
+                        (difference / expectedSells) * (2 - cPrice) * Kprice;
                 currentPrice = Math.min(currentPrice + deltaPrice, maxPrice);
             } else {
                 deltaPrice = currentPrice > midPrice ?
-                        (difference / (float) expectedSells) * (2 - Cprice) * Kprice :
-                        (difference / (float) expectedSells) * Cprice * Kprice;
+                        (difference / expectedSells) * (2 - cPrice) * Kprice :
+                        (difference / expectedSells) * cPrice * Kprice;
                 currentPrice = Math.max(currentPrice - deltaPrice, minPrice);
             }
+            System.out.printf("new currentPrice : " + currentPrice);
         }
     }
 
@@ -134,11 +118,17 @@ public class StockMarket {
         updateToNextCursor();
     }
 
-    public int getNumberOfSoldItems() {
-        int total = 0;
-        for(int i : amountOfSells){
-            total += i;
-        }
-        return total;
+
+    public ItemStack getMarketInfo() {
+        ItemStack itemStack = new ItemStack(Material.GOLD_INGOT);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(marketItem.getName());
+        itemMeta.setLore(Arrays.asList(
+                Lang.CURRENT_PRICE.get(currentPrice),
+                "Expected Sells: " + expectedSells,
+                "Sold Items: " + sellHistory.getAmount()
+        ));
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 }

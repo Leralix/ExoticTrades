@@ -1,13 +1,10 @@
 package org.leralix.exotictrades;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
-import org.leralix.exotictrades.listener.EconomyInitialiser;
-import org.leralix.exotictrades.listener.InteractWithTrader;
-import org.leralix.exotictrades.listener.RareItemDrops;
-import org.leralix.exotictrades.listener.SpawnTraders;
+import org.leralix.exotictrades.listener.*;
+import org.leralix.exotictrades.market.TemporalMarketTask;
 import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
@@ -49,6 +46,7 @@ public final class ExoticTrades extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
         getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
         getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCounter(), this);
 
 
         initTasks();
@@ -62,8 +60,7 @@ public final class ExoticTrades extends JavaPlugin {
     }
 
     private void initTasks() {
-        int movingSlider = 20 * 60 * 5;
-
+        TemporalMarketTask.scheduleMovingAverageTask();
     }
 
     @Override

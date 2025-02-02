@@ -12,7 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.DisplayMarketItem;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.MarketItemStack;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.RareItemStorage;
@@ -106,16 +108,12 @@ public class OpenTraderMenu extends basicGUI {
         }
         else {
             List<String> description = new ArrayList<>();
-            getAllMarketItem().forEach(item -> description.add(item.getLine()));
+            getAllMarketItem().forEach(item -> item.getDescription());
 
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756",
                     description);
             confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> {
-                double total = 0;
-                for(Map.Entry<Integer, Integer> entry : rareItems.entrySet()){
-                    MarketItem marketItem = RareItemStorage.getRareItem(entry.getKey());
-                    total += marketItem.getBasePrice() * entry.getValue();
-                }
+                double total = StockMarketManager.sellMarketItems(getAllMarketItem());
 
                 player.sendMessage(Lang.SOLD_MARKET_ITEM_SUCCESS.get(total));
                 EconomyManager.getEconomy().depositPlayer(player, total);
@@ -127,10 +125,10 @@ public class OpenTraderMenu extends basicGUI {
         return confirmButton;
     }
 
-    private List<DisplayMarketItem> getAllMarketItem(){
-        List<DisplayMarketItem> displayMarketItems = new ArrayList<>();
+    private List<MarketItemStack> getAllMarketItem(){
+        List<MarketItemStack> displayMarketItems = new ArrayList<>();
         for(Map.Entry<Integer, Integer> entry : rareItems.entrySet()){
-            DisplayMarketItem marketItem = new DisplayMarketItem(RareItemStorage.getRareItem(entry.getKey()), entry.getValue());
+            MarketItemStack marketItem = new MarketItemStack(RareItemStorage.getRareItem(entry.getKey()), entry.getValue());
             displayMarketItems.add(marketItem);
         }
         return displayMarketItems;

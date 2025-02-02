@@ -1,5 +1,7 @@
 package org.leralix.exotictrades.item;
 
+import org.leralix.exotictrades.lang.Lang;
+
 public class MarketItemStack {
 
     MarketItem item;
@@ -18,4 +20,7 @@ public class MarketItemStack {
         return quantity;
     }
 
+    public String getDescription() {
+        return Lang.QUANTITY_ITEM_TO_SELL.get(item.getName(), quantity, item.getName());
+    }
 }

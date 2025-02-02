@@ -1,5 +1,7 @@
 package org.leralix.exotictrades.market;
 
+import org.bukkit.entity.Player;
+import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.MarketItemStack;
 import org.leralix.exotictrades.storage.MarketItemKey;
 
@@ -10,9 +12,12 @@ import java.util.UUID;
 
 public class StockMarketManager{
 
-    private static HashMap<UUID, Long> playersConnections = new HashMap<>();
+    private StockMarketManager() {
+    }
 
-    private static HashMap<MarketItemKey, StockMarket> marketItems = new HashMap<>();
+    private static final HashMap<UUID, Long> playersConnections = new HashMap<>();
+
+    private static final HashMap<MarketItemKey, StockMarket> marketItems = new HashMap<>();
 
     public static void newConnection(UUID playerID){
         if(playersConnections.containsKey(playerID)){
@@ -43,7 +48,7 @@ public class StockMarketManager{
     }
 
 
-    public double sellMarketItems(List<MarketItemStack> marketItemStackList) {
+    public static double sellMarketItems(List<MarketItemStack> marketItemStackList) {
         double total = 0;
         for(MarketItemStack marketItemStack : marketItemStackList){
             StockMarket specificMarket = getStockMarket(new MarketItemKey(marketItemStack));
@@ -53,7 +58,16 @@ public class StockMarketManager{
         return total;
     }
 
-    private StockMarket getStockMarket(MarketItemKey marketItemKey) {
-        return marketItems.computeIfAbsent(marketItemKey, k -> new StockMarket(24,100,10,50,5,5));
+    private static StockMarket getStockMarket(MarketItemKey marketItemKey) {
+        return marketItems.get(marketItemKey);
+    }
+
+    public static void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice, double minPrice, double volatility, double basePrice) {
+        MarketItemKey marketItemKey = new MarketItemKey(marketItem);
+        marketItems.computeIfAbsent(marketItemKey, k -> new StockMarket(marketItem, timeLength, maxPrice, minPrice, volatility, basePrice));
+    }
+
+    public static void registerPlayer(Player player) {
+        newConnection(player.getUniqueId());
     }
 }

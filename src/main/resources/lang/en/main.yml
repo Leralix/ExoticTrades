@@ -69,3 +69,7 @@ language:
   CURRENT_BIOME: "Current biome : {0}"
   CURRENT_PROFESSION: "Current profession : {0}"
 
+  ##Market menu
+  CURRENT_PRICE: "Current price : {0}"
+
+

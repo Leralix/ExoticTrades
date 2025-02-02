@@ -8,13 +8,13 @@ public class AdminCommandManager extends CommandManager {
     public AdminCommandManager(){
         addSubCommand(new GetRareItem());
         addSubCommand(new OpenGui());
-
+        addSubCommand(new SkipOneHour());
         addSubCommand(new MainHelpCommand(this));
     }
 
     @Override
     public String getName() {
-        return "exotictradeadmin";
+        return "extrade";
     }
 
 

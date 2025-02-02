@@ -2,8 +2,12 @@ package org.leralix.exotictrades.traders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3DWithOrientation;
@@ -33,14 +37,23 @@ public class Trader {
         updateTrader();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void updateTrader() {
 
-        Optional<Villager> optionalEntity = getVillager();
-        if (optionalEntity.isEmpty()) {
-            spawnTrader();
-            return;
-        }
-        updateTrader(optionalEntity.get());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Optional<Villager> optionalEntity = getVillager();
+                if (optionalEntity.isEmpty()) {
+                    spawnTrader();
+                    return;
+                }
+                updateTrader(optionalEntity.get());
+            }
+        }.runTask(ExoticTrades.getPlugin());
     }
 
     public void setBiomeType(TraderBiome biomeType) {
@@ -57,7 +70,7 @@ public class Trader {
         villager.setProfession(workType.getProfession());
         if(name != null){
             villager.setCustomName(name);
-            villager.setCustomNameVisible(true);
+            //villager.setCustomNameVisible(true); TODO : test if this is needed
         }
         villager.setAI(false);
         villager.setInvulnerable(true);
@@ -113,4 +126,11 @@ public class Trader {
         this.workType = work;
         updateTrader();
     }
+
+    public void delete() {
+       getVillager().ifPresent(Entity::remove);
+       TraderStorage.delete(this);
+    }
+
+
 }

@@ -39,11 +39,9 @@ public class RareItemStorage {
         entityDropProbability.clear();
 
 
-        Configuration defaultConfiguration = new MemoryConfiguration();
+        Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
-        ConfigUtil.getCustomConfig(ConfigTag.MAIN).setDefaults(defaultConfiguration);
-
-        ConfigurationSection section = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getConfigurationSection("rareRessources");
+        ConfigurationSection section = defaultConfiguration.getConfigurationSection("rareRessources");
         for (String resourceKey : section.getKeys(false)) {
             ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
 
@@ -52,9 +50,10 @@ public class RareItemStorage {
 
             resourceSection.addDefault("movingAverage", defaultConfiguration.getInt("defaultMovingAverage", 24));
             resourceSection.addDefault("minPrice", defaultConfiguration.getDouble("defaultMinPrice", 0));
-            resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 1000));
-            resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 100));
+            resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 500));
+            resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 50));
             resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
+            resourceSection.addDefault("demandMultiplier", defaultConfiguration.getDouble("defaultDemandMultiplier", 1));
 
             int id = resourceSection.getInt("id");
             String name = resourceSection.getString("name");
@@ -69,6 +68,7 @@ public class RareItemStorage {
             double minPrice = resourceSection.getDouble("minPrice");
             double volatility = resourceSection.getDouble("volatility");
             double basePrice = resourceSection.getDouble("basePrice");
+            double demandMultiplier = resourceSection.getDouble("demandMultiplier");
 
             RareItem rareItem = new RareItem(id, name, material, customModelData, basePrice, volatility);
 
@@ -118,9 +118,9 @@ public class RareItemStorage {
                 }
             }
 
-            StockMarketManager.registerOrUpdateMarketItem(rareItem, movingAverage, maxPrice, minPrice, volatility, basePrice);
+            StockMarketManager.registerOrUpdateMarketItem(rareItem, movingAverage, maxPrice, minPrice, volatility, demandMultiplier, basePrice);
 
-            marketItemById.put(new MarketItemKey(rareItem), id);
+            marketItemById.put(MarketItemKey.of(rareItem), id);
             marketItemByName.put(name, id);
             rareItems.put(id, rareItem);
         }

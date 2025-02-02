@@ -10,18 +10,19 @@
 ##       MARKET       ##
 ########################
 
-#Set the number of hours sold items are kept in memory for every market item.
-defaultMovingAverage: 24
+#Set the number of hours sold items are kept in memory for every market item. Integer only.
+defaultMovingAverage: 4
 #Set the default minimum price for the market.
-defaultMinPrice: 0
+defaultMinPrice: 0.0
 #Set the default maximum price for the market.
-defaultMaxPrice: 1000
+defaultMaxPrice: 1000.0
 #Set the default market price for the market.
-defaultBasePrice: 100
+defaultBasePrice: 100.0
 #Set the default market volatility for the market.
 #A higher volatility means that the market price will fluctuate more.
-defaultMarketVolatility: 1
-
+defaultMarketVolatility: 1.0
+#A higher volatility means that the market price will fluctuate more.
+defaultDemandMultiplier: 1.0
 
 
 ########################
@@ -36,7 +37,8 @@ defaultMarketVolatility: 1
 #minPrice [default "defaultMinPrice"]: the minimum price of the rare ressource.
 #maxPrice [default "defaultMaxPrice"]: the maximum price of the rare ressource.
 #basePrice : the base price of the rare ressource at day 1.
-#volatility : the volatility of the rare ressource. This is used as a multiplier of the base market price update.
+#volatility : the volatility of the rare ressource. A higher volatility means that the market price will fluctuate more.
+#demandMultiplier [default "defaultDemandMultiplier"]: the demand multiplier of the rare ressource.
 
 #blocks : the blocks that can drop the rare ressource when broken.
 #baseChance [default 0]: the base chance of the rare ressource to drop when breaking the block.

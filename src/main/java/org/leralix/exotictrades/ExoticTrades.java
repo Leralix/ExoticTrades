@@ -1,9 +1,13 @@
 package org.leralix.exotictrades;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.exotictrades.commands.admin.AdminCommandManager;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.*;
+import org.leralix.exotictrades.listener.chat.ChatListener;
+import org.leralix.exotictrades.market.PlayerConnectionStorage;
+import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.market.TemporalMarketTask;
 import org.leralix.exotictrades.storage.RareItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
@@ -39,14 +43,18 @@ public final class ExoticTrades extends JavaPlugin {
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 
         RareItemStorage.init();
-        TraderStorage.load();
         VillagerHeadStorage.init();
+
+        TraderStorage.load();
+        PlayerConnectionStorage.load();
+        StockMarketManager.load();
 
         getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
         getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
         getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
         getServer().getPluginManager().registerEvents(new PlayerCounter(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
 
 
         initTasks();
@@ -71,9 +79,15 @@ public final class ExoticTrades extends JavaPlugin {
             return;
         }
         TraderStorage.save();
+        PlayerConnectionStorage.save();
+        StockMarketManager.save();
     }
 
     public static ExoticTrades getPlugin() {
         return plugin;
+    }
+
+    public static String getNameString() {
+        return ChatColor.GOLD + "[ExoticTrade]";
     }
 }

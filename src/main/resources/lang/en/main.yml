@@ -56,11 +56,10 @@ language:
   QUANTITY_ITEM_TO_SELL: "§5{0} §f: §5{1} (§5{2} x §f{3})"
   SOLD_MARKET_ITEM_SUCCESS: "Items sold successfully for {0}"
   CLICK_TO_OPEN: "Click to open"
+  CLICK_TO_DELETE: "Click to delete"
   ##Main menu
   TRADER_MENU: "Trader menu"
   MARKET_MENU: "Market menu"
-
-
   ##Trader menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"
@@ -68,8 +67,15 @@ language:
   RIGHT_CLICK_TO_TELEPORT: "Right click to teleport"
   CURRENT_BIOME: "Current biome : {0}"
   CURRENT_PROFESSION: "Current profession : {0}"
-
+  DELETE_TRADER: "Delete trader"
+  CURRENT_NAME: "Current name : {0}"
   ##Market menu
   CURRENT_PRICE: "Current price : {0}"
+
+  #Event
+  WRITE_CANCEL_TO_CANCEL: "Write {0} to cancel"
+  CANCEL_WORD: "cancel"
+  CANCELLED_ACTION: "Action cancelled"
+
 
 

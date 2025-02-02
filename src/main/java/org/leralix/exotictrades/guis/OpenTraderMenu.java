@@ -10,7 +10,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.ExoticTrades;
-import org.leralix.exotictrades.item.DisplayMarketItem;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.MarketItemStack;
 import org.leralix.exotictrades.lang.Lang;
@@ -87,7 +86,7 @@ public class OpenTraderMenu extends basicGUI {
                     continue;
                 }
                 allItems.add(item);
-                MarketItemKey key = new MarketItemKey(item);
+                MarketItemKey key = MarketItemKey.of(item);
                 MarketItem marketItem = RareItemStorage.getMarketItem(key);
                 if(marketItem == null){
                     continue;
@@ -101,7 +100,18 @@ public class OpenTraderMenu extends basicGUI {
 
     private GuiItem getConfirmButton(){
         GuiItem confirmButton;
-        if(rareItems.isEmpty()){
+
+        boolean allItemsAreNotRare = false;
+        for(ItemStack item : allItems){
+            MarketItemKey key = MarketItemKey.of(item);
+            MarketItem marketItem = RareItemStorage.getMarketItem(key);
+            if(marketItem == null){
+                allItemsAreNotRare = true;
+                break;
+            }
+        }
+
+        if(rareItems.isEmpty() || allItemsAreNotRare){
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065",
                     Lang.NO_ITEM_OR_WRONG.get());
             confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> event.setCancelled(true));

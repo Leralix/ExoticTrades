@@ -1,15 +1,16 @@
 package org.leralix.exotictrades.listener;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.market.PlayerConnectionStorage;
 
 public class PlayerCounter implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        StockMarketManager.registerPlayer(event.getPlayer());
+        PlayerConnectionStorage.newConnection(event.getPlayer().getUniqueId());
     }
 
 }

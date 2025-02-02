@@ -22,7 +22,7 @@ public class SellHistory {
     }
 
     public void updateToNextCursor() {
-        cursor = cursor + 1 % timeLength;
+        cursor = (cursor + 1) % timeLength;
         history.put(cursor, 0);
     }
 

@@ -47,32 +47,6 @@ public class TraderStorage {
         return Collections.unmodifiableCollection(traders.values());
     }
 
-    public static void load(){
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/traders.json");
-        if (!file.exists())
-            return;
-
-        Reader reader;
-        try {
-            reader = new FileReader(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
-        traders = gson.fromJson(reader, type);
-        int id = 0;
-        for (String ids: traders.keySet()) {
-            int newID =  Integer.parseInt(ids.substring(1));
-            if(newID > id)
-                id = newID;
-        }
-        nextID = id+1;
-
-        updateTraderPosition();
-    }
-
     private static void updateTraderPosition() {
         for(Trader trader : traders.values()){
             Vector2D chunkVector = trader.getChunkLocation();
@@ -84,6 +58,12 @@ public class TraderStorage {
                 traderPosition.put(chunkVector, list);
             }
         }
+    }
+
+    public static List<Trader> getTradersInChunk(Chunk chunk){
+        if(!traderPosition.containsKey(new Vector2D(chunk)))
+            return Collections.emptyList();
+        return traderPosition.get(new Vector2D(chunk));
     }
 
     public static void save() {
@@ -120,10 +100,36 @@ public class TraderStorage {
 
     }
 
-    public static List<Trader> getTradersInChunk(Chunk chunk){
-        if(!traderPosition.containsKey(new Vector2D(chunk)))
-            return Collections.emptyList();
-        return traderPosition.get(new Vector2D(chunk));
+    public static void load(){
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/traders.json");
+        if (!file.exists())
+            return;
+
+        Reader reader;
+        try {
+            reader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
+        traders = gson.fromJson(reader, type);
+        int id = 0;
+        for (String ids: traders.keySet()) {
+            int newID =  Integer.parseInt(ids.substring(1));
+            if(newID > id)
+                id = newID;
+        }
+        nextID = id+1;
+
+        updateTraderPosition();
     }
 
+
+    public static void delete(Trader trader) {
+        traders.remove(trader.getID());
+        updateTraderPosition();
+        save();
+    }
 }

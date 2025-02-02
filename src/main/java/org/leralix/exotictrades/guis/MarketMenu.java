@@ -16,7 +16,6 @@ public class MarketMenu extends basicGUI {
             gui.addItem(ItemBuilder.from(itemStack).asGuiItem());
         }
 
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
     }
-
-
 }

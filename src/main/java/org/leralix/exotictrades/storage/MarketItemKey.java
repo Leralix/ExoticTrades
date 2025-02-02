@@ -9,16 +9,37 @@ public class MarketItemKey {
     private final Material material;
     private final int modelData;
 
-    public MarketItemKey(MarketItem item) {
+    public static MarketItemKey of(String material, int modelData) {
+        return new MarketItemKey(Material.valueOf(material), modelData);
+    }
+
+    public static MarketItemKey of(MarketItem item) {
+        return new MarketItemKey(item);
+    }
+
+    public static MarketItemKey of(MarketItemStack item) {
+        return new MarketItemKey(item);
+    }
+
+    public static MarketItemKey of(ItemStack item) {
+        return new MarketItemKey(item);
+    }
+
+    private MarketItemKey(Material material, int modelData) {
+        this.material = material;
+        this.modelData = modelData;
+    }
+
+    private MarketItemKey(MarketItem item) {
         this.material = item.getMaterial();
         this.modelData = item.getModelData();
     }
 
-    public MarketItemKey(MarketItemStack item) {
+    private MarketItemKey(MarketItemStack item) {
         this(item.getItem());
     }
 
-    public MarketItemKey(ItemStack item) {
+    private MarketItemKey(ItemStack item) {
         this.material = item.getType();
         this.modelData = item.getItemMeta().hasCustomModelData() ? item.getItemMeta().getCustomModelData() : 0;
     }

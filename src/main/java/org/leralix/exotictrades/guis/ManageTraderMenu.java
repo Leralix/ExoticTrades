@@ -2,10 +2,14 @@ package org.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import org.leralix.exotictrades.listener.chat.events.RenameTraderChatListener;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.lib.utils.HeadUtils;
 
 public class ManageTraderMenu extends basicGUI {
 
@@ -25,12 +29,27 @@ public class ManageTraderMenu extends basicGUI {
         ItemStack workItem = trader.getWorkType().getIcon(Lang.CURRENT_PROFESSION.get(trader.getWorkType().getName()));
         GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> new SelectTraderProfessionMenu(player, trader).open());
 
+        ItemStack renameTraderItem = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.CURRENT_NAME.get(trader.getName()), Lang.CLICK_TO_SELECT.get());
+        GuiItem renameTraderGuiItem = ItemBuilder.from(renameTraderItem).asGuiItem(event -> {
+            player.closeInventory();
+            PlayerChatListenerStorage.register(player, new RenameTraderChatListener(trader));
+        });
 
+
+        ItemStack deleteTraderItem = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.DELETE_TRADER.get(), Lang.CLICK_TO_DELETE.get());
+        GuiItem deleteTraderGuiItem = ItemBuilder.from(deleteTraderItem).asGuiItem(event -> {
+            trader.delete();
+            new TradersMenu(player).open();
+        });
 
         gui.setItem(1, 5, villagerGuiItem);
 
         gui.setItem(2, 2, biomeGuiItem);
         gui.setItem(2, 4, workGuiItem);
+        gui.setItem(2, 6, renameTraderGuiItem);
+        gui.setItem(2,8, deleteTraderGuiItem);
+
+
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new TradersMenu(player).open()));
     }

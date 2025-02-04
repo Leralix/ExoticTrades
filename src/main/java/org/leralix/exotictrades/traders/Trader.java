@@ -5,11 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.lib.position.Vector2D;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.lib.utils.HeadUtils;
 
@@ -19,7 +22,8 @@ public class Trader {
 
     private final String id;
     private String name;
-    private final Vector3DWithOrientation position;
+    private Vector3D position;
+    private SpawnZone randomSpawnZone;
     private TraderBiome biomeType;
     private TraderWork workType;
 
@@ -29,6 +33,7 @@ public class Trader {
         this.position = new Vector3DWithOrientation(position);
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
+        this.randomSpawnZone = new SpawnZone();
         spawnTrader();
     }
 
@@ -70,11 +75,12 @@ public class Trader {
         villager.setProfession(workType.getProfession());
         if(name != null){
             villager.setCustomName(name);
-            //villager.setCustomNameVisible(true); TODO : test if this is needed
         }
-        villager.setAI(false);
         villager.setInvulnerable(true);
         villager.setPersistent(false);
+        villager.setCollidable(false);
+        villager.setVillagerLevel(5);
+        villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, Integer.MAX_VALUE, false, false));
     }
 
 
@@ -97,7 +103,6 @@ public class Trader {
     public ItemStack getIcon(){
         String url = VillagerHeadStorage.getURL(biomeType, workType);
         return HeadUtils.makeSkullURL(id, url);
-
     }
 
     public String getID() {
@@ -108,7 +113,7 @@ public class Trader {
         return position.getLocation();
     }
 
-    public Vector2D getChunkLocation() {
+    public Vector2D getChunkPosition() {
         int x = position.getLocation().getBlockX() >> 4;
         int z = position.getLocation().getBlockZ() >> 4;
         return new Vector2D(x, z, position.getWorldID().toString());
@@ -122,15 +127,29 @@ public class Trader {
         return workType;
     }
 
-    public void setWork(TraderWork work) {
-        this.workType = work;
-        updateTrader();
-    }
-
     public void delete() {
        getVillager().ifPresent(Entity::remove);
        TraderStorage.delete(this);
     }
 
 
+    public void updatePosition() {
+        Vector3D vector3D = randomSpawnZone.getValidRandomPosition();
+        if(vector3D == null){
+            return;
+        }
+        position = vector3D;
+
+        getVillager().ifPresentOrElse(
+                villager -> villager.teleport(position.getLocation()),
+                this::spawnTrader);
+    }
+
+    public boolean isStatic() {
+        return randomSpawnZone == null;
+    }
+
+    public SpawnZone getRandomSpawnZone() {
+        return randomSpawnZone;
+    }
 }

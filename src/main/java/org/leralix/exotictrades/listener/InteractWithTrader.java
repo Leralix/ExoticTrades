@@ -5,8 +5,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.leralix.exotictrades.guis.ManageTraderMenu;
-import org.leralix.exotictrades.guis.OpenTraderMenu;
+import org.leralix.exotictrades.guis.ManageTrader;
+import org.leralix.exotictrades.guis.TradeMenu;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
 
@@ -35,11 +35,11 @@ public class InteractWithTrader implements Listener {
             return;
         }
         if(player.isSneaking() && player.hasPermission("exotictrades.admin.trader")){
-            new ManageTraderMenu(player, trader).open();
+            new ManageTrader(player, trader).open();
             event.setCancelled(true);
         }
         else {
-            new OpenTraderMenu(player, trader).open();
+            new TradeMenu(player, trader).open();
         }
     }
 

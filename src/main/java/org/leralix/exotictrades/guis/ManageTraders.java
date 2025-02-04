@@ -9,10 +9,10 @@ import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
-public class TradersMenu extends basicGUI {
+public class ManageTraders extends basicGUI {
 
 
-    public TradersMenu(Player player) {
+    public ManageTraders(Player player) {
         super(player, "Traders", 6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
@@ -22,7 +22,7 @@ public class TradersMenu extends basicGUI {
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {
                 if(event.isLeftClick()){
-                    new ManageTraderMenu(player, trader).open();
+                    new ManageTrader(player, trader).open();
                 }
                 else if(event.isRightClick()){
                     player.teleport(trader.getLocation());
@@ -40,7 +40,7 @@ public class TradersMenu extends basicGUI {
 
         GuiItem addButton = ItemBuilder.from(addItem).asGuiItem(event -> {
             TraderStorage.register(player.getLocation());
-            new TradersMenu(player).open();
+            new ManageTraders(player).open();
         });
 
         gui.setItem(6,3, addButton);

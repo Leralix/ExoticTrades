@@ -4,18 +4,19 @@ import org.bukkit.command.CommandSender;
 import org.leralix.exotictrades.traders.TemporalUpdateTraderPosition;
 import org.leralix.lib.commands.SubCommand;
 
-import java.util.Collections;
 import java.util.List;
 
-public class SkipOneHour extends SubCommand {
+public class UpdateTradersPosition extends SubCommand {
+
+
     @Override
     public String getName() {
-        return "skipHour";
+        return "updateTradersPosition";
     }
 
     @Override
     public String getDescription() {
-        return "skip an hour in the stock market";
+        return "Update the position of all traders";
     }
 
     @Override
@@ -25,12 +26,12 @@ public class SkipOneHour extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/extrade skipHour";
+        return "/extrade updateTradersPosition";
     }
 
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] strings) {
-        return Collections.emptyList();
+        return List.of();
     }
 
     @Override

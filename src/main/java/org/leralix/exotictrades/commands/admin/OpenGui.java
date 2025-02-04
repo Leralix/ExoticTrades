@@ -2,7 +2,6 @@ package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.entity.Player;
 import org.leralix.exotictrades.guis.MainMenu;
-import org.leralix.exotictrades.guis.TradersMenu;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.lib.commands.PlayerSubCommand;
 

@@ -49,7 +49,7 @@ public class TraderStorage {
 
     private static void updateTraderPosition() {
         for(Trader trader : traders.values()){
-            Vector2D chunkVector = trader.getChunkLocation();
+            Vector2D chunkVector = trader.getChunkPosition();
             if(traderPosition.containsKey(chunkVector)){
                 traderPosition.get(chunkVector).add(trader);
             }else{

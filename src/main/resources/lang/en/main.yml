@@ -57,18 +57,20 @@ language:
   SOLD_MARKET_ITEM_SUCCESS: "Items sold successfully for {0}"
   CLICK_TO_OPEN: "Click to open"
   CLICK_TO_DELETE: "Click to delete"
+  LEFT_CLICK_TO_MANAGE: "Left click to manage"
+  CLICK_TO_MANAGE: "Click to manage"
   ##Main menu
   TRADER_MENU: "Trader menu"
   MARKET_MENU: "Market menu"
   ##Trader menu
   NEW_TRADER: "New trader"
   CLICK_TO_CREATE: "Click to create"
-  LEFT_CLICK_TO_MANAGE: "Left click to manage"
   RIGHT_CLICK_TO_TELEPORT: "Right click to teleport"
   CURRENT_BIOME: "Current biome : {0}"
   CURRENT_PROFESSION: "Current profession : {0}"
   DELETE_TRADER: "Delete trader"
   CURRENT_NAME: "Current name : {0}"
+  MANAGE_POSITION: "Manage position"
   ##Market menu
   CURRENT_PRICE: "Current price : {0}"
 

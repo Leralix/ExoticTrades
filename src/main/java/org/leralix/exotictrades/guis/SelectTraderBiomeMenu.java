@@ -20,13 +20,13 @@ public class SelectTraderBiomeMenu extends basicGUI {
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {
                 trader.setBiomeType(biome);
-                new ManageTraderMenu(player, trader).open();
+                new ManageTrader(player, trader).open();
             });
 
             gui.addItem(guiItem);
         }
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTraderMenu(player, trader).open()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTrader(player, trader).open()));
 
 
 

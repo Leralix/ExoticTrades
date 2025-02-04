@@ -9,6 +9,7 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new GetRareItem());
         addSubCommand(new OpenGui());
         addSubCommand(new SkipOneHour());
+        addSubCommand(new UpdateTradersPosition());
         addSubCommand(new MainHelpCommand(this));
     }
 

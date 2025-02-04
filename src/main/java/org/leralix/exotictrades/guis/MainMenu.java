@@ -17,7 +17,7 @@ public class MainMenu extends basicGUI {
         gui.setDragAction(event -> event.setCancelled(true));
 
         ItemStack tradersMenu = HeadUtils.createCustomItemStack(Material.EMERALD, Lang.TRADER_MENU.get(), Lang.CLICK_TO_OPEN.get());
-        GuiItem traderMenu = ItemBuilder.from(tradersMenu).asGuiItem(p -> new TradersMenu(player).open());
+        GuiItem traderMenu = ItemBuilder.from(tradersMenu).asGuiItem(p -> new ManageTraders(player).open());
         gui.setItem(2,3, traderMenu);
 
         ItemStack marketMenu = HeadUtils.createCustomItemStack(Material.GOLD_INGOT, Lang.MARKET_MENU.get(), Lang.CLICK_TO_OPEN.get());

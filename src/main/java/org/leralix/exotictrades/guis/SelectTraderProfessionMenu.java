@@ -18,12 +18,12 @@ public class SelectTraderProfessionMenu extends basicGUI {
             HeadUtils.addLore(item, Lang.CLICK_TO_SELECT.get());
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {
-                trader.setWork(work);
-                new ManageTraderMenu(player, trader).open();
+                trader.setWorkType(work);
+                new ManageTrader(player, trader).open();
             });
             gui.addItem(guiItem);
         }
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTraderMenu(player, trader).open()));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTrader(player, trader).open()));
     }
 }

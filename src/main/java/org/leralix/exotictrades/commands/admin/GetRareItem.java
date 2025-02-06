@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.lang.Lang;
-import org.leralix.exotictrades.storage.RareItemStorage;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.PlayerSubCommand;
 
@@ -36,7 +36,7 @@ public class GetRareItem extends PlayerSubCommand {
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
-            List<RareItem> rareItemList = RareItemStorage.getAllRareItems();
+            List<RareItem> rareItemList = MarketItemStorage.getAllRareItems();
             for (RareItem rareItem : rareItemList) {
                 suggestions.add(rareItem.getName().replace(" ", "_"));
             }
@@ -55,7 +55,7 @@ public class GetRareItem extends PlayerSubCommand {
         }
 
         String itemName = args[1].replace("_", " ");
-        MarketItem marketItem = RareItemStorage.getMarketItem(itemName);
+        MarketItem marketItem = MarketItemStorage.getMarketItem(itemName);
 
         if (marketItem == null) {
             player.sendMessage(StringUtil.getPluginString() + Lang.ITEM_NOT_FOUND.get());

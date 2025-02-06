@@ -7,7 +7,7 @@ import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.MarketItemStack;
 import org.leralix.exotictrades.storage.MarketItemKey;
-import org.leralix.exotictrades.storage.MarketItemKeyAdapter;
+import org.leralix.exotictrades.storage.Adapters.MarketItemKeyAdapter;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -104,5 +104,9 @@ public class StockMarketManager{
         }
         Type type = new TypeToken<HashMap<MarketItemKey, StockMarket>>(){}.getType();
         marketItems = gson.fromJson(reader, type);
+    }
+
+    public static StockMarket getMarketFor(MarketItemKey marketItemKey) {
+        return marketItems.get(marketItemKey);
     }
 }

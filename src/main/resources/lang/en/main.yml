@@ -71,8 +71,13 @@ language:
   DELETE_TRADER: "Delete trader"
   CURRENT_NAME: "Current name : {0}"
   MANAGE_POSITION: "Manage position"
+  TRADER_FIXED_POSITION: "Trader position is : [{0},{1},{2}]"
+  TRADER_RANDOM_POSITION: "Trader spawn zone is between [{0},{1}] and [{2},{3}]"
   ##Market menu
   CURRENT_PRICE: "Current price : {0}"
+  ##Player market information
+  MARKET_INFO: "Market information"
+
 
   #Event
   WRITE_CANCEL_TO_CANCEL: "Write {0} to cancel"

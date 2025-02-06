@@ -2,7 +2,7 @@ package org.leralix.exotictrades.item;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.storage.RareItemStorage;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.lib.utils.RandomUtil;
 
 public class DropProbability implements LootProbability {
@@ -29,7 +29,7 @@ public class DropProbability implements LootProbability {
         int chanceRolled = RandomUtil.getRandom().nextInt() * 100;
 
         if(chanceRolled <= chanceCap){
-            return RareItemStorage.getRareItem(rareItemID);
+            return MarketItemStorage.getRareItem(rareItemID);
         }
         return null;
     }

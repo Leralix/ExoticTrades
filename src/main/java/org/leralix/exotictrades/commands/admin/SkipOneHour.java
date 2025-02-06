@@ -1,6 +1,8 @@
 package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.command.CommandSender;
+import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.market.TemporalMarketTask;
 import org.leralix.exotictrades.traders.TemporalUpdateTraderPosition;
 import org.leralix.lib.commands.SubCommand;
 
@@ -35,6 +37,6 @@ public class SkipOneHour extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        TemporalUpdateTraderPosition.updateTraderPosition();
+        StockMarketManager.updateMovingAverage();
     }
 }

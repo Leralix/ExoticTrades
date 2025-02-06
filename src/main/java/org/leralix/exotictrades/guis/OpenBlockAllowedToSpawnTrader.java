@@ -28,7 +28,6 @@ public class OpenBlockAllowedToSpawnTrader extends basicGUI {
 
         for(Material material : trader.getRandomSpawnZone().getAuthorizedBlocks()){
             GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> {
-                trader.getRandomSpawnZone().removeAllowedBlock(material);
                 new OpenBlockAllowedToSpawnTrader(player, trader).open();
             });
             gui.addItem(guiItem);

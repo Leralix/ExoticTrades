@@ -9,7 +9,7 @@ import org.leralix.exotictrades.listener.chat.ChatListener;
 import org.leralix.exotictrades.market.PlayerConnectionStorage;
 import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.market.TemporalMarketTask;
-import org.leralix.exotictrades.storage.RareItemStorage;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -42,7 +42,7 @@ public final class ExoticTrades extends JavaPlugin {
         ConfigUtil.saveAndUpdateResource(this, "config.yml");
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 
-        RareItemStorage.init();
+        MarketItemStorage.init();
         VillagerHeadStorage.init();
 
         TraderStorage.load();

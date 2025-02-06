@@ -2,13 +2,14 @@ package org.leralix.exotictrades.traders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.lib.position.Vector2D;
@@ -16,6 +17,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.lib.utils.HeadUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Trader {
@@ -80,7 +82,7 @@ public class Trader {
         villager.setPersistent(false);
         villager.setCollidable(false);
         villager.setVillagerLevel(5);
-        villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, Integer.MAX_VALUE, false, false));
+        villager.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.0);
     }
 
 
@@ -151,5 +153,9 @@ public class Trader {
 
     public SpawnZone getRandomSpawnZone() {
         return randomSpawnZone;
+    }
+
+    public List<MarketItem> getMarketItems() {
+        return MarketItemStorage.getAllMarketItems();
     }
 }

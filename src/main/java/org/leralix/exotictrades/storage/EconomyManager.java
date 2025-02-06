@@ -4,6 +4,9 @@ import net.milkbowl.vault.economy.Economy;
 
 public class EconomyManager {
 
+    private EconomyManager() {
+        throw new IllegalStateException("Utility class");
+    }
 
 
     private static Economy economy;

@@ -20,7 +20,7 @@ public class SpawnZone {
 
     private boolean allowUnderwater;
 
-    public SpawnZone() {
+    SpawnZone() {
         this.zone = null;
         this.blocksAllowed = new ArrayList<>();
         this.allowUnderwater = false;
@@ -92,5 +92,13 @@ public class SpawnZone {
 
     public Collection<Material> getAuthorizedBlocks() {
         return Collections.unmodifiableList(blocksAllowed);
+    }
+
+    public boolean isSpawnRandom(){
+        return zone != null;
+    }
+
+    public Zone2D getZone() {
+        return zone;
     }
 }

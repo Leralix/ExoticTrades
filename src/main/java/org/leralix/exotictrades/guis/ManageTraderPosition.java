@@ -18,14 +18,10 @@ public class ManageTraderPosition extends basicGUI {
         SpawnZone randomSpawnZone = trader.getRandomSpawnZone();
 
         ItemStack spawnZoneItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Spawn Zone", "Click to manage");
-        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> {
-            PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader));
-        }));
+        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader))));
 
         ItemStack blockAllowedItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Block Allowed", "Click to choose");
-        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> {
-            new OpenBlockAllowedToSpawnTrader(player, trader).open();
-        }));
+        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader).open()));
 
 
 

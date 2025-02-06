@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.leralix.exotictrades.item.RareItem;
-import org.leralix.exotictrades.storage.RareItemStorage;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class RareItemDrops implements Listener {
         }
 
 
-        List<RareItem> rareItems = RareItemStorage.getRareItemsDropped(type,item);
+        List<RareItem> rareItems = MarketItemStorage.getRareItemsDropped(type,item);
         for(RareItem rareItem : rareItems){
             block.getWorld().dropItem(block.getLocation(), rareItem.getItemStack(1));
         }
@@ -55,7 +55,7 @@ public class RareItemDrops implements Listener {
 
         EntityType type = event.getEntityType();
         ItemStack item = killer.getInventory().getItem(killer.getInventory().getHeldItemSlot());
-        List<RareItem> rareItems = RareItemStorage.getRareItemsDropped(type,item);
+        List<RareItem> rareItems = MarketItemStorage.getRareItemsDropped(type,item);
         for(RareItem rareItem : rareItems){
             event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rareItem.getItemStack(1));
         }
@@ -83,7 +83,7 @@ public class RareItemDrops implements Listener {
 
         Item fish = (Item)event.getCaught();
 
-        List<RareItem> rareItems = RareItemStorage.getRareItemsDropped(fish.getType(),event.getPlayer().getInventory().getItemInMainHand());
+        List<RareItem> rareItems = MarketItemStorage.getRareItemsDropped(fish.getType(),event.getPlayer().getInventory().getItemInMainHand());
         for(RareItem rareItem : rareItems){
 
             Item rareFish = event.getCaught().getWorld().dropItem(event.getCaught().getLocation(), rareItem.getItemStack(1));

@@ -1,8 +1,15 @@
 package org.leralix.exotictrades.item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.exotictrades.market.StockMarket;
+import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.storage.MarketItemKey;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarketItem {
 
@@ -11,15 +18,13 @@ public class MarketItem {
     private final Material material;
     private final int modelData;
     private final double basePrice;
-    private final double volatility;
 
-    public MarketItem(int id, String name, Material material, int modelData, double basePrice, double volatility) {
+    public MarketItem(int id, String name, Material material, int modelData, double basePrice) {
         this.id = id;
         this.name = name;
         this.material = material;
         this.modelData = modelData;
         this.basePrice = basePrice;
-        this.volatility = volatility;
     }
 
 
@@ -51,5 +56,35 @@ public class MarketItem {
         meta.setCustomModelData(modelData);
         item.setItemMeta(meta);
         return item;
+    }
+
+    public ItemStack getMarketInfoForPlayer() {
+
+        StockMarket stockMarket = StockMarketManager.getMarketFor(MarketItemKey.of(this));
+        double price = stockMarket.getCurrentPrice();
+        double estimaedPrice = stockMarket.getNextPriceEstimation();
+
+        String priceEvolutionString = getPriceEvolutionString(price, estimaedPrice);
+        List<String> description = new ArrayList<>();
+        description.add(ChatColor.WHITE + "Current price : " + priceEvolutionString);
+
+        ItemStack item = getItemStack(1);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GREEN + name);
+        meta.setLore(description);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private String getPriceEvolutionString(double price, double estimatedPrice) {
+        if(estimatedPrice > price){
+            return ChatColor.GREEN + "▲ " + ChatColor.WHITE + price;
+        }
+        else if(estimatedPrice < price){
+            return ChatColor.RED + "▼ " + ChatColor.WHITE + price;
+        }
+        else{
+            return ChatColor.WHITE + "->" + price;
+        }
     }
 }

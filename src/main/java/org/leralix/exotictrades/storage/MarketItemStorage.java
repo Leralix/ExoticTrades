@@ -3,10 +3,8 @@ package org.leralix.exotictrades.storage;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.DropProbability;
 import org.leralix.exotictrades.item.KillProbability;
 import org.leralix.exotictrades.item.MarketItem;
@@ -17,10 +15,9 @@ import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.*;
 
-public class RareItemStorage {
+public class MarketItemStorage {
 
-    private RareItemStorage() {
-
+    private MarketItemStorage() {
     }
 
     private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
@@ -127,7 +124,6 @@ public class RareItemStorage {
 
     }
 
-
     public static RareItem getRareItem(int rareItemID) {
         return rareItems.get(rareItemID);
     }
@@ -168,6 +164,10 @@ public class RareItemStorage {
     }
 
     public static List<RareItem> getAllRareItems() {
+        return new ArrayList<>(rareItems.values());
+    }
+
+    public static List<MarketItem> getAllMarketItems() {
         return new ArrayList<>(rareItems.values());
     }
     public static MarketItem getMarketItem(String name) {

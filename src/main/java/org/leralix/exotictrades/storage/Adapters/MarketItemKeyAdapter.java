@@ -1,10 +1,11 @@
-package org.leralix.exotictrades.storage;
+package org.leralix.exotictrades.storage.Adapters;
 
 import com.google.gson.*;
+import org.leralix.exotictrades.storage.MarketItemKey;
+
 import java.lang.reflect.Type;
 
 public class MarketItemKeyAdapter implements JsonDeserializer<MarketItemKey> {
-
 
     @Override
     public MarketItemKey deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {

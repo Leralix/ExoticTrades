@@ -16,7 +16,7 @@ import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemKey;
-import org.leralix.exotictrades.storage.RareItemStorage;
+import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
@@ -58,7 +58,18 @@ public class TradeMenu extends basicGUI {
         GuiItem sellButton = getConfirmButton();
         gui.setItem(2,6, sellButton);
 
+        gui.setItem(2,8, getMarketInfoButton(trader));
+
         gui.setItem(4,1, GuiUtil.createBackArrow(player, event -> player.closeInventory()));
+    }
+
+    private GuiItem getMarketInfoButton(Trader trader) {
+        ItemStack marketInfo = HeadUtils.makeSkullURL(Lang.MARKET_INFO.get(), "https://textures.minecraft.net/texture/ab69967163c743ddb1f083566757576b9e63ac380cc150f518b33dc4e91ef712",
+                Lang.CLICK_TO_OPEN.get());
+        return ItemBuilder.from(marketInfo).asGuiItem(event -> {
+            new MarketInfoMenu(player, trader).open();
+            event.setCancelled(true);
+        });
     }
 
     private void setupGui() {
@@ -87,7 +98,7 @@ public class TradeMenu extends basicGUI {
                 }
                 allItems.add(item);
                 MarketItemKey key = MarketItemKey.of(item);
-                MarketItem marketItem = RareItemStorage.getMarketItem(key);
+                MarketItem marketItem = MarketItemStorage.getMarketItem(key);
                 if(marketItem == null){
                     continue;
                 }
@@ -104,7 +115,7 @@ public class TradeMenu extends basicGUI {
         boolean allItemsAreNotRare = false;
         for(ItemStack item : allItems){
             MarketItemKey key = MarketItemKey.of(item);
-            MarketItem marketItem = RareItemStorage.getMarketItem(key);
+            MarketItem marketItem = MarketItemStorage.getMarketItem(key);
             if(marketItem == null){
                 allItemsAreNotRare = true;
                 break;
@@ -138,7 +149,7 @@ public class TradeMenu extends basicGUI {
     private List<MarketItemStack> getAllMarketItem(){
         List<MarketItemStack> displayMarketItems = new ArrayList<>();
         for(Map.Entry<Integer, Integer> entry : rareItems.entrySet()){
-            MarketItemStack marketItem = new MarketItemStack(RareItemStorage.getRareItem(entry.getKey()), entry.getValue());
+            MarketItemStack marketItem = new MarketItemStack(MarketItemStorage.getRareItem(entry.getKey()), entry.getValue());
             displayMarketItems.add(marketItem);
         }
         return displayMarketItems;

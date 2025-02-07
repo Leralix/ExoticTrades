@@ -47,7 +47,9 @@ public final class ExoticTrades extends JavaPlugin {
 
         TraderStorage.load();
         PlayerConnectionStorage.load();
+
         StockMarketManager.load();
+        StockMarketManager.init();
 
         getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);

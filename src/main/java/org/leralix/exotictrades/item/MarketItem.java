@@ -13,53 +13,51 @@ import java.util.List;
 
 public class MarketItem {
 
-    private final int id;
-    private final String name;
-    private final Material material;
-    private final int modelData;
-    private final double basePrice;
+    protected final Material material;
+    protected int id;
 
-    public MarketItem(int id, String name, Material material, int modelData, double basePrice) {
-        this.id = id;
-        this.name = name;
+    public MarketItem(int id, Material material) {
         this.material = material;
-        this.modelData = modelData;
-        this.basePrice = basePrice;
+        this.id = id;
     }
-
 
     public int getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getBasePrice() {
-        return basePrice;
     }
 
     public Material getMaterial() {
         return material;
     }
 
-    public int getModelData() {
-        return modelData;
-    }
+
 
     public ItemStack getItemStack(int quantity) {
         ItemStack item = new ItemStack(material);
         item.setAmount(quantity);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        meta.setCustomModelData(modelData);
-        item.setItemMeta(meta);
         return item;
     }
 
-    public ItemStack getMarketInfoForPlayer() {
+    protected String getPriceEvolutionString(double price, double estimatedPrice) {
+        if(estimatedPrice > price){
+            return ChatColor.GREEN + "▲" + price;
+        }
+        else if(estimatedPrice < price){
+            return ChatColor.RED + "▼" + price;
+        }
+        else{
+            return ChatColor.WHITE + "->" + price;
+        }
+    }
 
+    public int getModelData() {
+        return 0;
+    }
+
+    public ItemStack getMarketInfoForPlayer() {
+        return getMarketInfoForPlayer(new ItemStack(material).getItemMeta().getDisplayName());
+    }
+
+    protected ItemStack getMarketInfoForPlayer(String name) {
         StockMarket stockMarket = StockMarketManager.getMarketFor(MarketItemKey.of(this));
         double price = stockMarket.getCurrentPrice();
         double estimaedPrice = stockMarket.getNextPriceEstimation();
@@ -76,15 +74,7 @@ public class MarketItem {
         return item;
     }
 
-    private String getPriceEvolutionString(double price, double estimatedPrice) {
-        if(estimatedPrice > price){
-            return ChatColor.GREEN + "▲ " + ChatColor.WHITE + price;
-        }
-        else if(estimatedPrice < price){
-            return ChatColor.RED + "▼ " + ChatColor.WHITE + price;
-        }
-        else{
-            return ChatColor.WHITE + "->" + price;
-        }
+    public String getName() {
+        return new ItemStack(material).getItemMeta().getDisplayName();
     }
 }

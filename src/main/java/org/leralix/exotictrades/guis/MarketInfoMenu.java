@@ -17,6 +17,6 @@ public class MarketInfoMenu extends basicGUI {
             GuiItem item = ItemBuilder.from(info).asGuiItem();
             gui.addItem(item);
         }
-        gui.setItem(6,1,GuiUtil.createBackArrow(player, event -> new TradeMenu(player, trader)));
+        gui.setItem(6,1,GuiUtil.createBackArrow(player, event -> new TradeMenu(player, trader).open()));
     }
 }

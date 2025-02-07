@@ -9,7 +9,6 @@ import org.leralix.exotictrades.item.DropProbability;
 import org.leralix.exotictrades.item.KillProbability;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.RareItem;
-import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -20,18 +19,21 @@ public class MarketItemStorage {
     private MarketItemStorage() {
     }
 
+
+
     private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
     private static final Map<EntityType, List<KillProbability>> entityDropProbability = new EnumMap<>(EntityType.class);
 
 
-    private static final Map<String, Integer> marketItemByName = new HashMap<>();
-    private static final Map<MarketItemKey, Integer> marketItemById = new HashMap<>();
+    private static final Map<String, RareItem> rareItemsByName = new HashMap<>();
+    private static final Map<MarketItemKey, MarketItem> marketItemByKey = new HashMap<>();
     private static final Map<Integer, RareItem> rareItems = new HashMap<>();
+    private static final Map<Integer, MarketItem> marketItems = new HashMap<>();
 
 
 
     public static void init(){
-        marketItemById.clear();
+        marketItemByKey.clear();
         blockDropProbability.clear();
         entityDropProbability.clear();
 
@@ -52,7 +54,7 @@ public class MarketItemStorage {
             resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
             resourceSection.addDefault("demandMultiplier", defaultConfiguration.getDouble("defaultDemandMultiplier", 1));
 
-            int id = resourceSection.getInt("id");
+            int id = resourceKey.hashCode();
             String name = resourceSection.getString("name");
             Material material = Material.matchMaterial(resourceSection.getString("material"));
             if(material == null){
@@ -67,9 +69,7 @@ public class MarketItemStorage {
             double basePrice = resourceSection.getDouble("basePrice");
             double demandMultiplier = resourceSection.getDouble("demandMultiplier");
 
-            RareItem rareItem = new RareItem(id, name, material, customModelData, basePrice, volatility);
-
-
+            RareItem rareItem = new RareItem(id, name, material, customModelData);
 
             ConfigurationSection dropChanceSection = resourceSection.getConfigurationSection("dropChance");
             if (dropChanceSection != null) {
@@ -115,11 +115,23 @@ public class MarketItemStorage {
                 }
             }
 
-            StockMarketManager.registerOrUpdateMarketItem(rareItem, movingAverage, maxPrice, minPrice, volatility, demandMultiplier, basePrice);
 
-            marketItemById.put(MarketItemKey.of(rareItem), id);
-            marketItemByName.put(name, id);
+            marketItemByKey.put(MarketItemKey.of(rareItem), rareItem);
+            rareItemsByName.put(name, rareItem);
             rareItems.put(id, rareItem);
+            marketItems.put(id, rareItem);
+        }
+
+
+        ConfigurationSection marketItemSection = defaultConfiguration.getConfigurationSection("marketItem");
+
+        if (marketItemSection != null) {
+            for (String resourceKey : marketItemSection.getKeys(false)) {
+                Material material = Material.valueOf(marketItemSection.getString(resourceKey));
+                MarketItem marketItem = new MarketItem(resourceKey.hashCode(),material);
+                marketItems.put(resourceKey.hashCode(), marketItem);
+                marketItemByKey.put(MarketItemKey.of(marketItem), marketItem);
+            }
         }
 
     }
@@ -158,9 +170,7 @@ public class MarketItemStorage {
     }
 
     public static MarketItem getMarketItem(MarketItemKey key) {
-        Integer id = marketItemById.get(key);
-        if (id == null) return null;
-        return getRareItem(id);
+        return marketItemByKey.get(key);
     }
 
     public static List<RareItem> getAllRareItems() {
@@ -168,11 +178,19 @@ public class MarketItemStorage {
     }
 
     public static List<MarketItem> getAllMarketItems() {
-        return new ArrayList<>(rareItems.values());
+        return new ArrayList<>(marketItems.values());
     }
     public static MarketItem getMarketItem(String name) {
-        Integer id = marketItemByName.get(name);
-        if (id == null) return null;
-        return getRareItem(id);
+        return rareItemsByName.get(name);
+    }
+
+    public static MarketItem getMarketItem(int marketID){
+        if(rareItems.containsKey(marketID)) {
+            return rareItems.get(marketID);
+        }
+        if(marketItems.containsKey(marketID)){
+            return marketItems.get(marketID);
+        }
+        return null;
     }
 }

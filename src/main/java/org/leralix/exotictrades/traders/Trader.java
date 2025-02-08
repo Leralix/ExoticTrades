@@ -27,10 +27,10 @@ public class Trader {
     private final String id;
     private String name;
     private Vector3D position;
-    private SpawnZone spawnZone;
+    private final SpawnZone spawnZone;
     private TraderBiome biomeType;
     private TraderWork workType;
-    private List<MarketItemKey> acceptedMarketItem;
+    private final List<MarketItemKey> acceptedMarketItem;
 
 
     public Trader(String id, Location position){
@@ -40,6 +40,7 @@ public class Trader {
         this.workType = TraderWork.FARMER;
         this.spawnZone = new SpawnZone();
         this.acceptedMarketItem = new ArrayList<>();
+        this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
         spawnTrader();
     }
 

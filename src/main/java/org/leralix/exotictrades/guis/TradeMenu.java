@@ -67,7 +67,7 @@ public class TradeMenu extends basicGUI {
         ItemStack marketInfo = HeadUtils.makeSkullURL(Lang.MARKET_INFO.get(), "https://textures.minecraft.net/texture/ab69967163c743ddb1f083566757576b9e63ac380cc150f518b33dc4e91ef712",
                 Lang.CLICK_TO_OPEN.get());
         return ItemBuilder.from(marketInfo).asGuiItem(event -> {
-            new MarketInfoMenu(player, trader).open();
+            new MarketInfoMenu(player, trader, 0).open();
             event.setCancelled(true);
         });
     }

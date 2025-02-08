@@ -189,4 +189,8 @@ public class MarketItemStorage {
         }
         return null;
     }
+
+    public static Collection<MarketItemKey> getAllMarketItemsKey() {
+        return marketItemByKey.keySet();
+    }
 }

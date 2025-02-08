@@ -7,16 +7,25 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.traders.Trader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MarketInfoMenu extends basicGUI {
-    public MarketInfoMenu(Player player, Trader trader) {
+    public MarketInfoMenu(Player player, Trader trader, int page) {
         super(player, "Market Info", 6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
+        List<GuiItem> guiItems = new ArrayList<>();
 
         for(MarketItem marketItem : trader.getMarketItems()){
             ItemStack info = marketItem.getMarketInfoForPlayer();
             GuiItem item = ItemBuilder.from(info).asGuiItem();
-            gui.addItem(item);
+            guiItems.add(item);
         }
-        gui.setItem(6,1,GuiUtil.createBackArrow(player, event -> new TradeMenu(player, trader).open()));
+
+        GuiUtil.createIterator(gui, guiItems, page, player,
+                p -> new TradeMenu(player, trader).open(),
+                p -> new MarketInfoMenu(player, trader, page + 1).open(),
+                p -> new MarketInfoMenu(player, trader, page - 1).open());
+
     }
 }

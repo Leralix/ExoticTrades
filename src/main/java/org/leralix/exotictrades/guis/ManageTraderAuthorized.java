@@ -15,12 +15,9 @@ import java.util.List;
 
 public class ManageTraderAuthorized extends basicGUI {
 
-    private Trader trader;
     public ManageTraderAuthorized(Player player, Trader trader, int page) {
         super(player, "Authorized items", 6);
         gui.setDefaultClickAction(event -> event.setCancelled(false));
-        this.trader = trader;
-
 
 
         List<GuiItem> allMarketItems = new ArrayList<>();

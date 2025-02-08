@@ -26,7 +26,7 @@ public class OpenBlockAllowedToSpawnTrader extends basicGUI {
                 Bukkit.getScheduler().runTask(ExoticTrades.getPlugin(), this::reloadAuthorizedBlocks)
         );
 
-        for(Material material : trader.getRandomSpawnZone().getAuthorizedBlocks()){
+        for(Material material : trader.getSpawnZone().getAuthorizedBlocks()){
             GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> {
                 new OpenBlockAllowedToSpawnTrader(player, trader).open();
             });
@@ -43,7 +43,7 @@ public class OpenBlockAllowedToSpawnTrader extends basicGUI {
     }
 
     private void reloadAuthorizedBlocks() {
-        SpawnZone spawnZone = trader.getRandomSpawnZone();
+        SpawnZone spawnZone = trader.getSpawnZone();
         List<Material> authorizedBlocks = new ArrayList<>();
         for(int i = 0; i < 45; i++){
             ItemStack item = gui.getInventory().getItem(i);

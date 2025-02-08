@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
@@ -17,6 +18,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.lib.utils.HeadUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +27,10 @@ public class Trader {
     private final String id;
     private String name;
     private Vector3D position;
-    private SpawnZone randomSpawnZone;
+    private SpawnZone spawnZone;
     private TraderBiome biomeType;
     private TraderWork workType;
+    private List<MarketItemKey> acceptedMarketItem;
 
 
     public Trader(String id, Location position){
@@ -35,7 +38,8 @@ public class Trader {
         this.position = new Vector3DWithOrientation(position);
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
-        this.randomSpawnZone = new SpawnZone();
+        this.spawnZone = new SpawnZone();
+        this.acceptedMarketItem = new ArrayList<>();
         spawnTrader();
     }
 
@@ -136,7 +140,7 @@ public class Trader {
 
 
     public void updatePosition() {
-        Vector3D vector3D = randomSpawnZone.getValidRandomPosition();
+        Vector3D vector3D = spawnZone.getValidRandomPosition();
         if(vector3D == null){
             return;
         }
@@ -148,14 +152,30 @@ public class Trader {
     }
 
     public boolean isStatic() {
-        return randomSpawnZone == null;
+        return spawnZone == null;
     }
 
-    public SpawnZone getRandomSpawnZone() {
-        return randomSpawnZone;
+    public SpawnZone getSpawnZone() {
+        return spawnZone;
     }
 
     public List<MarketItem> getMarketItems() {
-        return MarketItemStorage.getAllMarketItems();
+        List<MarketItem> result = new ArrayList<>();
+        for(MarketItemKey key : acceptedMarketItem){
+            result.add(MarketItemStorage.getMarketItem(key));
+        }
+        return result;
+    }
+
+    public void addMarketItem(MarketItem marketItem){
+        acceptedMarketItem.add(MarketItemKey.of(marketItem));
+    }
+
+    public void removeMarketItem(MarketItem marketItem){
+        acceptedMarketItem.remove(MarketItemKey.of(marketItem));
+    }
+
+    public boolean canTradeMarketItem(MarketItem marketItem){
+        return acceptedMarketItem.contains(MarketItemKey.of(marketItem));
     }
 }

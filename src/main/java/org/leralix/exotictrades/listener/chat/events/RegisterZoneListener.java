@@ -31,7 +31,7 @@ public class RegisterZoneListener extends ChatListenerEvent {
             position2 = new Vector3D(player.getLocation());
             player.sendMessage("Position 2 set to " + position2);
 
-            SpawnZone randomSpawnZone = trader.getRandomSpawnZone();
+            SpawnZone randomSpawnZone = trader.getSpawnZone();
             randomSpawnZone.setZone(new Zone2D(position1, position2));
 
             openGui(player1 -> new ManageTraderPosition(player, trader).open(),player);

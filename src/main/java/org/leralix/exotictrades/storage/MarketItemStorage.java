@@ -102,7 +102,6 @@ public class MarketItemStorage {
                         if (entitySection == null) return;
 
                         EntityType entityType = EntityType.valueOf(entityName);
-                        if (entityType == null) return;
 
                         double baseChance = entitySection.getDouble("baseChance", 0);
                         double lootingModifier = entitySection.getDouble("lootingModifier", 0);
@@ -142,7 +141,6 @@ public class MarketItemStorage {
 
     public static List<RareItem> getRareItemsDropped(Material blockType, ItemStack itemUsed){
         List<RareItem> items = new ArrayList<>();
-
         if(blockDropProbability.containsKey(blockType)){
             blockDropProbability.get(blockType).forEach(dropProbability -> {
                 RareItem item = dropProbability.shouldDrop(itemUsed);
@@ -156,8 +154,6 @@ public class MarketItemStorage {
 
     public static List<RareItem> getRareItemsDropped(EntityType entityType, ItemStack itemUsed){
         List<RareItem> items = new ArrayList<>();
-
-
         if(entityDropProbability.containsKey(entityType)){
             entityDropProbability.get(entityType).forEach(killProbability -> {
                 RareItem item = killProbability.shouldDrop(itemUsed);

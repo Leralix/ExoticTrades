@@ -51,6 +51,11 @@ public class ManageTrader extends basicGUI {
         );
         GuiItem managePositionGuiItem = ItemBuilder.from(managePosition).asGuiItem(event -> new ManageTraderPosition(player, trader).open());
 
+        ItemStack selectedMarketItems = HeadUtils.createCustomItemStack(Material.CHEST, Lang.SELECT_ITEM_TO_SELL.get(),
+                Lang.LEFT_CLICK_TO_MANAGE.get());
+        GuiItem selectMarketItemsButton = ItemBuilder.from(selectedMarketItems).asGuiItem(event -> new ManageTraderAuthorized(player, trader, 0).open());
+
+
         gui.setItem(1, 5, villagerGuiItem);
 
         gui.setItem(2, 2, biomeGuiItem);
@@ -58,7 +63,7 @@ public class ManageTrader extends basicGUI {
         gui.setItem(2, 4, renameTraderGuiItem);
 
         gui.setItem(2, 6, managePositionGuiItem);
-
+        gui.setItem(2, 7, selectMarketItemsButton);
         gui.setItem(2,8, deleteTraderGuiItem);
 
 
@@ -67,7 +72,7 @@ public class ManageTrader extends basicGUI {
     }
 
     private String getSpawnZoneInfo() {
-        SpawnZone zone = trader.getRandomSpawnZone();
+        SpawnZone zone = trader.getSpawnZone();
         if(zone.isSpawnRandom()){
             Vector2D p1 = zone.getZone().getMax();
             Vector2D p2 = zone.getZone().getMin();

@@ -15,7 +15,7 @@ public class ManageTraderPosition extends basicGUI {
         super(player, "Manage Trader Position", 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        SpawnZone randomSpawnZone = trader.getRandomSpawnZone();
+        SpawnZone randomSpawnZone = trader.getSpawnZone();
 
         ItemStack spawnZoneItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Spawn Zone", "Click to manage");
         gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader))));

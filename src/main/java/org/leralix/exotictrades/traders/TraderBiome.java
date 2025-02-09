@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.lang.Lang;
 
+import java.util.Collections;
+
 public enum TraderBiome {
 
     PLAINS(Villager.Type.PLAINS, Material.GRASS_BLOCK, Lang.PLAINS),
@@ -30,10 +32,11 @@ public enum TraderBiome {
         return type;
     }
 
-    public ItemStack getIcon(String title) {
+    public ItemStack getIcon(String title, Lang desc) {
         ItemStack item = new ItemStack(icon);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(title);
+        meta.setLore(Collections.singletonList(desc.get()));
         item.setItemMeta(meta);
         return item;
     }

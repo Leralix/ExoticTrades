@@ -1,40 +1,31 @@
 package org.leralix.exotictrades.guis;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
-import org.leralix.exotictrades.listener.chat.events.RegisterZoneListener;
-import org.leralix.exotictrades.traders.SpawnZone;
 import org.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.utils.HeadUtils;
+import org.leralix.exotictrades.traders.position.TraderPosition;
 
 public class ManageTraderPosition extends basicGUI {
+    Trader trader;
+
     public ManageTraderPosition(Player player, Trader trader) {
+        this(player, trader, 0);
+    }
+
+    public ManageTraderPosition(Player player, Trader trader, int page) {
         super(player, "Manage Trader Position", 3);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
+        this.trader = trader;
+        TraderPosition randomRandomPosition = trader.getPosition();
 
-        SpawnZone randomSpawnZone = trader.getSpawnZone();
-
-        ItemStack spawnZoneItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Spawn Zone", "Click to manage");
-        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader))));
-
-        ItemStack blockAllowedItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Block Allowed", "Click to choose");
-        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader).open()));
-
-
-
-        Material allowWaterMaterial = randomSpawnZone.isWatterAllowed() ? Material.WATER_BUCKET : Material.BUCKET;
-        ItemStack allowWaterItem = HeadUtils.createCustomItemStack(allowWaterMaterial, "Allow Water", "Click to toggle");
-        gui.setItem(2, 6, ItemBuilder.from(allowWaterItem).asGuiItem(event -> {
-            randomSpawnZone.switchWaterAllowed();
-            new ManageTraderPosition(player, trader).open();
-        }));
+        randomRandomPosition.addGuiItems(gui, this, player, trader, page);
 
 
 
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new ManageTrader(player, trader).open()));
+    }
+
+    public void reload() {
+        new ManageTraderPosition(player, trader).open();
     }
 }

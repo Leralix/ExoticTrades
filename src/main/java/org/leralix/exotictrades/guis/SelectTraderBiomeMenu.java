@@ -15,7 +15,7 @@ public class SelectTraderBiomeMenu extends basicGUI {
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         for(TraderBiome biome : TraderBiome.values()){
-            ItemStack item = biome.getIcon(biome.getName());
+            ItemStack item = biome.getIcon(biome.getName(), Lang.CLICK_TO_SELECT);
             HeadUtils.addLore(item, Lang.CLICK_TO_SELECT.get());
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {

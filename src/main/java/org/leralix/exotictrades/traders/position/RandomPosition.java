@@ -1,18 +1,29 @@
-package org.leralix.exotictrades.traders;
+package org.leralix.exotictrades.traders.position;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.leralix.exotictrades.guis.ManageTraderPosition;
+import org.leralix.exotictrades.guis.OpenBlockAllowedToSpawnTrader;
+import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import org.leralix.exotictrades.listener.chat.events.RegisterZoneListener;
+import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Zone2D;
 import org.leralix.lib.util.RandomUtil;
+import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SpawnZone {
+public class RandomPosition implements TraderPosition {
 
     private Zone2D zone;
 
@@ -20,7 +31,7 @@ public class SpawnZone {
 
     private boolean allowUnderwater;
 
-    SpawnZone() {
+    RandomPosition() {
         this.zone = null;
         this.blocksAllowed = new ArrayList<>();
         this.allowUnderwater = false;
@@ -100,5 +111,33 @@ public class SpawnZone {
 
     public Zone2D getZone() {
         return zone;
+    }
+
+    @Override
+    public Vector3D getNextPosition() {
+        return null;
+    }
+
+    @Override
+    public String getSpawnInfo() {
+        return Lang.TRADER_RANDOM_POSITION.get();
+    }
+
+    @Override
+    public void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page) {
+        ItemStack spawnZoneItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Spawn Zone", "Click to manage");
+        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader, this))));
+
+        ItemStack blockAllowedItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Block Allowed", "Click to choose");
+        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, this).open()));
+
+
+
+        Material allowWaterMaterial = isWatterAllowed() ? Material.WATER_BUCKET : Material.BUCKET;
+        ItemStack allowWaterItem = HeadUtils.createCustomItemStack(allowWaterMaterial, "Allow Water", "Click to toggle");
+        gui.setItem(2, 6, ItemBuilder.from(allowWaterItem).asGuiItem(event -> {
+            switchWaterAllowed();
+            manageTraderPosition.reload();
+        }));
     }
 }

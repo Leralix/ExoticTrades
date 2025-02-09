@@ -13,6 +13,8 @@ import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
+import org.leralix.exotictrades.traders.position.FixedPosition;
+import org.leralix.exotictrades.traders.position.TraderPosition;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
@@ -27,7 +29,7 @@ public class Trader {
     private final String id;
     private String name;
     private Vector3D position;
-    private final SpawnZone spawnZone;
+    private final TraderPosition positionHandler;
     private TraderBiome biomeType;
     private TraderWork workType;
     private final List<MarketItemKey> acceptedMarketItem;
@@ -38,7 +40,7 @@ public class Trader {
         this.position = new Vector3DWithOrientation(position);
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
-        this.spawnZone = new SpawnZone();
+        this.positionHandler = new FixedPosition(this.position);
         this.acceptedMarketItem = new ArrayList<>();
         this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
         spawnTrader();
@@ -141,7 +143,7 @@ public class Trader {
 
 
     public void updatePosition() {
-        Vector3D vector3D = spawnZone.getValidRandomPosition();
+        Vector3D vector3D = positionHandler.getNextPosition();
         if(vector3D == null){
             return;
         }
@@ -153,11 +155,7 @@ public class Trader {
     }
 
     public boolean isStatic() {
-        return spawnZone == null;
-    }
-
-    public SpawnZone getSpawnZone() {
-        return spawnZone;
+        return positionHandler == null;
     }
 
     public List<MarketItem> getMarketItems() {
@@ -178,5 +176,9 @@ public class Trader {
 
     public boolean canTradeMarketItem(MarketItem marketItem){
         return acceptedMarketItem.contains(MarketItemKey.of(marketItem));
+    }
+
+    public TraderPosition getPosition() {
+        return positionHandler;
     }
 }

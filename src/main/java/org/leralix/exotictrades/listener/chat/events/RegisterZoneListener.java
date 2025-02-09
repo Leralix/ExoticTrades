@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.exotictrades.guis.ManageTraderPosition;
 import org.leralix.exotictrades.listener.chat.ChatListenerEvent;
 import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
-import org.leralix.exotictrades.traders.SpawnZone;
+import org.leralix.exotictrades.traders.position.RandomPosition;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Zone2D;
@@ -14,9 +14,11 @@ public class RegisterZoneListener extends ChatListenerEvent {
     private final Trader trader;
     private Vector3D position1;
     private Vector3D position2;
+    private final RandomPosition randomRandomPosition;
 
-    public RegisterZoneListener(Trader trader) {
+    public RegisterZoneListener(Trader trader, RandomPosition randomPosition) {
         this.trader = trader;
+        this.randomRandomPosition = randomPosition;
     }
 
     @Override
@@ -31,8 +33,7 @@ public class RegisterZoneListener extends ChatListenerEvent {
             position2 = new Vector3D(player.getLocation());
             player.sendMessage("Position 2 set to " + position2);
 
-            SpawnZone randomSpawnZone = trader.getSpawnZone();
-            randomSpawnZone.setZone(new Zone2D(position1, position2));
+            randomRandomPosition.setZone(new Zone2D(position1, position2));
 
             openGui(player1 -> new ManageTraderPosition(player, trader).open(),player);
             PlayerChatListenerStorage.removePlayer(player);

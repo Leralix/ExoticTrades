@@ -8,9 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import org.leralix.exotictrades.listener.chat.events.RenameTraderChatListener;
-import org.leralix.exotictrades.traders.SpawnZone;
 import org.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.HeadUtils;
 
 public class ManageTrader extends basicGUI {
@@ -26,10 +24,10 @@ public class ManageTrader extends basicGUI {
         GuiItem villagerGuiItem = ItemBuilder.from(villagerItem).asGuiItem();
 
 
-        ItemStack biomeItem = trader.getBiomeType().getIcon(Lang.CURRENT_BIOME.get(trader.getBiomeType().getName()));
+        ItemStack biomeItem = trader.getBiomeType().getIcon(Lang.CURRENT_BIOME.get(trader.getBiomeType().getName()), Lang.CLICK_TO_MANAGE);
         GuiItem biomeGuiItem = ItemBuilder.from(biomeItem).asGuiItem(event -> new SelectTraderBiomeMenu(player, trader).open());
 
-        ItemStack workItem = trader.getWorkType().getIcon(Lang.CURRENT_PROFESSION.get(trader.getWorkType().getName()));
+        ItemStack workItem = trader.getWorkType().getIcon(Lang.CURRENT_PROFESSION.get(trader.getWorkType().getName()), Lang.CLICK_TO_MANAGE);
         GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> new SelectTraderProfessionMenu(player, trader).open());
 
         ItemStack renameTraderItem = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.CURRENT_NAME.get(trader.getName()), Lang.CLICK_TO_SELECT.get());
@@ -72,24 +70,7 @@ public class ManageTrader extends basicGUI {
     }
 
     private String getSpawnZoneInfo() {
-        SpawnZone zone = trader.getSpawnZone();
-        if(zone.isSpawnRandom()){
-            Vector2D p1 = zone.getZone().getMax();
-            Vector2D p2 = zone.getZone().getMin();
-            return Lang.TRADER_RANDOM_POSITION.get(
-                    p1.getX(),
-                    p1.getZ(),
-                    p2.getX(),
-                    p2.getZ()
-            );
-        }
-        else{
-            return Lang.TRADER_FIXED_POSITION.get(
-                    trader.getLocation().getBlockX(),
-                    trader.getLocation().getBlockY(),
-                    trader.getLocation().getBlockZ()
-            );
-        }
+        return trader.getPosition().getSpawnInfo();
 
     }
 

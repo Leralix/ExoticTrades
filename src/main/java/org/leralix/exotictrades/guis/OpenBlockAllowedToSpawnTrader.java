@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.ExoticTrades;
-import org.leralix.exotictrades.traders.SpawnZone;
+import org.leralix.exotictrades.traders.position.RandomPosition;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
@@ -17,19 +17,19 @@ import java.util.List;
 public class OpenBlockAllowedToSpawnTrader extends basicGUI {
 
     Trader trader;
+    RandomPosition randomPosition;
 
-    public OpenBlockAllowedToSpawnTrader(Player player, Trader trader) {
+    public OpenBlockAllowedToSpawnTrader(Player player, Trader trader, RandomPosition randomPosition) {
         super(player, "Block Allowed", 6);
         this.trader = trader;
+        this.randomPosition = randomPosition;
 
         gui.setDefaultClickAction(event ->
                 Bukkit.getScheduler().runTask(ExoticTrades.getPlugin(), this::reloadAuthorizedBlocks)
         );
 
-        for(Material material : trader.getSpawnZone().getAuthorizedBlocks()){
-            GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> {
-                new OpenBlockAllowedToSpawnTrader(player, trader).open();
-            });
+        for(Material material : randomPosition.getAuthorizedBlocks()){
+            GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, randomPosition).open());
             gui.addItem(guiItem);
         }
 
@@ -43,13 +43,12 @@ public class OpenBlockAllowedToSpawnTrader extends basicGUI {
     }
 
     private void reloadAuthorizedBlocks() {
-        SpawnZone spawnZone = trader.getSpawnZone();
         List<Material> authorizedBlocks = new ArrayList<>();
         for(int i = 0; i < 45; i++){
             ItemStack item = gui.getInventory().getItem(i);
             if(item != null)
                 authorizedBlocks.add(item.getType());
         }
-        spawnZone.setAuthorizedBlocks(authorizedBlocks);
+        randomPosition.setAuthorizedBlocks(authorizedBlocks);
     }
 }

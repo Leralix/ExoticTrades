@@ -14,8 +14,7 @@ public class SelectTraderProfessionMenu extends basicGUI {
         super(player, "Select Profession", 3);
 
         for(TraderWork work : TraderWork.values()){
-            ItemStack item = work.getIcon(work.getName());
-            HeadUtils.addLore(item, Lang.CLICK_TO_SELECT.get());
+            ItemStack item = work.getIcon(work.getName(), Lang.CLICK_TO_SELECT);
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {
                 trader.setWorkType(work);

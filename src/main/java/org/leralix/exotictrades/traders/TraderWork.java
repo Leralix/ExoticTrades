@@ -1,10 +1,13 @@
 package org.leralix.exotictrades.traders;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.lang.Lang;
+
+import java.util.Collections;
 
 public enum TraderWork {
 
@@ -38,10 +41,11 @@ public enum TraderWork {
         return profession;
     }
 
-    public ItemStack getIcon(String title){
+    public ItemStack getIcon(String title, Lang desc){
         ItemStack item = new ItemStack(icon);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(title);
+        meta.setDisplayName(ChatColor.GREEN + title);
+        meta.setLore(Collections.singletonList(desc.get()));
         item.setItemMeta(meta);
         return item;
     }

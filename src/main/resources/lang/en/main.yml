@@ -83,7 +83,9 @@ language:
   ##Player market information
   MARKET_INFO: "Market information"
 
-
+  #Trader position menu
+  ADD_POSITION : "§aAdd position"
+  CLICK_TO_ADD_POSITION: "§fClick to register a new position"
   #Event
   WRITE_CANCEL_TO_CANCEL: "Write {0} to cancel"
   CANCEL_WORD: "cancel"

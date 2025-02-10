@@ -20,12 +20,11 @@ public class ManageTraderPosition extends basicGUI {
         randomRandomPosition.addGuiItems(gui, this, player, trader, page);
 
 
-
-
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new ManageTrader(player, trader).open()));
     }
 
     public void reload() {
         new ManageTraderPosition(player, trader).open();
     }
+
 }

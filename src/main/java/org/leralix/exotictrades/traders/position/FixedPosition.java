@@ -10,6 +10,8 @@ import org.leralix.exotictrades.guis.GuiUtil;
 import org.leralix.exotictrades.guis.ManageTrader;
 import org.leralix.exotictrades.guis.ManageTraderPosition;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import org.leralix.exotictrades.listener.chat.RegisterNewTraderPosition;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.HeadUtils;
@@ -24,7 +26,8 @@ public class FixedPosition implements TraderPosition {
     private int currentPosition = 0;
 
     public FixedPosition(Vector3D position) {
-        this.positions = Collections.singletonList(position);
+        this.positions = new ArrayList<>();
+        this.positions.add(position);
     }
 
 
@@ -57,6 +60,14 @@ public class FixedPosition implements TraderPosition {
                 p -> new ManageTraderPosition(player, trader, page + 1).open(),
                 p -> new ManageTraderPosition(player, trader, page - 1).open());
 
+        ItemStack addPosition = HeadUtils.makeSkullB64(Lang.ADD_POSITION.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
+                Lang.CLICK_TO_ADD_POSITION.get());
+
+        GuiItem addPositionButton = ItemBuilder.from(addPosition).asGuiItem(event -> {
+            PlayerChatListenerStorage.register(player, new RegisterNewTraderPosition(player, this));
+        });
+
+        gui.setItem(gui.getRows(), 4, addPositionButton);
 
     }
 
@@ -80,5 +91,7 @@ public class FixedPosition implements TraderPosition {
 
     }
 
-
+    public void addPosition(Vector3D vector3D) {
+        positions.add(vector3D);
+    }
 }

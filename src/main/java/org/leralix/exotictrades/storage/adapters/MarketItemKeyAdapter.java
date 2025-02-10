@@ -1,4 +1,4 @@
-package org.leralix.exotictrades.storage.Adapters;
+package org.leralix.exotictrades.storage.adapters;
 
 import com.google.gson.*;
 import org.leralix.exotictrades.storage.MarketItemKey;

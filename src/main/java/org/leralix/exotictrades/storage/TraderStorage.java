@@ -7,7 +7,9 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.storage.adapters.TraderPositionTypeAdapter;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.exotictrades.traders.position.TraderPosition;
 import org.leralix.lib.position.Vector2D;
 
 import java.io.*;
@@ -68,7 +70,9 @@ public class TraderStorage {
 
     public static void save() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(TraderPosition.class, new TraderPositionTypeAdapter())
+                .create();
         File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
         storageFolder.mkdir();
         File jsonFile = new File(storageFolder.getAbsolutePath() + "/json");
@@ -102,7 +106,9 @@ public class TraderStorage {
 
     public static void load(){
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapter(TraderPosition.class, new TraderPositionTypeAdapter())
+                .create();
         File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/traders.json");
         if (!file.exists())
             return;

@@ -9,7 +9,7 @@ import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.MarketItemStack;
 import org.leralix.exotictrades.storage.MarketItemKey;
-import org.leralix.exotictrades.storage.Adapters.MarketItemKeyAdapter;
+import org.leralix.exotictrades.storage.adapters.MarketItemKeyAdapter;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;

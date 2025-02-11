@@ -54,10 +54,6 @@ public class MarketItem {
     }
 
     public ItemStack getMarketInfoForPlayer() {
-        return getMarketInfoForPlayer(new ItemStack(material).getItemMeta().getDisplayName());
-    }
-
-    protected ItemStack getMarketInfoForPlayer(String name) {
         StockMarket stockMarket = StockMarketManager.getMarketFor(MarketItemKey.of(this));
         double price = stockMarket.getCurrentPrice();
         double estimaedPrice = stockMarket.getNextPriceEstimation();
@@ -68,7 +64,9 @@ public class MarketItem {
 
         ItemStack item = getItemStack(1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + name);
+        if(this instanceof RareItem rareItem){
+            meta.setDisplayName(ChatColor.GREEN + rareItem.getName());
+        }
         meta.setLore(description);
         item.setItemMeta(meta);
         return item;

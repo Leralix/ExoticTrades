@@ -10,7 +10,7 @@ import org.leralix.exotictrades.traders.Trader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketInfoMenu extends basicGUI {
+public class MarketInfoMenu extends BasicGui {
     public MarketInfoMenu(Player player, Trader trader, int page) {
         super(player, "Market Info", 6);
         gui.setDefaultClickAction(event -> event.setCancelled(true));

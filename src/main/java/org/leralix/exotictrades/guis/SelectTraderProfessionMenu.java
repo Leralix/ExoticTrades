@@ -7,9 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.TraderWork;
-import org.leralix.lib.utils.HeadUtils;
 
-public class SelectTraderProfessionMenu extends basicGUI {
+public class SelectTraderProfessionMenu extends BasicGui {
     public SelectTraderProfessionMenu(Player player, Trader trader) {
         super(player, "Select Profession", 3);
 

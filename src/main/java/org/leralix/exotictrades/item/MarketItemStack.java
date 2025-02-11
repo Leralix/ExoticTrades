@@ -1,6 +1,9 @@
 package org.leralix.exotictrades.item;
 
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.storage.MarketItemKey;
+import org.leralix.exotictrades.util.NumberUtil;
 
 public class MarketItemStack {
 
@@ -21,6 +24,7 @@ public class MarketItemStack {
     }
 
     public String getDescription() {
-        return Lang.QUANTITY_ITEM_TO_SELL.get(item.getName(), quantity, item.getName());
+        double price = StockMarketManager.getMarketFor(MarketItemKey.of(item)).getCurrentPrice();
+        return Lang.QUANTITY_ITEM_TO_SELL.get(item.getName(), NumberUtil.roundWithDigits(quantity * price), quantity, price);
     }
 }

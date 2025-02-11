@@ -11,7 +11,7 @@ import org.leralix.exotictrades.listener.chat.events.RenameTraderChatListener;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
-public class ManageTrader extends basicGUI {
+public class ManageTrader extends BasicGui {
 
     private final Trader trader;
 

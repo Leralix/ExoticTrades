@@ -34,7 +34,7 @@ public class InteractWithTrader implements Listener {
             villager.remove();
             return;
         }
-        if(player.isSneaking() && player.hasPermission("exotictrades.admin.trader")){
+        if(player.isSneaking() && player.hasPermission("exotictrades.admin.manage_trader")){
             new ManageTrader(player, trader).open();
             event.setCancelled(true);
         }

@@ -12,6 +12,7 @@ import org.leralix.exotictrades.market.TemporalMarketTask;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
+import org.leralix.exotictrades.util.NumberUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -50,6 +51,7 @@ public final class ExoticTrades extends JavaPlugin {
 
         StockMarketManager.load();
         StockMarketManager.init();
+        NumberUtil.init();
 
         getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);

@@ -22,7 +22,7 @@ import org.leralix.lib.utils.HeadUtils;
 
 import java.util.*;
 
-public class TradeMenu extends basicGUI {
+public class TradeMenu extends BasicGui {
 
     private final List<ItemStack> allItems = new ArrayList<>();
     private final Map<Integer, Integer> rareItems = new HashMap<>();
@@ -129,7 +129,7 @@ public class TradeMenu extends basicGUI {
         }
         else {
             List<String> description = new ArrayList<>();
-            getAllMarketItem().forEach(item -> item.getDescription());
+            getAllMarketItem().forEach(item -> description.add(item.getDescription()));
 
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756",
                     description);

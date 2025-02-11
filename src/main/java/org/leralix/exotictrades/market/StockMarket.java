@@ -1,10 +1,13 @@
 package org.leralix.exotictrades.market;
 
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.util.NumberUtil;
 
 import java.util.*;
 
@@ -14,9 +17,9 @@ public class StockMarket {
     private final double volatility;
 
     private double currentPrice;
-    private double maxPrice;
-    private double minPrice;
-    private double maxIncreasePercent;
+    private final double maxPrice;
+    private final double minPrice;
+    private final double maxIncreasePercent;
     private final SellHistory sellHistory;
 
     // Constructor
@@ -25,8 +28,8 @@ public class StockMarket {
         this.demandMultiplier = demandMultiplier;
         this.volatility = volatility;
 
-        this.maxPrice = maxPrice;
-        this.minPrice = minPrice;
+        this.maxPrice = NumberUtil.roundWithDigits(maxPrice);
+        this.minPrice = NumberUtil.roundWithDigits(minPrice);
         this.maxIncreasePercent = 0.2;
 
         this.currentPrice = basePrice;
@@ -53,7 +56,7 @@ public class StockMarket {
         double deltaSold = sellHistory.getAmount() - getDemand();
         double maxIncrease = currentPrice * maxIncreasePercent;
         double newPrice = currentPrice + getSigmoid(deltaSold, maxIncrease, volatility);
-        return Math.min(Math.max(newPrice,minPrice),maxPrice);
+        return NumberUtil.roundWithDigits(Math.min(Math.max(newPrice,minPrice),maxPrice));
     }
 
     public void updatePrice() {
@@ -72,7 +75,7 @@ public class StockMarket {
 
         addAmountOfSells(amount);
 
-        return total;
+        return NumberUtil.roundWithDigits(total);
     }
 
 
@@ -88,14 +91,17 @@ public class StockMarket {
     public ItemStack getMarketInfo() {
         ItemStack itemStack = getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(marketItem.getName());
+        if(marketItem instanceof RareItem){
+            itemMeta.setCustomModelData(marketItem.getModelData());
+            itemMeta.setDisplayName(ChatColor.GREEN + marketItem.getName());
+        }
         itemMeta.setLore(Arrays.asList(
                 Lang.CURRENT_PRICE.get(currentPrice),
-                "Minimum price : " + minPrice,
-                "Maximum price : " + maxPrice,
-                "Current sells: " + sellHistory.getAmount(),
-                "Expected Sells: " + getDemand(),
-                "Expected next price: " + getNextPriceEstimation()
+                Lang.EXPECTED_NEXT_PRICE.get(getNextPriceEstimation()),
+                Lang.MIN_PRICE.get(minPrice),
+                Lang.MAX_PRICE.get(maxPrice),
+                Lang.CURRENT_SELLS.get(sellHistory.getAmount()),
+                Lang.CURRENT_BUYS.get(getDemand())
         ));
         itemStack.setItemMeta(itemMeta);
         return itemStack;

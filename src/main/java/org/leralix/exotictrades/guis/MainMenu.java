@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.lib.utils.HeadUtils;
 
-public class MainMenu extends basicGUI {
+public class MainMenu extends BasicGui {
 
     public MainMenu(Player player) {
         super(player, "Main Menu", 3);
@@ -26,14 +26,4 @@ public class MainMenu extends basicGUI {
 
         gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
     }
-
-    @Override
-    public void open() {
-        super.open();
-    }
-
-
-
-
-
 }

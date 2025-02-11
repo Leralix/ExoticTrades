@@ -2,9 +2,11 @@ name: ExoticTrades
 version: '${version}'
 main: org.leralix.exotictrades.ExoticTrades
 api-version: '1.19'
+authors: [ Leralix ]
+depend: [Vault]
 load: STARTUP
 commands:
   extrade:
     description: admin command of exotictrades
-    permission: tan.exotic_trade.admin.command.*
+    permission: exotic.admin.command
     usage: /<command>

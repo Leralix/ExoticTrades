@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.position.TraderPosition;
 
-public class ManageTraderPosition extends basicGUI {
+public class ManageTraderPosition extends BasicGui {
     Trader trader;
 
     public ManageTraderPosition(Player player, Trader trader) {

@@ -2,10 +2,12 @@ package org.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.traders.Trader;
@@ -13,7 +15,7 @@ import org.leralix.exotictrades.traders.Trader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageTraderAuthorized extends basicGUI {
+public class ManageTraderAuthorized extends BasicGui {
 
     public ManageTraderAuthorized(Player player, Trader trader, int page) {
         super(player, "Authorized items", 6);
@@ -29,6 +31,9 @@ public class ManageTraderAuthorized extends basicGUI {
             List<String> description = new ArrayList<>();
             description.add(currentState);
             description.add(Lang.CLICK_TO_SWAP.get());
+            if(marketItem instanceof RareItem){
+                itemMeta.setDisplayName(ChatColor.GREEN + itemMeta.getDisplayName());
+            }
             itemMeta.setLore(description);
             itemStack.setItemMeta(itemMeta);
             GuiItem item = ItemBuilder.from(itemStack).asGuiItem(event -> {

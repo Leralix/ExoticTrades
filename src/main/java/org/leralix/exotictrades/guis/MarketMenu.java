@@ -7,9 +7,10 @@ import org.leralix.exotictrades.market.StockMarket;
 import org.leralix.exotictrades.market.StockMarketManager;
 
 
-public class MarketMenu extends basicGUI {
+public class MarketMenu extends BasicGui {
     public MarketMenu(Player player) {
         super(player, "Market Menu", 3);
+        gui.setDefaultClickAction(event -> event.setCancelled(true));
 
         for(StockMarket stock : StockMarketManager.getAllStocks()){
             ItemStack itemStack = stock.getMarketInfo();

@@ -8,9 +8,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.MarketItemStack;
+import org.leralix.exotictrades.item.RareItem;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.adapters.MarketItemKeyAdapter;
 import org.leralix.exotictrades.storage.MarketItemStorage;
+import org.leralix.exotictrades.storage.adapters.RuntimeTypeAdapterFactory;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -89,7 +91,13 @@ public class StockMarketManager{
 
     public static void save() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting()
+                .registerTypeAdapterFactory(
+                        RuntimeTypeAdapterFactory.of(MarketItem.class)
+                                .registerSubtype(MarketItem.class, "MarketItem")
+                                .registerSubtype(RareItem.class, "RareItem")
+                )
+                .create();
         File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
         storageFolder.mkdir();
         File jsonFile = new File(storageFolder.getAbsolutePath() + "/json");
@@ -125,6 +133,11 @@ public class StockMarketManager{
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(MarketItemKey.class, new MarketItemKeyAdapter())
+                .registerTypeAdapterFactory(
+                        RuntimeTypeAdapterFactory.of(MarketItem.class)
+                                .registerSubtype(MarketItem.class, "MarketItem")
+                                .registerSubtype(RareItem.class, "RareItem")
+                )
                 .setPrettyPrinting().create();
         File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/markets.json");
         if (!file.exists())

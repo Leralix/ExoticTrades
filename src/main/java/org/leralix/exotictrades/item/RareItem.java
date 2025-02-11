@@ -36,10 +36,4 @@ public class RareItem extends MarketItem {
         return item;
     }
 
-    @Override
-    public ItemStack getMarketInfoForPlayer() {
-        return getMarketInfoForPlayer(name);
-    }
-
-
 }

@@ -9,7 +9,7 @@ import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
-public class ManageTraders extends basicGUI {
+public class ManageTraders extends BasicGui {
 
 
     public ManageTraders(Player player) {
@@ -31,8 +31,6 @@ public class ManageTraders extends basicGUI {
             });
 
             gui.addItem(guiItem);
-
-
         }
 
         ItemStack addItem = HeadUtils.makeSkullURL(Lang.NEW_TRADER.get(), "https://textures.minecraft.net/texture/ebba69f6ee3e128bc2feec78c247b2a2f00c3aea11d8906c728de92c60a542ed",

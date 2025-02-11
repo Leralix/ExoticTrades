@@ -14,7 +14,7 @@ import org.leralix.lib.utils.HeadUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenBlockAllowedToSpawnTrader extends basicGUI {
+public class OpenBlockAllowedToSpawnTrader extends BasicGui {
 
     Trader trader;
     RandomPosition randomPosition;

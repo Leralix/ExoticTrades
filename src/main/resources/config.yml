@@ -48,7 +48,7 @@ rareRessources:
     enabled: true
     name : "Rare Stone"
     material: "EMERALD"
-    customModelData: 1
+    customModelData: 101
     dropChance:
       blocks:
         GOLD_ORE:
@@ -91,7 +91,7 @@ rareRessources:
     enabled: true
     name : "Rare Wood"
     material: "STICK"
-    customModelData: 2
+    customModelData: 101
     dropChance:
       blocks:
         ACACIA_LOG:
@@ -116,7 +116,7 @@ rareRessources:
     enabled: true
     name : "Rare Crops"
     material: "WHEAT"
-    customModelData: 3
+    customModelData: 101
     dropChance:
       blocks:
         WHEAT:
@@ -141,7 +141,7 @@ rareRessources:
     enabled: true
     name : "Rare Soul"
     material: "FLINT"
-    customModelData: 4
+    customModelData: 101
     dropChance:
       entities:
         ZOMBIE:
@@ -178,7 +178,7 @@ rareRessources:
     enabled: true
     name : "Rare Fish"
     material: "COD"
-    customModelData: 5
+    customModelData: 101
     dropChance:
       fishing:
         COD:

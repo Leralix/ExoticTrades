@@ -5,10 +5,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.item.DropProbability;
-import org.leralix.exotictrades.item.KillProbability;
-import org.leralix.exotictrades.item.MarketItem;
-import org.leralix.exotictrades.item.RareItem;
+import org.leralix.exotictrades.item.*;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -23,6 +20,7 @@ public class MarketItemStorage {
 
     private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
     private static final Map<EntityType, List<KillProbability>> entityDropProbability = new EnumMap<>(EntityType.class);
+    private static final Map<Material, List<FishProbability>> entityFishProbability = new EnumMap<>(Material.class);
 
 
     private static final Map<String, RareItem> rareItemsByName = new HashMap<>();
@@ -36,7 +34,7 @@ public class MarketItemStorage {
         marketItemByKey.clear();
         blockDropProbability.clear();
         entityDropProbability.clear();
-
+        entityFishProbability.clear();
 
         Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
@@ -47,13 +45,6 @@ public class MarketItemStorage {
             if (resourceSection == null) continue;
             if(!resourceSection.getBoolean("enabled")) continue;
 
-            resourceSection.addDefault("movingAverage", defaultConfiguration.getInt("defaultMovingAverage", 24));
-            resourceSection.addDefault("minPrice", defaultConfiguration.getDouble("defaultMinPrice", 0));
-            resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 500));
-            resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 50));
-            resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
-            resourceSection.addDefault("demandMultiplier", defaultConfiguration.getDouble("defaultDemandMultiplier", 1));
-
             int id = resourceKey.hashCode();
             String name = resourceSection.getString("name");
             Material material = Material.matchMaterial(resourceSection.getString("material"));
@@ -61,13 +52,6 @@ public class MarketItemStorage {
                 throw new IllegalStateException("Material " + resourceSection.getString("material") + " not found.");
             }
             int customModelData = resourceSection.getInt("customModelData");
-
-            int movingAverage = resourceSection.getInt("movingAverage");
-            double maxPrice = resourceSection.getDouble("maxPrice");
-            double minPrice = resourceSection.getDouble("minPrice");
-            double volatility = resourceSection.getDouble("volatility");
-            double basePrice = resourceSection.getDouble("basePrice");
-            double demandMultiplier = resourceSection.getDouble("demandMultiplier");
 
             RareItem rareItem = new RareItem(id, name, material, customModelData);
 
@@ -110,6 +94,24 @@ public class MarketItemStorage {
                             entityDropProbability.put(entityType, new ArrayList<>());
                         }
                         entityDropProbability.get(entityType).add(new KillProbability(baseChance, lootingModifier, id));
+                    });
+                }
+
+                if (dropChanceSection.contains("fishing")) {
+                    ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("fishing");
+                    entitiesSection.getKeys(false).forEach(entityName -> {
+                        ConfigurationSection entitySection = entitiesSection.getConfigurationSection(entityName);
+                        if (entitySection == null) return;
+
+                        Material fishedMaterial = Material.valueOf(entityName);
+
+                        double baseChance = entitySection.getDouble("baseChance", 0);
+                        double luckOfTheSeaModifier = entitySection.getDouble("luckOfTheSeaModifier", 0);
+
+                        if (!entityFishProbability.containsKey(fishedMaterial)) {
+                            entityFishProbability.put(fishedMaterial, new ArrayList<>());
+                        }
+                        entityFishProbability.get(fishedMaterial).add(new FishProbability(baseChance,luckOfTheSeaModifier, id));
                     });
                 }
             }
@@ -192,5 +194,20 @@ public class MarketItemStorage {
 
     public static Collection<MarketItemKey> getAllMarketItemsKey() {
         return marketItemByKey.keySet();
+    }
+
+    public static List<RareItem> getRareItemFished(Material type, ItemStack itemInMainHand) {
+        System.out.println("getRareItemFished " + type);
+        System.out.println("entityFishProbability " + entityFishProbability);
+        List<RareItem> items = new ArrayList<>();
+        if(entityFishProbability.containsKey(type)){
+            entityFishProbability.get(type).forEach(fishProbability -> {
+                RareItem item = fishProbability.shouldDrop(itemInMainHand);
+                if(item != null){
+                    items.add(item);
+                }
+            });
+        }
+        return items;
     }
 }

@@ -197,8 +197,6 @@ public class MarketItemStorage {
     }
 
     public static List<RareItem> getRareItemFished(Material type, ItemStack itemInMainHand) {
-        System.out.println("getRareItemFished " + type);
-        System.out.println("entityFishProbability " + entityFishProbability);
         List<RareItem> items = new ArrayList<>();
         if(entityFishProbability.containsKey(type)){
             entityFishProbability.get(type).forEach(fishProbability -> {

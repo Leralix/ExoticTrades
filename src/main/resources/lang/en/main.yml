@@ -1,6 +1,6 @@
 language:
   #General
-  EXOTIC_TRADE_STRING: "§5[ExoticTrade]"
+  EXOTIC_TRADE_STRING: "§6[ExoticTrade]§f "
   LANGUAGE_SUCCESSFULLY_LOADED: "Language successfully loaded"
   #Common errors
   SYNTAX_ERROR: "§cSyntax error"

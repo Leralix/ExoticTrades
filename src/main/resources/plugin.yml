@@ -3,7 +3,7 @@ version: '${version}'
 main: org.leralix.exotictrades.ExoticTrades
 api-version: '1.19'
 authors: [ Leralix ]
-depend: [Vault]
+depend: [SphereLib, Vault]
 load: STARTUP
 commands:
   extrade:

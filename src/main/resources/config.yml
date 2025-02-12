@@ -40,7 +40,7 @@ defaultDemandMultiplier: 1.0
 #blocks :                           The blocks that can drop the rare ressource when broken.
 #baseChance [default 0]:            The base chance of the rare ressource to drop when breaking the block.
 #FortuneModifier [default 0] :      The fortune modifier of the rare ressource. Each level of fortune will multiply the base chance by this value.
-#allowSilkTouch [default true] :    Define if the rare ressource can be obtained with a silk touch pickaxe.
+#allowSilkTouch [default true] :    Define if the rare ressource can be obtained with a silk touch tool.
 
 #Rare ressources are new items that will be added to the base loot of a block, entity or fishing. They will have a custom name and a custom model data can be applied.
 rareRessources:

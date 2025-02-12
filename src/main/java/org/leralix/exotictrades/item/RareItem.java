@@ -1,5 +1,6 @@
 package org.leralix.exotictrades.item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,7 +31,7 @@ public class RareItem extends MarketItem {
         ItemStack item = new ItemStack(material);
         item.setAmount(quantity);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
+        meta.setDisplayName(ChatColor.AQUA + name);
         meta.setCustomModelData(modelData);
         item.setItemMeta(meta);
         return item;

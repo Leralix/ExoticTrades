@@ -1,7 +1,9 @@
 package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.command.CommandSender;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.TemporalUpdateTraderPosition;
+import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.SubCommand;
 
 import java.util.List;
@@ -37,5 +39,6 @@ public class UpdateTradersPosition extends SubCommand {
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
         TemporalUpdateTraderPosition.updateTraderPosition();
+        commandSender.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

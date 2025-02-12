@@ -16,6 +16,8 @@ import org.leralix.exotictrades.util.NumberUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +42,11 @@ public final class ExoticTrades extends JavaPlugin {
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
         logger.warning("[ExoticTrade] -Loading data");
-        ConfigUtil.saveAndUpdateResource(this, "config.yml");
+        List<String> blackListedWords = new ArrayList<>();
+        blackListedWords.add("rareRessources");
+        blackListedWords.add("stockMarket");
+        blackListedWords.add("marketItem");
+        ConfigUtil.saveAndUpdateResourceBetter(this, "config.yml", blackListedWords);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 
         MarketItemStorage.init();

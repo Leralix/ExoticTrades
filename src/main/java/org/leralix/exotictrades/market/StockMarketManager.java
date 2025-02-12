@@ -47,6 +47,9 @@ public class StockMarketManager{
 
             MarketItem marketItem = MarketItemStorage.getMarketItem(resourceKey.hashCode());
 
+            if(marketItem == null)
+                continue;
+
             int movingAverage = resourceSection.getInt("movingAverage");
             double maxPrice = resourceSection.getDouble("maxPrice");
             double minPrice = resourceSection.getDouble("minPrice");

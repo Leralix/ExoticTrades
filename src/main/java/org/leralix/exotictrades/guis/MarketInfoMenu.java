@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MarketInfoMenu extends BasicGui {
     public MarketInfoMenu(Player player, Trader trader, int page) {
-        super(player, "Market Info", 6);
+        super(player, "Market Info", 4);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
         List<GuiItem> guiItems = new ArrayList<>();
 

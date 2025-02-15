@@ -3,7 +3,7 @@ package org.leralix.exotictrades.item;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.storage.MarketItemStorage;
-import org.leralix.lib.util.RandomUtil;
+import org.leralix.lib.utils.RandomUtil;
 
 public class KillProbability implements LootProbability {
 

@@ -43,10 +43,10 @@ public final class ExoticTrades extends JavaPlugin {
 
         logger.warning("[ExoticTrade] -Loading data");
         List<String> blackListedWords = new ArrayList<>();
-        blackListedWords.add("rareRessources.");
-        blackListedWords.add("stockMarket.");
-        blackListedWords.add("marketItem.");
-        ConfigUtil.saveAndUpdateResourceBetter(this, "config.yml", blackListedWords);
+        blackListedWords.add("rareRessources");
+        blackListedWords.add("stockMarket");
+        blackListedWords.add("marketItem");
+        ConfigUtil.saveAndUpdateResource(this, "config.yml", blackListedWords);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 
         MarketItemStorage.init();

@@ -15,7 +15,7 @@ import org.leralix.exotictrades.listener.chat.events.RegisterZoneListener;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Zone2D;
-import org.leralix.lib.util.RandomUtil;
+import org.leralix.lib.utils.RandomUtil;
 import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;

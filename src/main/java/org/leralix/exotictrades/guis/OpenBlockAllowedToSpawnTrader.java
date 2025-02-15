@@ -16,12 +16,10 @@ import java.util.List;
 
 public class OpenBlockAllowedToSpawnTrader extends BasicGui {
 
-    Trader trader;
-    RandomPosition randomPosition;
+    private final RandomPosition randomPosition;
 
     public OpenBlockAllowedToSpawnTrader(Player player, Trader trader, RandomPosition randomPosition) {
         super(player, "Block Allowed", 6);
-        this.trader = trader;
         this.randomPosition = randomPosition;
 
         gui.setDefaultClickAction(event ->

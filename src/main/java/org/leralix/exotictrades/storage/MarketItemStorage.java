@@ -39,93 +39,94 @@ public class MarketItemStorage {
         Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
 
         ConfigurationSection section = defaultConfiguration.getConfigurationSection("rareRessources");
-        for (String resourceKey : section.getKeys(false)) {
-            ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
+        if(section != null){
+            for (String resourceKey : section.getKeys(false)) {
+                ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
 
-            if (resourceSection == null) continue;
-            if(!resourceSection.getBoolean("enabled")) continue;
+                if (resourceSection == null) continue;
+                if(!resourceSection.getBoolean("enabled")) continue;
 
-            int id = resourceKey.hashCode();
-            String name = resourceSection.getString("name");
-            Material material = Material.matchMaterial(resourceSection.getString("material"));
-            if(material == null){
-                throw new IllegalStateException("Material " + resourceSection.getString("material") + " not found.");
+                int id = resourceKey.hashCode();
+                String name = resourceSection.getString("name");
+                Material material = Material.matchMaterial(resourceSection.getString("material"));
+                if(material == null){
+                    throw new IllegalStateException("Material " + resourceSection.getString("material") + " not found.");
+                }
+                int customModelData = resourceSection.getInt("customModelData");
+
+                RareItem rareItem = new RareItem(id, name, material, customModelData);
+
+                ConfigurationSection dropChanceSection = resourceSection.getConfigurationSection("dropChance");
+                if (dropChanceSection != null) {
+                    // Vérifier si ce sont des blocs
+                    if (dropChanceSection.contains("blocks")) {
+                        ConfigurationSection blocksSection = dropChanceSection.getConfigurationSection("blocks");
+                        blocksSection.getKeys(false).forEach(blockName -> {
+                            ConfigurationSection blockSection = blocksSection.getConfigurationSection(blockName);
+                            if (blockSection == null) return;
+
+                            Material blockType = Material.matchMaterial(blockName);
+                            if (blockType == null) return;
+
+                            double baseChance = blockSection.getDouble("baseChance", 0);
+                            double fortuneModifier = blockSection.getDouble("fortuneModifier", 0);
+                            boolean allowSilkTouch = blockSection.getBoolean("allowSilkTouch", true);
+
+                            if (!blockDropProbability.containsKey(blockType)) {
+                                blockDropProbability.put(blockType, new ArrayList<>());
+                            }
+                            blockDropProbability.get(blockType).add(new DropProbability(baseChance, fortuneModifier, allowSilkTouch, id));
+                        });
+                    }
+
+                    // Vérifier si ce sont des entités
+                    if (dropChanceSection.contains("entities")) {
+                        ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("entities");
+                        entitiesSection.getKeys(false).forEach(entityName -> {
+                            ConfigurationSection entitySection = entitiesSection.getConfigurationSection(entityName);
+                            if (entitySection == null) return;
+
+                            EntityType entityType = EntityType.valueOf(entityName);
+
+                            double baseChance = entitySection.getDouble("baseChance", 0);
+                            double lootingModifier = entitySection.getDouble("lootingModifier", 0);
+
+                            if (!entityDropProbability.containsKey(entityType)) {
+                                entityDropProbability.put(entityType, new ArrayList<>());
+                            }
+                            entityDropProbability.get(entityType).add(new KillProbability(baseChance, lootingModifier, id));
+                        });
+                    }
+
+                    if (dropChanceSection.contains("fishing")) {
+                        ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("fishing");
+                        entitiesSection.getKeys(false).forEach(entityName -> {
+                            ConfigurationSection entitySection = entitiesSection.getConfigurationSection(entityName);
+                            if (entitySection == null) return;
+
+                            Material fishedMaterial = Material.valueOf(entityName);
+
+                            double baseChance = entitySection.getDouble("baseChance", 0);
+                            double luckOfTheSeaModifier = entitySection.getDouble("luckOfTheSeaModifier", 0);
+
+                            if (!entityFishProbability.containsKey(fishedMaterial)) {
+                                entityFishProbability.put(fishedMaterial, new ArrayList<>());
+                            }
+                            entityFishProbability.get(fishedMaterial).add(new FishProbability(baseChance,luckOfTheSeaModifier, id));
+                        });
+                    }
+                }
+
+
+                marketItemByKey.put(MarketItemKey.of(rareItem), rareItem);
+                rareItemsByName.put(name, rareItem);
+                rareItems.put(id, rareItem);
+                marketItems.put(id, rareItem);
             }
-            int customModelData = resourceSection.getInt("customModelData");
-
-            RareItem rareItem = new RareItem(id, name, material, customModelData);
-
-            ConfigurationSection dropChanceSection = resourceSection.getConfigurationSection("dropChance");
-            if (dropChanceSection != null) {
-                // Vérifier si ce sont des blocs
-                if (dropChanceSection.contains("blocks")) {
-                    ConfigurationSection blocksSection = dropChanceSection.getConfigurationSection("blocks");
-                    blocksSection.getKeys(false).forEach(blockName -> {
-                        ConfigurationSection blockSection = blocksSection.getConfigurationSection(blockName);
-                        if (blockSection == null) return;
-
-                        Material blockType = Material.matchMaterial(blockName);
-                        if (blockType == null) return;
-
-                        double baseChance = blockSection.getDouble("baseChance", 0);
-                        double fortuneModifier = blockSection.getDouble("fortuneModifier", 0);
-                        boolean allowSilkTouch = blockSection.getBoolean("allowSilkTouch", true);
-
-                        if (!blockDropProbability.containsKey(blockType)) {
-                            blockDropProbability.put(blockType, new ArrayList<>());
-                        }
-                        blockDropProbability.get(blockType).add(new DropProbability(baseChance, fortuneModifier, allowSilkTouch, id));
-                    });
-                }
-
-                // Vérifier si ce sont des entités
-                if (dropChanceSection.contains("entities")) {
-                    ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("entities");
-                    entitiesSection.getKeys(false).forEach(entityName -> {
-                        ConfigurationSection entitySection = entitiesSection.getConfigurationSection(entityName);
-                        if (entitySection == null) return;
-
-                        EntityType entityType = EntityType.valueOf(entityName);
-
-                        double baseChance = entitySection.getDouble("baseChance", 0);
-                        double lootingModifier = entitySection.getDouble("lootingModifier", 0);
-
-                        if (!entityDropProbability.containsKey(entityType)) {
-                            entityDropProbability.put(entityType, new ArrayList<>());
-                        }
-                        entityDropProbability.get(entityType).add(new KillProbability(baseChance, lootingModifier, id));
-                    });
-                }
-
-                if (dropChanceSection.contains("fishing")) {
-                    ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("fishing");
-                    entitiesSection.getKeys(false).forEach(entityName -> {
-                        ConfigurationSection entitySection = entitiesSection.getConfigurationSection(entityName);
-                        if (entitySection == null) return;
-
-                        Material fishedMaterial = Material.valueOf(entityName);
-
-                        double baseChance = entitySection.getDouble("baseChance", 0);
-                        double luckOfTheSeaModifier = entitySection.getDouble("luckOfTheSeaModifier", 0);
-
-                        if (!entityFishProbability.containsKey(fishedMaterial)) {
-                            entityFishProbability.put(fishedMaterial, new ArrayList<>());
-                        }
-                        entityFishProbability.get(fishedMaterial).add(new FishProbability(baseChance,luckOfTheSeaModifier, id));
-                    });
-                }
-            }
-
-
-            marketItemByKey.put(MarketItemKey.of(rareItem), rareItem);
-            rareItemsByName.put(name, rareItem);
-            rareItems.put(id, rareItem);
-            marketItems.put(id, rareItem);
         }
 
 
         ConfigurationSection marketItemSection = defaultConfiguration.getConfigurationSection("marketItem");
-
         if (marketItemSection != null) {
             for (String resourceKey : marketItemSection.getKeys(false)) {
                 Material material = Material.valueOf(marketItemSection.getString(resourceKey));

@@ -32,7 +32,8 @@ public class StockMarketManager{
     public static void init(){
         Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         ConfigurationSection section = defaultConfiguration.getConfigurationSection("stockMarket");
-
+        if(section == null)
+            return;
         for (String resourceKey : section.getKeys(false)) {
             ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
 

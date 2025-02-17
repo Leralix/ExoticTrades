@@ -3,7 +3,6 @@ package org.leralix.exotictrades.listener.chat;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.position.FixedPosition;
 import org.leralix.lib.position.Vector3D;
 

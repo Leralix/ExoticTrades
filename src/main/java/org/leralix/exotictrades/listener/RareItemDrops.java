@@ -21,8 +21,13 @@ import java.util.List;
 
 public class RareItemDrops implements Listener {
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreakBlock(BlockBreakEvent event){
+
+        if(event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -46,8 +51,9 @@ public class RareItemDrops implements Listener {
         }
 
     }
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onKillingMobs(EntityDeathEvent event){
+
         Player killer = event.getEntity().getKiller();
 
         if(killer == null)
@@ -61,8 +67,13 @@ public class RareItemDrops implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onFishing(PlayerFishEvent event){
+
+        if(event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
 
         if(player.getGameMode() != GameMode.SURVIVAL)

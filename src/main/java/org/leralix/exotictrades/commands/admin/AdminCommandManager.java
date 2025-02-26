@@ -6,6 +6,7 @@ import org.leralix.lib.commands.MainHelpCommand;
 public class AdminCommandManager extends CommandManager {
 
     public AdminCommandManager(){
+        super("exotictrades.admin.commands");
         addSubCommand(new GetRareItem());
         addSubCommand(new OpenGui());
         addSubCommand(new SkipOneHour());

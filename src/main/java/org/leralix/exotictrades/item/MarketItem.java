@@ -73,6 +73,7 @@ public class MarketItem {
     }
 
     public String getName() {
-        return new ItemStack(material).getItemMeta().getDisplayName();
+        String name = material.toString().toLowerCase().replace("_", " "); //Spigot cannot deal with TranslatableComponent in item lore
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 }

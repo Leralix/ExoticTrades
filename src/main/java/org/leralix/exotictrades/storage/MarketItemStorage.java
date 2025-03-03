@@ -184,9 +184,6 @@ public class MarketItemStorage {
     }
 
     public static MarketItem getMarketItem(int marketID){
-        if(rareItems.containsKey(marketID)) {
-            return rareItems.get(marketID);
-        }
         if(marketItems.containsKey(marketID)){
             return marketItems.get(marketID);
         }

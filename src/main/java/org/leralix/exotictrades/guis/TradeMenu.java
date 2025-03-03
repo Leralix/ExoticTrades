@@ -149,7 +149,7 @@ public class TradeMenu extends BasicGui {
     private List<MarketItemStack> getAllMarketItem(){
         List<MarketItemStack> displayMarketItems = new ArrayList<>();
         for(Map.Entry<Integer, Integer> entry : rareItems.entrySet()){
-            MarketItemStack marketItem = new MarketItemStack(MarketItemStorage.getRareItem(entry.getKey()), entry.getValue());
+            MarketItemStack marketItem = new MarketItemStack(MarketItemStorage.getMarketItem(entry.getKey()), entry.getValue());
             displayMarketItems.add(marketItem);
         }
         return displayMarketItems;

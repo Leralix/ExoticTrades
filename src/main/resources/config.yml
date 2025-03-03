@@ -245,6 +245,12 @@ stockMarket:
     demandMultiplier : 1.0
     maxPrice : 25.0
     minPrice : 0.5
+  diamond_market:
+    basePrice: 3.0
+    volatility: 1.5
+    demandMultiplier: 1.0
+    maxPrice: 50.0
+    minPrice: 0.5
 
 
 

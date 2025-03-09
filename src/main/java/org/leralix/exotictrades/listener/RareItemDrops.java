@@ -78,8 +78,6 @@ public class RareItemDrops implements Listener {
 
         if(player.getGameMode() != GameMode.SURVIVAL)
             return;
-        if(!event.getHook().isInOpenWater())
-            return;
         if(!event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH))
             return;
         Entity caughtEntity = event.getCaught();

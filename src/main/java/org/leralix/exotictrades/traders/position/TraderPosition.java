@@ -8,7 +8,7 @@ import org.leralix.lib.position.Vector3D;
 
 public interface TraderPosition {
 
-    Vector3D getNextPosition();
+    Vector3D getPositionNextHour();
     String getSpawnInfo();
     void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page);
 

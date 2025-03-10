@@ -21,8 +21,8 @@ public class TemporalUpdateTraderPosition {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxHourTime",0);
-                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("taxMinuteTime",0);
+                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("traderUpdatePositionHour",0);
+                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("traderUpdatePositionMinute",0);
 
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
                     updateTraderPosition();
@@ -33,7 +33,7 @@ public class TemporalUpdateTraderPosition {
 
     public static void updateTraderPosition() {
         for(Trader trader : TraderStorage.getAll()){
-            trader.updatePosition();
+            trader.nextHour();
         }
     }
 }

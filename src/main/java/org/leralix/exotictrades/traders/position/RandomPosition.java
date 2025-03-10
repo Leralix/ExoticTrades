@@ -114,7 +114,7 @@ public class RandomPosition implements TraderPosition {
     }
 
     @Override
-    public Vector3D getNextPosition() {
+    public Vector3D getPositionNextHour() {
         return null;
     }
 

@@ -17,28 +17,38 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FixedPosition implements TraderPosition {
 
     private final List<Vector3D> positions;
-    private int currentPosition = 0;
+    private int currentPosition;
+    private final int numberOfDaysBeforeNextPosition;
+    private int dayIndex;
+
 
     public FixedPosition(Vector3D position) {
         this.positions = new ArrayList<>();
         this.positions.add(position);
+        currentPosition = 0;
+        numberOfDaysBeforeNextPosition = 1;
+        dayIndex = 0;
     }
 
 
     @Override
-    public Vector3D getNextPosition() {
-        if(currentPosition >= positions.size()){
-            currentPosition = 0;
+    public Vector3D getPositionNextHour() {
+
+        dayIndex++;
+        if(dayIndex >= numberOfDaysBeforeNextPosition){
+            dayIndex = 0;
+            currentPosition++;
+            if(currentPosition >= positions.size()){
+                currentPosition = 0;
+            }
         }
-        Vector3D position = positions.get(currentPosition);
-        currentPosition++;
-        return position;
+
+        return positions.get(currentPosition);
     }
 
     @Override
@@ -63,9 +73,7 @@ public class FixedPosition implements TraderPosition {
         ItemStack addPosition = HeadUtils.makeSkullB64(Lang.ADD_POSITION.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
                 Lang.CLICK_TO_ADD_POSITION.get());
 
-        GuiItem addPositionButton = ItemBuilder.from(addPosition).asGuiItem(event -> {
-            PlayerChatListenerStorage.register(player, new RegisterNewTraderPosition(player, this));
-        });
+        GuiItem addPositionButton = ItemBuilder.from(addPosition).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterNewTraderPosition(player, this)));
 
         gui.setItem(gui.getRows(), 4, addPositionButton);
 

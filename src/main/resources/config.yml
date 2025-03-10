@@ -26,6 +26,9 @@ defaultMarketVolatility: 1.0
 #A higher volatility means that the market price will fluctuate more.
 defaultDemandMultiplier: 1.0
 
+#Define at which hour and minute the trader will update his position if he has several.
+traderUpdatePositionHour: 0
+traderUpdatePositionMinute: 0
 
 ########################
 ##  RARES RESSOURCES  ##

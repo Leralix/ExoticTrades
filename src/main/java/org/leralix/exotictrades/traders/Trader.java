@@ -33,6 +33,7 @@ public class Trader {
     private TraderBiome biomeType;
     private TraderWork workType;
     private final List<MarketItemKey> acceptedMarketItem;
+    private int numberOfHoursBeforeNextPosition;
 
 
     public Trader(String id, Location position){
@@ -43,6 +44,7 @@ public class Trader {
         this.positionHandler = new FixedPosition(this.position);
         this.acceptedMarketItem = new ArrayList<>();
         this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
+        this.numberOfHoursBeforeNextPosition = 0;
         spawnTrader();
     }
 
@@ -142,8 +144,8 @@ public class Trader {
     }
 
 
-    public void updatePosition() {
-        Vector3D vector3D = positionHandler.getNextPosition();
+    public void nextHour() {
+        Vector3D vector3D = positionHandler.getPositionNextHour();
         if(vector3D == null){
             return;
         }
@@ -180,5 +182,10 @@ public class Trader {
 
     public TraderPosition getPosition() {
         return positionHandler;
+    }
+
+    public void switchNextHour(){
+        numberOfHoursBeforeNextPosition++;
+
     }
 }

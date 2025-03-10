@@ -9,6 +9,7 @@ import org.leralix.exotictrades.listener.chat.ChatListener;
 import org.leralix.exotictrades.market.PlayerConnectionStorage;
 import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.market.TemporalMarketTask;
+import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
@@ -37,6 +38,7 @@ public final class ExoticTrades extends JavaPlugin {
         ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
         String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
 
+        EconomyManager.setupEconomy();
 
         Lang.loadTranslations(lang);
         getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());

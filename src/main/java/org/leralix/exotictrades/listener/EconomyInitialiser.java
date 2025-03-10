@@ -11,7 +11,6 @@ public class EconomyInitialiser implements Listener {
 
     @EventHandler
     public void onServiceRegister(ServiceRegisterEvent event) {
-        ExoticTrades.getPlugin().getLogger().info("[ExoticTrade] -Economy loaded");
         if (event.getProvider().getProvider() instanceof Economy economy) {
             EconomyManager.registerEconomy(economy);
         }

@@ -100,6 +100,6 @@ public final class ExoticTrades extends JavaPlugin {
     }
 
     public static String getNameString() {
-        return ChatColor.GOLD + "[ExoticTrade]";
+        return Lang.EXOTIC_TRADE_STRING.get();
     }
 }

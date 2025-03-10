@@ -75,6 +75,8 @@ language:
   CURRENT_STATE_ENABLE: "§fCurrentState : §aenable"
   CURRENT_STATE_DISABLE: "§fCurrentState : §cdisable"
   CLICK_TO_SWAP: "§fClick to change state"
+  WRITE_POSITION_OF_TRADER_OR_HERE: "Write the position of the trader in the format \"§6x;y;z§f\" or \"§6here\""
+  NEW_TRADER_POSITION_REGISTERED: "New trader position registered at : §6{0}"
   TRADER_FIXED_POSITION: "§f[x:§6{0}§f,y:§6{1}§f,z:§6{2}§f,§6{3}§f]"
   TRADER_RANDOM_POSITION: "§fTrader spawn zone is between [{0},{1}] and [{2},{3}]"
   TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fTrader can spawn in {0} locations"

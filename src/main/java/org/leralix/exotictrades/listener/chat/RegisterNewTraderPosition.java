@@ -3,6 +3,7 @@ package org.leralix.exotictrades.listener.chat;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.position.FixedPosition;
 import org.leralix.lib.position.Vector3D;
 
@@ -12,7 +13,7 @@ public class RegisterNewTraderPosition extends ChatListenerEvent {
 
 
     public RegisterNewTraderPosition(Player player, FixedPosition position) {
-        player.sendMessage("Please write the position of the trader in the format x;y;z or write here to use your current position");
+        player.sendMessage(Lang.WRITE_POSITION_OF_TRADER_OR_HERE.get());
         this.position = position;
     }
 
@@ -32,6 +33,7 @@ public class RegisterNewTraderPosition extends ChatListenerEvent {
         }
         Vector3D vector3D = new Vector3D(location);
         position.addPosition(vector3D);
+        player.sendMessage(Lang.NEW_TRADER_POSITION_REGISTERED.get(vector3D));
         PlayerChatListenerStorage.removePlayer(player);
 
     }

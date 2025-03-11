@@ -3,7 +3,9 @@ package org.leralix.exotictrades.storage;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.item.*;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -108,11 +110,12 @@ public class MarketItemStorage {
 
                             double baseChance = entitySection.getDouble("baseChance", 0);
                             double luckOfTheSeaModifier = entitySection.getDouble("luckOfTheSeaModifier", 0);
+                            boolean replaceReward = entitySection.getBoolean("replaceVanilla", false);
 
                             if (!entityFishProbability.containsKey(fishedMaterial)) {
                                 entityFishProbability.put(fishedMaterial, new ArrayList<>());
                             }
-                            entityFishProbability.get(fishedMaterial).add(new FishProbability(baseChance,luckOfTheSeaModifier, id));
+                            entityFishProbability.get(fishedMaterial).add(new FishProbability(baseChance,luckOfTheSeaModifier, replaceReward, id));
                         });
                     }
                 }
@@ -194,13 +197,19 @@ public class MarketItemStorage {
         return marketItemByKey.keySet();
     }
 
-    public static List<RareItem> getRareItemFished(Material type, ItemStack itemInMainHand) {
+    public static List<RareItem> getRareItemFished(Material type, PlayerFishEvent event) {
         List<RareItem> items = new ArrayList<>();
         if(entityFishProbability.containsKey(type)){
             entityFishProbability.get(type).forEach(fishProbability -> {
-                RareItem item = fishProbability.shouldDrop(itemInMainHand);
+                RareItem item = fishProbability.shouldDrop(event.getPlayer().getInventory().getItemInMainHand());
                 if(item != null){
                     items.add(item);
+                    if(fishProbability.shouldReplaceReward()){
+                        Entity entityType = event.getCaught();
+                        if(entityType != null){
+                            event.getCaught().remove();
+                        }
+                    }
                 }
             });
         }

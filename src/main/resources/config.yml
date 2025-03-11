@@ -45,6 +45,9 @@ traderUpdatePositionMinute: 0
 #FortuneModifier [default 0] :      The fortune modifier of the rare ressource. Each level of fortune will multiply the base chance by this value.
 #allowSilkTouch [default true] :    Define if the rare ressource can be obtained with a silk touch tool.
 
+#Fishing only :
+#replaceVanilla [default false] :   Replace the vanilla fish by the rare ressource. If set to true, the rare ressource will be the only fish that can be obtained.
+
 #Rare ressources are new items that will be added to the base loot of a block, entity or fishing. They will have a custom name and a custom model data can be applied.
 rareRessources:
   rareStone :
@@ -186,12 +189,16 @@ rareRessources:
       fishing:
         COD:
           baseChance: 4
+          replaceVanilla: true
         SALMON:
           baseChance: 4
+          replaceVanilla: true
         PUFFERFISH:
           baseChance: 8
+          replaceVanilla: true
         TROPICAL_FISH:
           baseChance: 12
+          replaceVanilla: true
 
 #It is also possible to add vanilla ressources to the rare ressources list from the GUI.
 
@@ -304,7 +311,7 @@ villagerHeads :
     CLERIC: "https://textures.minecraft.net/texture/46cc8fa8379665fbb8c924e45235da1c988c1c523af1b2479796d4a49af1c5c8"
     CARTOGRAPHER: "https://textures.minecraft.net/texture/f2f944222ff693fe088bd543c8efdd3246eab6a34978acde774f7e295dee9e16"
     BUTCHER: "https://textures.minecraft.net/texture/366715115de766c949e8700b7650c8994fd3eeb97bd1836c2e16b5d8d5551b5d"
-    ARMORER: "http://textures.minecraft.net/texture/8b6cd9a9fb4b13f49d25b82a14040c045ff57aa8c279cce20a2503b8184d9b9c"
+    ARMORER: "https://textures.minecraft.net/texture/8b6cd9a9fb4b13f49d25b82a14040c045ff57aa8c279cce20a2503b8184d9b9c"
     WEAPONSMITH: "https://textures.minecraft.net/texture/c1beaa099c823332e7780a32110f5b0bfc2546e53fde8e206817325894018f3"
     TOOLSMITH: "https ://textures.minecraft.net/texture/7d586f55be429db689c070c47aa9b1284cd51da493768559d7132df8c8916aed"
   SNOW:
@@ -356,19 +363,19 @@ villagerHeads :
     WEAPONSMITH: "https://textures.minecraft.net/texture/25fafa2be55bd15aea6e2925f5d24f8068e0f4a2616f3b92b380d94912f0ec5f"
     TOOLSMITH: "https://textures.minecraft.net/texture/16ec61097e11bfe6f10aaa12e5c0a54c829bdbd9d9d7a32fc627e6b5a931e77"
   SWAMP:
-    NONE: "http://textures.minecraft.net/texture/51df1fd0f9937c631c6ec26e4b4ec61dd6ba1dfb2ba078f46379d993ee88d735"
-    SHEPHERD: "http://textures.minecraft.net/texture/69cf18b0447ff1dfcfba9e4c4ac7f6e26a986352dd1878c6a1e00d0f5dd6211d"
-    NITWIT: "http://textures.minecraft.net/texture/b8c0dd0797fd1ee9f1849d4ac1ebb871af7fe610c9ca61660ce112be842f6b41"
-    MASON: "http://textures.minecraft.net/texture/4b17427d4e9d89fa1e2cb297cd146ed2fdb49721a0eabf048e7e7d24c73fcda5"
-    LIBRARIAN: "http://textures.minecraft.net/texture/e7473596a1cb40cf1b3ec5f46f2f9d590d5e78d0507680a7b9bc4304587da0c9"
-    LEATHERWORKER: "http://textures.minecraft.net/texture/5007c4a3e3b8d31b94a95173bc2aea4b718c150f0166f0c964ca9e04be664a22"
-    FLETCHER: "http://textures.minecraft.net/texture/12ed931ee6b77539d2fd7d271617db6b19365cb0e3c52eac005272301d07ac74"
-    FISHERMAN: "http://textures.minecraft.net/texture/d223664886d96643d3afdc4a2ac72ebc2bcd229e517519e15c3e7c1570ad745e"
-    FARMER: "http://textures.minecraft.net/texture/e2cfc7eade016a969c2b3a87e010a02ac910df60d3714f76184b2c17a703101e"
-    CLERIC: "http://textures.minecraft.net/texture/1a8e3e224a768bb5771d6e4653e48a54fe6cd095fc399d3ec39b95c2544af054"
-    CARTOGRAPHER: "http://textures.minecraft.net/texture/2e040983328da42b4eda931bdcefb39a8816b32045da1ed9f335e538c18f3c41"
-    BUTCHER: "http://textures.minecraft.net/texture/5393370444ee915595630cd900d065c03cc5c61f7a91edd8fec24f204b3eeb4f"
-    ARMORER: "http://textures.minecraft.net/texture/ea7abb127b69338a81b87a17b664214ee9fe0437c8b577a0e3674b1c6d0fca77"
-    WEAPONSMITH: "http://textures.minecraft.net/texture/4625c64beded1875b8cd9fdf810f16430e74197371572024b7307f26637573f6"
-    TOOLSMITH: "http://textures.minecraft.net/texture/ad074b26b09c67feefea4e0245f63306e45cb935e98dbfaa3020eb40c7069719"
+    NONE: "https://textures.minecraft.net/texture/51df1fd0f9937c631c6ec26e4b4ec61dd6ba1dfb2ba078f46379d993ee88d735"
+    SHEPHERD: "https://textures.minecraft.net/texture/69cf18b0447ff1dfcfba9e4c4ac7f6e26a986352dd1878c6a1e00d0f5dd6211d"
+    NITWIT: "https://textures.minecraft.net/texture/b8c0dd0797fd1ee9f1849d4ac1ebb871af7fe610c9ca61660ce112be842f6b41"
+    MASON: "https://textures.minecraft.net/texture/4b17427d4e9d89fa1e2cb297cd146ed2fdb49721a0eabf048e7e7d24c73fcda5"
+    LIBRARIAN: "https://textures.minecraft.net/texture/e7473596a1cb40cf1b3ec5f46f2f9d590d5e78d0507680a7b9bc4304587da0c9"
+    LEATHERWORKER: "https://textures.minecraft.net/texture/5007c4a3e3b8d31b94a95173bc2aea4b718c150f0166f0c964ca9e04be664a22"
+    FLETCHER: "https://textures.minecraft.net/texture/12ed931ee6b77539d2fd7d271617db6b19365cb0e3c52eac005272301d07ac74"
+    FISHERMAN: "https://textures.minecraft.net/texture/d223664886d96643d3afdc4a2ac72ebc2bcd229e517519e15c3e7c1570ad745e"
+    FARMER: "https://textures.minecraft.net/texture/e2cfc7eade016a969c2b3a87e010a02ac910df60d3714f76184b2c17a703101e"
+    CLERIC: "https://textures.minecraft.net/texture/1a8e3e224a768bb5771d6e4653e48a54fe6cd095fc399d3ec39b95c2544af054"
+    CARTOGRAPHER: "https://textures.minecraft.net/texture/2e040983328da42b4eda931bdcefb39a8816b32045da1ed9f335e538c18f3c41"
+    BUTCHER: "https://textures.minecraft.net/texture/5393370444ee915595630cd900d065c03cc5c61f7a91edd8fec24f204b3eeb4f"
+    ARMORER: "https://textures.minecraft.net/texture/ea7abb127b69338a81b87a17b664214ee9fe0437c8b577a0e3674b1c6d0fca77"
+    WEAPONSMITH: "https://textures.minecraft.net/texture/4625c64beded1875b8cd9fdf810f16430e74197371572024b7307f26637573f6"
+    TOOLSMITH: "https://textures.minecraft.net/texture/ad074b26b09c67feefea4e0245f63306e45cb935e98dbfaa3020eb40c7069719"
 

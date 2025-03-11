@@ -87,7 +87,8 @@ public class RareItemDrops implements Listener {
             return;
         Item fish = (Item)event.getCaught();
 
-        List<RareItem> rareItems = MarketItemStorage.getRareItemFished(fish.getItemStack().getType(),event.getPlayer().getInventory().getItemInMainHand());
+        List<RareItem> rareItems = MarketItemStorage.getRareItemFished(fish.getItemStack().getType(),event);
+
         for(RareItem rareItem : rareItems){
 
             Item rareFish = event.getCaught().getWorld().dropItem(event.getCaught().getLocation(), rareItem.getItemStack(1));

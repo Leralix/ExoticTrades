@@ -10,10 +10,12 @@ public class FishProbability implements LootProbability {
     private final double dropChance;
     private final double luckOfTheSeaBonus;
     private final int rareItemID;
+    private final boolean replaceReward;
 
-    public FishProbability(double baseChance,double luckOfTheSeaBonus, int id) {
+    public FishProbability(double baseChance,double luckOfTheSeaBonus,boolean replaceReward, int id) {
         this.dropChance = baseChance;
         this.luckOfTheSeaBonus = luckOfTheSeaBonus;
+        this.replaceReward = replaceReward;
         this.rareItemID = id;
     }
 
@@ -35,5 +37,9 @@ public class FishProbability implements LootProbability {
             return MarketItemStorage.getRareItem(rareItemID);
         }
         return null;
+    }
+
+    public boolean shouldReplaceReward() {
+        return replaceReward;
     }
 }

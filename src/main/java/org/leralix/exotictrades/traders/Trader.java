@@ -29,7 +29,7 @@ public class Trader {
     private final String id;
     private String name;
     private Vector3D position;
-    private final TraderPosition positionHandler;
+    private final FixedPosition positionHandler;
     private TraderBiome biomeType;
     private TraderWork workType;
     private final List<MarketItemKey> acceptedMarketItem;
@@ -180,12 +180,9 @@ public class Trader {
         return acceptedMarketItem.contains(MarketItemKey.of(marketItem));
     }
 
-    public TraderPosition getPosition() {
+    public FixedPosition getPosition() {
         return positionHandler;
     }
 
-    public void switchNextHour(){
-        numberOfHoursBeforeNextPosition++;
 
-    }
 }

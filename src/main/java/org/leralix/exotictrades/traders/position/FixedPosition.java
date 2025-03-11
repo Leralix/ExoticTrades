@@ -12,6 +12,7 @@ import org.leralix.exotictrades.guis.ManageTraderPosition;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import org.leralix.exotictrades.listener.chat.RegisterNewTraderPosition;
+import org.leralix.exotictrades.listener.chat.events.RegisterTraderTimeBetweenPosition;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.HeadUtils;
@@ -23,7 +24,7 @@ public class FixedPosition implements TraderPosition {
 
     private final List<Vector3D> positions;
     private int currentPosition;
-    private final int numberOfDaysBeforeNextPosition;
+    private int numberOfDaysBeforeNextPosition;
     private int dayIndex;
 
 
@@ -31,7 +32,7 @@ public class FixedPosition implements TraderPosition {
         this.positions = new ArrayList<>();
         this.positions.add(position);
         currentPosition = 0;
-        numberOfDaysBeforeNextPosition = 1;
+        this.numberOfDaysBeforeNextPosition = 1;
         dayIndex = 0;
     }
 
@@ -75,7 +76,16 @@ public class FixedPosition implements TraderPosition {
 
         GuiItem addPositionButton = ItemBuilder.from(addPosition).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterNewTraderPosition(player, this)));
 
-        gui.setItem(gui.getRows(), 4, addPositionButton);
+        ItemStack selectNumberOfPosition = HeadUtils.createCustomItemStack(Material.PAPER,
+                Lang.NUMBER_OF_DAYS_BEFORE_NEXT_POSITION.get(trader.getPosition().getNumberOfDaysBeforeNextPosition()),
+                Lang.CLICK_TO_MODIFY.get());
+
+        GuiItem setTraderTime = ItemBuilder.from(selectNumberOfPosition).asGuiItem(event -> {
+            PlayerChatListenerStorage.register(player, new RegisterTraderTimeBetweenPosition(player, trader));
+        });
+
+        gui.setItem(gui.getRows(), 3, addPositionButton);
+        gui.setItem(3, 5, setTraderTime);
 
     }
 
@@ -101,5 +111,13 @@ public class FixedPosition implements TraderPosition {
 
     public void addPosition(Vector3D vector3D) {
         positions.add(vector3D);
+    }
+
+    public int getNumberOfDaysBeforeNextPosition() {
+        return numberOfDaysBeforeNextPosition;
+    }
+
+    public void setNumberOfDaysBeforeNextPosition(int numberOfDaysBeforeNextPosition) {
+        this.numberOfDaysBeforeNextPosition = numberOfDaysBeforeNextPosition;
     }
 }

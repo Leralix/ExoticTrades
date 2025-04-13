@@ -13,75 +13,99 @@ import java.util.*;
 
 public class StockMarket {
     private final MarketItem marketItem;
-    private final double demandMultiplier; // Coefficient for the demand of the item based on the amount of players
-    private final double volatility;
 
+    /**
+     * The current price of the item.
+     */
     private double currentPrice;
-    private final double maxPrice;
-    private final double minPrice;
-    private final double maxIncreasePercent;
+
+    private MarketConstants constants;
+
+    /**
+     * The history of every item sold in a period of days.
+     * Used to evaluate the market demand
+     */
     private final SellHistory sellHistory;
 
-    // Constructor
-    public StockMarket(MarketItem marketItem, double maxPrice, double minPrice, double demandMultiplier, double volatility, double basePrice, int timeLength) {
+    public StockMarket(
+            MarketItem marketItem,
+            double maxPrice,
+            double percentForMaxPrice,
+            double minPrice,
+            double percentForMinPrice,
+            double demandMultiplier,
+            double volatility,
+            double basePrice,
+            int timeLength
+    ) {
         this.marketItem = marketItem;
-        this.demandMultiplier = demandMultiplier;
-        this.volatility = volatility;
-
-        this.maxPrice = NumberUtil.roundWithDigits(maxPrice);
-        this.minPrice = NumberUtil.roundWithDigits(minPrice);
-        this.maxIncreasePercent = 0.2;
+        this.constants = new MarketConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
 
         this.currentPrice = basePrice;
         this.sellHistory = new SellHistory(timeLength);
     }
 
-    public void updateToNextCursor() {
-        sellHistory.updateToNextCursor();
+
+    public void updateHistory(int newQuantitySold) {
+        sellHistory.recordSale(newQuantitySold);
     }
 
-    // Method to add an amount to the amount of sells at the current cursor position
-    public void addAmountOfSells(int sells) {
-        sellHistory.addSell(sells);
-    }
-
-    // Updating the expected selling price mainly based on the amount of players that joined the server
+    /**
+     * Get the expected demand of the ressource.
+     * @return the quantity of item to be sold
+     */
     public double getDemand() {
         int uniquePlayerCount = PlayerConnectionStorage.getNumberOfConnections();
-        return uniquePlayerCount * demandMultiplier;
+        return uniquePlayerCount * constants.demandMultiplier();
     }
 
+    public double getPercentSold(){
 
-    public double getNextPriceEstimation() {
-        double deltaSold = sellHistory.getAmount() - getDemand();
-        double maxIncrease = currentPrice * maxIncreasePercent;
-        double newPrice = currentPrice + getSigmoid(deltaSold, maxIncrease, volatility);
-        return NumberUtil.roundWithDigits(Math.min(Math.max(newPrice,minPrice),maxPrice));
+        double demand = getDemand();
+        //Avoid dividing by 0
+        if(demand < 0.1)
+            demand = 0.1;
+
+        return sellHistory.getTotalSales() / demand;
     }
 
-    public void updatePrice() {
-        this.currentPrice = getNextPriceEstimation();
+    /**
+     * Compute the price at the next update
+     * @return the estimated new price
+     */
+    public double getEstimatedPrice() {
+
+        double percent = getPercentSold();
+        if(percent > 1){
+            return getNextIncrease(percent);
+        }
+        return getNextDecrease(percent);
     }
 
-    private double getSigmoid(double deltaSold, double maxValue, double volatility) {
-        return (maxValue*2) * (1 / (1 + Math.exp(volatility * deltaSold))) - maxValue;
+    private double getNextDecrease(double percent) {
+        double ratio = Math.max(1, constants.percentForMinPrice() / percent);
+        return constants.minPrice() * ratio;
+    }
+
+    private double getNextIncrease(double percent) {
+        double ratio = Math.min(percent - 1.0, constants.percentForMaxPrice()) / constants.percentForMaxPrice();
+        return constants.maxPrice() * ratio;
     }
 
     public double sell(int amount){
-        double total = 0;
-        for(int i = 0; i < amount; i++){
-            total += currentPrice;
-        }
-
-        addAmountOfSells(amount);
-
-        return NumberUtil.roundWithDigits(total);
+        updateHistory(amount);
+        return NumberUtil.roundWithDigits(currentPrice * amount);
     }
 
 
     public void updateMovingAverage() {
         updatePrice();
-        updateToNextCursor();
+        sellHistory.nextRecord();
+    }
+
+    private void updatePrice() {
+        double difference = getEstimatedPrice() - currentPrice;
+        this.currentPrice = this.currentPrice + difference * constants.volatility();
     }
 
     public ItemStack getItemStack(){
@@ -97,10 +121,10 @@ public class StockMarket {
         }
         itemMeta.setLore(Arrays.asList(
                 Lang.CURRENT_PRICE.get(currentPrice),
-                Lang.EXPECTED_NEXT_PRICE.get(getNextPriceEstimation()),
-                Lang.MIN_PRICE.get(minPrice),
-                Lang.MAX_PRICE.get(maxPrice),
-                Lang.CURRENT_SELLS.get(sellHistory.getAmount()),
+                Lang.EXPECTED_NEXT_PRICE.get(getEstimatedPrice()),
+                Lang.MIN_PRICE.get(constants.minPrice()),
+                Lang.MAX_PRICE.get(constants.maxPrice()),
+                Lang.CURRENT_SELLS.get(sellHistory.getTotalSales()),
                 Lang.CURRENT_BUYS.get(getDemand())
         ));
         itemStack.setItemMeta(itemMeta);
@@ -109,5 +133,11 @@ public class StockMarket {
 
     public double getCurrentPrice() {
         return currentPrice;
+    }
+
+
+    public void updateConstants(double maxPrice, double percentForMaxPrice, double minPrice, double percentForMinPrice, double demandMultiplier, double volatility, int timeLength) {
+        this.constants = new MarketConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
+        this.sellHistory.updateTimeLength(timeLength);
     }
 }

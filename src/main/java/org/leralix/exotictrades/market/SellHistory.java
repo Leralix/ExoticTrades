@@ -1,36 +1,48 @@
 package org.leralix.exotictrades.market;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 
 public class SellHistory {
 
+    private static class Sales {
+        int number;
 
-    private int cursor;
-    private final HashMap<Integer,Integer> history;
-    private final int timeLength;
+        Sales() {
+            this.number = 0;
+        }
+    }
 
+    private final LinkedList<Sales> salesHistory;
 
     public SellHistory(int timeLength) {
-        this.cursor = 0;
-        this.history = new HashMap<>();
-        this.timeLength = timeLength;
-    }
+        this.salesHistory = new LinkedList<>();
 
-
-    public void addSell(int quantity){
-        history.put(cursor, history.getOrDefault(cursor,0) + quantity);
-    }
-
-    public void updateToNextCursor() {
-        cursor = (cursor + 1) % timeLength;
-        history.put(cursor, 0);
-    }
-
-    public int getAmount() {
-        int total = 0;
         for(int i = 0; i < timeLength; i++){
-            total += history.getOrDefault(i,0);
+            salesHistory.add(new Sales());
         }
-        return total;
+
     }
+
+    public void recordSale(int nbSold) {
+        salesHistory.getLast().number += nbSold;
+    }
+
+
+    public void nextRecord() {
+        salesHistory.addLast(new Sales());
+        salesHistory.removeFirst();
+
+    }
+
+    public void updateTimeLength(int timeLength) {
+
+        while (salesHistory.size() > timeLength){
+            salesHistory.removeFirst();
+        }
+    }
+
+    public int getTotalSales() {
+        return salesHistory.stream().mapToInt(h -> h.number).sum();
+    }
+
 }

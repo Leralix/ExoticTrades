@@ -41,7 +41,9 @@ public class StockMarketManager{
 
             resourceSection.addDefault("movingAverage", defaultConfiguration.getInt("defaultMovingAverage", 24));
             resourceSection.addDefault("minPrice", defaultConfiguration.getDouble("defaultMinPrice", 0));
+            resourceSection.addDefault("percentForMinPrice", defaultConfiguration.getDouble("defaultPercentForMinPrice", 0));
             resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 500));
+            resourceSection.addDefault("percentForMaxPrice", defaultConfiguration.getDouble("defaultPercentForMaxPrice", 0));
             resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 50));
             resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
             resourceSection.addDefault("demandMultiplier", defaultConfiguration.getDouble("defaultDemandMultiplier", 1));
@@ -53,12 +55,14 @@ public class StockMarketManager{
 
             int movingAverage = resourceSection.getInt("movingAverage");
             double maxPrice = resourceSection.getDouble("maxPrice");
+            double percentForMaxPrice = resourceSection.getDouble("percentForMaxPrice");
             double minPrice = resourceSection.getDouble("minPrice");
+            double percentForMinPrice = resourceSection.getDouble("percentForMinPrice");
             double volatility = resourceSection.getDouble("volatility");
             double basePrice = resourceSection.getDouble("basePrice");
             double demandMultiplier = resourceSection.getDouble("demandMultiplier");
 
-            StockMarketManager.registerOrUpdateMarketItem(marketItem, movingAverage, maxPrice, minPrice, volatility, demandMultiplier, basePrice);
+            StockMarketManager.registerOrUpdateMarketItem(marketItem, movingAverage, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, volatility, demandMultiplier, basePrice);
         }
     }
 
@@ -87,9 +91,14 @@ public class StockMarketManager{
         return marketItems.get(marketItemKey);
     }
 
-    public static void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice, double minPrice, double volatility,double demandMultiplier, double basePrice) {
+    public static void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice,double percentForMaxPrice, double minPrice, double percentForMinPrice, double volatility,double demandMultiplier, double basePrice) {
         MarketItemKey marketItemKey = MarketItemKey.of(marketItem);
-        marketItems.computeIfAbsent(marketItemKey, k -> new StockMarket(marketItem, maxPrice, minPrice, demandMultiplier, volatility, basePrice, timeLength));
+        if(marketItems.containsKey(marketItemKey)){
+            marketItems.get(marketItemKey).updateConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, timeLength);
+        }
+        else {
+            marketItems.put(marketItemKey,new StockMarket(marketItem, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, basePrice, timeLength));
+        }
     }
 
 

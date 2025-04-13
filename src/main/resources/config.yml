@@ -15,9 +15,13 @@ nbDigits: 2
 #Set the number of hours sold items are kept in memory for every market item. Integer only.
 defaultMovingAverage: 4
 #Set the default minimum price for the market.
-defaultMinPrice: 0.0
+defaultMinPrice: 0.1
+#Set the default maximum percent to reach the max price (0.2 = 20%)
+defaultPercentForMinPrice : 0.2
 #Set the default maximum price for the market.
 defaultMaxPrice: 1000.0
+#Set the default maximum percent to reach the max price (5.0 = 100%)
+defaultPercentForMaxPrice : 5.0
 #Set the default market price for the market.
 defaultBasePrice: 100.0
 #Set the default market volatility for the market.
@@ -227,38 +231,40 @@ marketItem:
 stockMarket:
   rareStone :
     basePrice : 5.0
-    volatility : 0.5
-    demandMultiplier : 1.0
-    maxPrice : 10.0
+    volatility : 0.25
+    demandMultiplier : 10.0
+    maxPrice : 15.0
+    percentForMaxPrice : 0.1
     minPrice : 0.5
+    percentForMinPrice : 3.0
   rareWood :
     basePrice : 2.0
-    volatility : 0.5
-    demandMultiplier : 1.5
+    volatility : 0.4
+    demandMultiplier : 15.0
     maxPrice : 7.5
     minPrice : 0.2
   rareCrops :
     basePrice : 1.0
-    volatility : 2.5
-    demandMultiplier : 2.0
+    volatility : 0.65
+    demandMultiplier : 25.0
     maxPrice : 4.0
     minPrice : 0.1
   rareSoul :
     basePrice : 6.0
-    volatility : 1.0
-    demandMultiplier : 1.0
+    volatility : 0.35
+    demandMultiplier : 5.0
     maxPrice : 20.0
     minPrice : 1.0
   rareFish :
     basePrice : 3.0
-    volatility : 1.5
-    demandMultiplier : 1.0
+    volatility : 0.45
+    demandMultiplier : 15.0
     maxPrice : 25.0
     minPrice : 0.5
   diamond_market:
     basePrice: 3.0
-    volatility: 1.5
-    demandMultiplier: 1.0
+    volatility: 0.3
+    demandMultiplier: 10.0
     maxPrice: 50.0
     minPrice: 0.5
 

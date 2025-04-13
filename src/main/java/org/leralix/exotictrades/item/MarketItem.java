@@ -55,8 +55,9 @@ public class MarketItem {
 
     public ItemStack getMarketInfoForPlayer() {
         StockMarket stockMarket = StockMarketManager.getMarketFor(MarketItemKey.of(this));
+
         double price = stockMarket.getCurrentPrice();
-        double estimatedPrice = stockMarket.getEstimatedPrice();
+        double estimatedPrice = stockMarket.getPriceNextHour();
 
         String priceEvolutionString = getPriceEvolutionString(price, estimatedPrice);
         List<String> description = new ArrayList<>();

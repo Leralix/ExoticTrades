@@ -39,7 +39,7 @@ public class StockMarket {
             int timeLength
     ) {
         this.marketItem = marketItem;
-        this.constants = new MarketConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
+        this.constants = new MarketConstants(basePrice, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
 
         this.currentPrice = basePrice;
         this.sellHistory = new SellHistory(timeLength);
@@ -62,10 +62,6 @@ public class StockMarket {
     public double getPercentSold(){
 
         double demand = getDemand();
-        //Avoid dividing by 0
-        if(demand < 0.1)
-            demand = 0.1;
-
         return sellHistory.getTotalSales() / demand;
     }
 
@@ -73,24 +69,33 @@ public class StockMarket {
      * Compute the price at the next update
      * @return the estimated new price
      */
-    public double getEstimatedPrice() {
+    public double getPriceNextHour() {
 
+        double targetPrice = getTargetPrice();
+
+        double difference = targetPrice - currentPrice;
+        return currentPrice + difference * constants.volatility();
+
+    }
+
+    private double getTargetPrice() {
         double percent = getPercentSold();
-        if(percent > 1){
-            return getNextIncrease(percent);
-        }
-        return getNextDecrease(percent);
+        return percent > 1 ? getEstimatedPriceDown(percent) : getEstimatedPriceUp(percent);
     }
 
-    private double getNextDecrease(double percent) {
-        double ratio = Math.max(1, constants.percentForMinPrice() / percent);
-        return constants.minPrice() * ratio;
+    private double getEstimatedPriceDown(double percent) {
+        double ratio = (percent - 1.0)/(constants.percentForMinPrice() - 1.0);
+
+
+        return constants.basePrice() - (constants.basePrice() - constants.minPrice()) * ratio;
     }
 
-    private double getNextIncrease(double percent) {
-        double ratio = Math.min(percent - 1.0, constants.percentForMaxPrice()) / constants.percentForMaxPrice();
-        return constants.maxPrice() * ratio;
+    private double getEstimatedPriceUp(double percent) {
+        double ratio = (1.0 - percent)/(1.0 - constants.percentForMaxPrice());
+        ratio = Math.min(1.0, ratio);
+        return constants.basePrice() + (constants.maxPrice() - constants.basePrice()) * ratio;
     }
+
 
     public double sell(int amount){
         updateHistory(amount);
@@ -104,7 +109,7 @@ public class StockMarket {
     }
 
     private void updatePrice() {
-        double difference = getEstimatedPrice() - currentPrice;
+        double difference = getPriceNextHour() - currentPrice;
         this.currentPrice = this.currentPrice + difference * constants.volatility();
     }
 
@@ -121,7 +126,8 @@ public class StockMarket {
         }
         itemMeta.setLore(Arrays.asList(
                 Lang.CURRENT_PRICE.get(currentPrice),
-                Lang.EXPECTED_NEXT_PRICE.get(getEstimatedPrice()),
+                Lang.EXPECTED_NEXT_PRICE.get(getTargetPrice()),
+                Lang.EXPECTED_NEXT_PRICE.get(getPriceNextHour()),
                 Lang.MIN_PRICE.get(constants.minPrice()),
                 Lang.MAX_PRICE.get(constants.maxPrice()),
                 Lang.CURRENT_SELLS.get(sellHistory.getTotalSales()),
@@ -131,13 +137,13 @@ public class StockMarket {
         return itemStack;
     }
 
-    public double getCurrentPrice() {
-        return currentPrice;
+
+    public void updateConstants(double basePrice, double maxPrice, double percentForMaxPrice, double minPrice, double percentForMinPrice, double demandMultiplier, double volatility, int timeLength) {
+        this.constants = new MarketConstants(basePrice, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
+        this.sellHistory.updateTimeLength(timeLength);
     }
 
-
-    public void updateConstants(double maxPrice, double percentForMaxPrice, double minPrice, double percentForMinPrice, double demandMultiplier, double volatility, int timeLength) {
-        this.constants = new MarketConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility);
-        this.sellHistory.updateTimeLength(timeLength);
+    public double getCurrentPrice() {
+        return currentPrice;
     }
 }

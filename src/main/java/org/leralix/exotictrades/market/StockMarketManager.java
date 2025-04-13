@@ -27,9 +27,10 @@ public class StockMarketManager{
     private StockMarketManager() {
     }
 
-    private static HashMap<MarketItemKey, StockMarket> marketItems = new HashMap<>();
+    private static HashMap<MarketItemKey, StockMarket> marketItems;
 
     public static void init(){
+        marketItems = new HashMap<>();
         Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         ConfigurationSection section = defaultConfiguration.getConfigurationSection("stockMarket");
         if(section == null)
@@ -94,7 +95,7 @@ public class StockMarketManager{
     public static void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice,double percentForMaxPrice, double minPrice, double percentForMinPrice, double volatility,double demandMultiplier, double basePrice) {
         MarketItemKey marketItemKey = MarketItemKey.of(marketItem);
         if(marketItems.containsKey(marketItemKey)){
-            marketItems.get(marketItemKey).updateConstants(maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, timeLength);
+            marketItems.get(marketItemKey).updateConstants(basePrice, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, timeLength);
         }
         else {
             marketItems.put(marketItemKey,new StockMarket(marketItem, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, basePrice, timeLength));

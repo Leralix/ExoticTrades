@@ -15,6 +15,7 @@ package org.leralix.exotictrades.market;
  *                           percentForMaxPrice = 0.2 : 20%
  */
 public record MarketConstants(
+        double basePrice,
         double maxPrice,
         double percentForMaxPrice,
         double minPrice,

@@ -12,7 +12,7 @@ public class SellHistory {
         }
     }
 
-    private final LinkedList<Sales> salesHistory;
+    private LinkedList<Sales> salesHistory;
 
     public SellHistory(int timeLength) {
         this.salesHistory = new LinkedList<>();
@@ -35,6 +35,10 @@ public class SellHistory {
     }
 
     public void updateTimeLength(int timeLength) {
+
+        if(salesHistory == null){
+            salesHistory = new LinkedList<>();
+        }
 
         while (salesHistory.size() > timeLength){
             salesHistory.removeFirst();

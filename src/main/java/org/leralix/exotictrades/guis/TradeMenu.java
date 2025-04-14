@@ -26,10 +26,11 @@ public class TradeMenu extends BasicGui {
 
     private final List<ItemStack> allItems = new ArrayList<>();
     private final Map<Integer, Integer> rareItems = new HashMap<>();
+    private final Trader trader;
 
     public TradeMenu(Player player, Trader trader) {
         super(player, "Trader", 4);
-
+        this.trader = trader;
         setupGui();
 
         ItemStack pane = HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE,"");
@@ -116,7 +117,7 @@ public class TradeMenu extends BasicGui {
         for(ItemStack item : allItems){
             MarketItemKey key = MarketItemKey.of(item);
             MarketItem marketItem = MarketItemStorage.getMarketItem(key);
-            if(marketItem == null){
+            if(marketItem == null || !trader.canTradeMarketItem(marketItem)){
                 allItemsAreNotRare = true;
                 break;
             }

@@ -14,7 +14,6 @@ import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
 import org.leralix.exotictrades.traders.position.FixedPosition;
-import org.leralix.exotictrades.traders.position.TraderPosition;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
@@ -33,7 +32,6 @@ public class Trader {
     private TraderBiome biomeType;
     private TraderWork workType;
     private final List<MarketItemKey> acceptedMarketItem;
-    private int numberOfHoursBeforeNextPosition;
 
 
     public Trader(String id, Location position){
@@ -44,7 +42,6 @@ public class Trader {
         this.positionHandler = new FixedPosition(this.position);
         this.acceptedMarketItem = new ArrayList<>();
         this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
-        this.numberOfHoursBeforeNextPosition = 0;
         spawnTrader();
     }
 
@@ -144,7 +141,7 @@ public class Trader {
     }
 
 
-    public void nextHour() {
+    public void updatePosition() {
         Vector3D vector3D = positionHandler.getPositionNextHour();
         if(vector3D == null){
             return;

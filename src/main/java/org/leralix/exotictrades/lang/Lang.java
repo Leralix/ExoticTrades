@@ -58,6 +58,7 @@ public enum Lang {
     CLICK_TO_MODIFY,
     CURRENT_NAME,
     CURRENT_PRICE,
+    TARGET_PRICE,
     MIN_PRICE,
     MAX_PRICE,
     CURRENT_SELLS,

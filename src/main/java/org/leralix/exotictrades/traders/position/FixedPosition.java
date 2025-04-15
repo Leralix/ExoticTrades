@@ -24,31 +24,29 @@ public class FixedPosition implements TraderPosition {
 
     private final List<Vector3D> positions;
     private int currentPosition;
-    private int numberOfDaysBeforeNextPosition;
-    private int dayIndex;
+    private int nbHoursBetweenPositions;
+    private int hourIndex;
 
 
     public FixedPosition(Vector3D position) {
         this.positions = new ArrayList<>();
         this.positions.add(position);
-        currentPosition = 0;
-        this.numberOfDaysBeforeNextPosition = 1;
-        dayIndex = 0;
+        this.currentPosition = 0;
+        this.nbHoursBetweenPositions = 24;
+        this.hourIndex = 0;
     }
 
 
     @Override
     public Vector3D getPositionNextHour() {
-
-        dayIndex++;
-        if(dayIndex >= numberOfDaysBeforeNextPosition){
-            dayIndex = 0;
+        hourIndex++;
+        if(hourIndex >= nbHoursBetweenPositions){
+            hourIndex = 0;
             currentPosition++;
             if(currentPosition >= positions.size()){
                 currentPosition = 0;
             }
         }
-
         return positions.get(currentPosition);
     }
 
@@ -114,10 +112,10 @@ public class FixedPosition implements TraderPosition {
     }
 
     public int getNumberOfDaysBeforeNextPosition() {
-        return numberOfDaysBeforeNextPosition;
+        return nbHoursBetweenPositions;
     }
 
     public void setNumberOfDaysBeforeNextPosition(int numberOfDaysBeforeNextPosition) {
-        this.numberOfDaysBeforeNextPosition = numberOfDaysBeforeNextPosition;
+        this.nbHoursBetweenPositions = numberOfDaysBeforeNextPosition;
     }
 }

@@ -106,12 +106,12 @@ public class StockMarketManager{
     public static void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
-                .registerTypeAdapterFactory(
-                        RuntimeTypeAdapterFactory.of(MarketItem.class)
-                                .registerSubtype(MarketItem.class, "MarketItem")
-                                .registerSubtype(RareItem.class, "RareItem")
-                )
-                .create();
+        .registerTypeAdapterFactory(
+                RuntimeTypeAdapterFactory.of(MarketItem.class)
+                        .registerSubtype(MarketItem.class, "MarketItem")
+                        .registerSubtype(RareItem.class, "RareItem")
+        )
+        .create();
         File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
         storageFolder.mkdir();
         File jsonFile = new File(storageFolder.getAbsolutePath() + "/json");

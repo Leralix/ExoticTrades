@@ -82,10 +82,11 @@ language:
   TRADER_RANDOM_POSITION: "§fTrader spawn zone is between [{0},{1}] and [{2},{3}]"
   TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fTrader can spawn in {0} locations"
   ##Manage position
-  NUMBER_OF_DAYS_BEFORE_NEXT_POSITION: "§fCurrent delay between position switch : §6{0}"
+  NUMBER_OF_DAYS_BEFORE_NEXT_POSITION: "§fCurrent delay between position switch : §6{0}§f hours"
 
   ##Market menu
   CURRENT_PRICE: "§fPrice : §6{0}"
+  TARGET_PRICE: "§fTarget price : §6{0}"
   EXPECTED_NEXT_PRICE: "§fExpected next price : §6{0}"
   MIN_PRICE: "§fMinimum price : §c{0}"
   MAX_PRICE: "§fMaximum price : §a{0}"

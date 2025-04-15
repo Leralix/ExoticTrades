@@ -60,7 +60,6 @@ public class StockMarket {
     }
 
     public double getPercentSold(){
-
         double demand = getDemand();
         return sellHistory.getTotalSales() / demand;
     }
@@ -70,28 +69,24 @@ public class StockMarket {
      * @return the estimated new price
      */
     public double getPriceNextHour() {
-
         double targetPrice = getTargetPrice();
-
         double difference = targetPrice - currentPrice;
-        return currentPrice + difference * constants.volatility();
+        return NumberUtil.roundWithDigits(currentPrice + difference * constants.volatility());
 
     }
 
-    private double getTargetPrice() {
+    double getTargetPrice() {
         double percent = getPercentSold();
         return percent > 1 ? getEstimatedPriceDown(percent) : getEstimatedPriceUp(percent);
     }
 
     private double getEstimatedPriceDown(double percent) {
         double ratio = (percent - 1.0)/(constants.percentForMinPrice() - 1.0);
-
-
         return constants.basePrice() - (constants.basePrice() - constants.minPrice()) * ratio;
     }
 
     private double getEstimatedPriceUp(double percent) {
-        double ratio = (1.0 - percent)/(1.0 - constants.percentForMaxPrice());
+        double ratio =  (1.0 - percent)/(1.0 - constants.percentForMaxPrice());
         ratio = Math.min(1.0, ratio);
         return constants.basePrice() + (constants.maxPrice() - constants.basePrice()) * ratio;
     }
@@ -109,8 +104,7 @@ public class StockMarket {
     }
 
     private void updatePrice() {
-        double difference = getPriceNextHour() - currentPrice;
-        this.currentPrice = this.currentPrice + difference * constants.volatility();
+        this.currentPrice = getPriceNextHour();
     }
 
     public ItemStack getItemStack(){
@@ -126,7 +120,7 @@ public class StockMarket {
         }
         itemMeta.setLore(Arrays.asList(
                 Lang.CURRENT_PRICE.get(currentPrice),
-                Lang.EXPECTED_NEXT_PRICE.get(getTargetPrice()),
+                Lang.TARGET_PRICE.get(getTargetPrice()),
                 Lang.EXPECTED_NEXT_PRICE.get(getPriceNextHour()),
                 Lang.MIN_PRICE.get(constants.minPrice()),
                 Lang.MAX_PRICE.get(constants.maxPrice()),

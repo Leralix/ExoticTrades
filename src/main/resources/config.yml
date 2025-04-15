@@ -16,23 +16,24 @@ nbDigits: 2
 defaultMovingAverage: 4
 #Set the default minimum price for the market.
 defaultMinPrice: 0.1
-#Set the default maximum percent to reach the max price (0.2 = 20%)
-defaultPercentForMinPrice : 0.2
+#Set the default maximum percent to reach the min price (5.0 = 100%). Beyond this, the target price will be set to the max price.
+defaultPercentForMinPrice : 5.0
 #Set the default maximum price for the market.
 defaultMaxPrice: 1000.0
-#Set the default maximum percent to reach the max price (5.0 = 100%)
-defaultPercentForMaxPrice : 5.0
+#Set the default minimum percent to reach the max price (0.2 = 20%). Beyond this, the target price will be set to the min price.
+defaultPercentForMaxPrice : 0.2
 #Set the default market price for the market.
 defaultBasePrice: 100.0
 #Set the default market volatility for the market.
-#A higher volatility means that the market price will fluctuate more.
+#Higher volatility means that the market price will fluctuate more.
 defaultMarketVolatility: 1.0
-#A higher volatility means that the market price will fluctuate more.
+#The demand mltiplier determines the demand of the market for a specific item.
+#Demand = Number of players connected in the last 7 days * demandMultiplier.
 defaultDemandMultiplier: 1.0
 
-#Define at which hour and minute the trader will update his position if he has several.
-traderUpdatePositionHour: 0
-traderUpdatePositionMinute: 0
+#Define at which hour and minute the trader will update his position if he has several. (0,0 is midnight)
+traderUpdatePositionHour: 0 #[0-23]
+traderUpdatePositionMinute: 0 #[0-59]
 
 ########################
 ##  RARES RESSOURCES  ##
@@ -238,34 +239,34 @@ stockMarket:
     minPrice : 0.5
     percentForMinPrice : 3.0
   rareWood :
-    basePrice : 2.0
+    basePrice : 3.0
     volatility : 0.4
     demandMultiplier : 15.0
-    maxPrice : 7.5
+    maxPrice : 8.5
     minPrice : 0.2
   rareCrops :
-    basePrice : 1.0
+    basePrice : 2.0
     volatility : 0.65
     demandMultiplier : 25.0
-    maxPrice : 4.0
+    maxPrice : 7.0
     minPrice : 0.1
   rareSoul :
-    basePrice : 6.0
+    basePrice : 7.0
     volatility : 0.35
     demandMultiplier : 5.0
     maxPrice : 20.0
     minPrice : 1.0
   rareFish :
-    basePrice : 3.0
+    basePrice : 4.0
     volatility : 0.45
     demandMultiplier : 15.0
     maxPrice : 25.0
     minPrice : 0.5
   diamond_market:
-    basePrice: 3.0
+    basePrice: 5.0
     volatility: 0.3
     demandMultiplier: 10.0
-    maxPrice: 50.0
+    maxPrice: 10.0
     minPrice: 0.5
 
 

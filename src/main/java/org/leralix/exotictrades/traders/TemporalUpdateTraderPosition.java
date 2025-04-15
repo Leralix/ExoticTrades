@@ -33,7 +33,7 @@ public class TemporalUpdateTraderPosition {
 
     public static void updateTraderPosition() {
         for(Trader trader : TraderStorage.getAll()){
-            trader.nextHour();
+            trader.updatePosition();
         }
     }
 }

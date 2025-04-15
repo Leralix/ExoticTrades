@@ -140,4 +140,16 @@ public class StockMarket {
     public double getCurrentPrice() {
         return currentPrice;
     }
+
+    public double getMinPrice() {
+        return constants.minPrice();
+    }
+
+    public double getMaxPrice() {
+        return constants.maxPrice();
+    }
+
+    public double getNumberSold() {
+        return sellHistory.getTotalSales();
+    }
 }

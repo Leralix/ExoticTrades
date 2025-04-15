@@ -4,6 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.exotictrades.market.StockMarket;
+import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.storage.MarketItemKey;
 
 
 public class RareItem extends MarketItem {

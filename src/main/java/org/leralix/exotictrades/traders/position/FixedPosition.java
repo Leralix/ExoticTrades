@@ -118,4 +118,12 @@ public class FixedPosition implements TraderPosition {
     public void setNumberOfDaysBeforeNextPosition(int numberOfDaysBeforeNextPosition) {
         this.nbHoursBetweenPositions = numberOfDaysBeforeNextPosition;
     }
+
+    public Vector3D getCurrentPosition() {
+        return positions.get(currentPosition);
+    }
+
+    public List<Vector3D> getAllPositions() {
+        return positions;
+    }
 }

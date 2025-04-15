@@ -77,4 +77,9 @@ public class MarketItem {
         String name = material.toString().toLowerCase().replace("_", " "); //Spigot cannot deal with TranslatableComponent in item lore
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
+
+
+    public StockMarket getStockMarket() {
+        return StockMarketManager.getMarketFor(MarketItemKey.of(this));
+    }
 }

@@ -126,4 +126,8 @@ public class FixedPosition implements TraderPosition {
     public List<Vector3D> getAllPositions() {
         return positions;
     }
+
+    public int getNbHoursBeforeNextPosition() {
+        return nbHoursBetweenPositions - hourIndex;
+    }
 }

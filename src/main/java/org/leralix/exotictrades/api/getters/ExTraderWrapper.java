@@ -46,4 +46,9 @@ public class ExTraderWrapper implements ExTrader {
     public List<Vector3D> getPotentialPosition() {
         return  trader.getPosition().getAllPositions();
     }
+
+    @Override
+    public int getNbHoursBeforeNextPosition() {
+        return trader.getPosition().getNbHoursBeforeNextPosition();
+    }
 }

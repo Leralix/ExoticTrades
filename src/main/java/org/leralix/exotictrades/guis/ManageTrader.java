@@ -49,6 +49,10 @@ public class ManageTrader extends BasicGui {
         );
         GuiItem managePositionGuiItem = ItemBuilder.from(managePosition).asGuiItem(event -> new ManageTraderPosition(player, trader).open());
 
+        ItemStack sellingItem = HeadUtils.createCustomItemStack(Material.BARREL, Lang.MANAGE_ITEM_TO_SELL.get(),
+                Lang.CLICK_TO_MANAGE.get());
+        GuiItem manageItemToSellGuiItem = ItemBuilder.from(sellingItem).asGuiItem(event -> new ManageTraderItemToSell(player, trader).open());
+
         ItemStack selectedMarketItems = HeadUtils.createCustomItemStack(Material.CHEST, Lang.SELECT_ITEM_TO_SELL.get(),
                 Lang.LEFT_CLICK_TO_MANAGE.get());
         GuiItem selectMarketItemsButton = ItemBuilder.from(selectedMarketItems).asGuiItem(event -> new ManageTraderAuthorized(player, trader, 0).open());
@@ -59,8 +63,8 @@ public class ManageTrader extends BasicGui {
         gui.setItem(2, 2, biomeGuiItem);
         gui.setItem(2, 3, workGuiItem);
         gui.setItem(2, 4, renameTraderGuiItem);
-
-        gui.setItem(2, 6, managePositionGuiItem);
+        gui.setItem(2, 5, managePositionGuiItem);
+        gui.setItem(2, 6, manageItemToSellGuiItem);
         gui.setItem(2, 7, selectMarketItemsButton);
         gui.setItem(2,8, deleteTraderGuiItem);
 

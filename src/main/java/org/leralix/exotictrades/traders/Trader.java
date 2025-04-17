@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
+import org.leralix.exotictrades.item.SellableItem;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
@@ -32,6 +33,8 @@ public class Trader {
     private TraderBiome biomeType;
     private TraderWork workType;
     private final List<MarketItemKey> acceptedMarketItem;
+    private SellableItemManager sellableItemManager;
+
 
 
     public Trader(String id, Location position){
@@ -42,6 +45,7 @@ public class Trader {
         this.positionHandler = new FixedPosition(this.position);
         this.acceptedMarketItem = new ArrayList<>();
         this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
+        this.sellableItemManager = new SellableItemManager(2);
         spawnTrader();
     }
 
@@ -181,5 +185,31 @@ public class Trader {
         return positionHandler;
     }
 
+    private SellableItemManager getItemManager() {
+        if(sellableItemManager == null){
+            sellableItemManager = new SellableItemManager(2);
+        }
+        return sellableItemManager;
+    }
 
+    public void updateItemSold(List<SellableItem> itemStacks){
+        getItemManager().setSellableItems(itemStacks);
+    }
+
+    public List<SellableItem> getItemSold() {
+        return getItemManager().getAllSellableItems();
+    }
+
+    public List<SellableItem> getTodaySellableItems() {
+        return getItemManager().getTodaySellableItems();
+    }
+
+    public void setNumberOfDailySellableItems(int number){
+        getItemManager().setNbDailySellableItems(number);
+    }
+
+    public void nextHour() {
+        updatePosition();
+        getItemManager().updateSellableItems();
+    }
 }

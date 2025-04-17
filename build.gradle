@@ -39,8 +39,8 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation "dev.triumphteam:triumph-gui:+"
 
+    testImplementation "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
     testImplementation 'io.github.leralix:sphere-lib:0.4.4'
-    compileOnly "org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation 'org.mockito:mockito-core:5.7.0'

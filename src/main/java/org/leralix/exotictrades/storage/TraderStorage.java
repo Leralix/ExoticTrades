@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.item.SellableItem;
 import org.leralix.exotictrades.storage.adapters.TraderPositionTypeAdapter;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.position.TraderPosition;
@@ -70,9 +71,12 @@ public class TraderStorage {
 
     public static void save() {
 
-        Gson gson = new GsonBuilder().setPrettyPrinting()
+        Gson gson = new GsonBuilder()
                 .registerTypeAdapter(TraderPosition.class, new TraderPositionTypeAdapter())
+                .enableComplexMapKeySerialization()
+                .setPrettyPrinting()
                 .create();
+
         File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
         storageFolder.mkdir();
         File jsonFile = new File(storageFolder.getAbsolutePath() + "/json");
@@ -90,7 +94,8 @@ public class TraderStorage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        gson.toJson(traders, writer);
+        Type traderMapType = new TypeToken<Map<String, Trader>>(){}.getType();
+        gson.toJson(traders, traderMapType, writer);
         try {
             writer.flush();
         } catch (IOException e) {

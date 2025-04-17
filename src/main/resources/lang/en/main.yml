@@ -73,6 +73,7 @@ language:
   DELETE_TRADER: "Delete trader"
   CURRENT_NAME: "Current name : {0}"
   MANAGE_POSITION: "Manage position"
+  MANAGE_ITEM_TO_SELL: "Manage items to sell"
   SELECT_ITEM_TO_SELL: "Select items to trade"
   CURRENT_STATE_ENABLE: "§fCurrentState : §aenable"
   CURRENT_STATE_DISABLE: "§fCurrentState : §cdisable"

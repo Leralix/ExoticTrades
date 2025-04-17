@@ -23,7 +23,7 @@ public class MarketInfoMenu extends BasicGui {
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> new TradeMenu(player, trader).open(),
+                p -> new SellItemMenu(player, trader).open(),
                 p -> new MarketInfoMenu(player, trader, page + 1).open(),
                 p -> new MarketInfoMenu(player, trader, page - 1).open());
 

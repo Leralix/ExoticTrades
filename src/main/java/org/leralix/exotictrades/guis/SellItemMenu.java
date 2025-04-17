@@ -22,13 +22,13 @@ import org.leralix.lib.utils.HeadUtils;
 
 import java.util.*;
 
-public class TradeMenu extends BasicGui {
+public class SellItemMenu extends BasicGui {
 
     private final List<ItemStack> allItems = new ArrayList<>();
     private final Map<Integer, Integer> rareItems = new HashMap<>();
     private final Trader trader;
 
-    public TradeMenu(Player player, Trader trader) {
+    public SellItemMenu(Player player, Trader trader) {
         super(player, "Trader", 4);
         this.trader = trader;
         setupGui();
@@ -60,6 +60,13 @@ public class TradeMenu extends BasicGui {
         gui.setItem(2,6, sellButton);
 
         gui.setItem(2,8, getMarketInfoButton(trader));
+
+        ItemStack traderItem = HeadUtils.makeSkullURL(Lang.BUY_ITEM_MENU.get(), "https://textures.minecraft.net/texture/cc1b2f592cfc8d372dcf5fd44eed69dddc64601d7846d72619f70511d8043a89",
+                Lang.CLICK_TO_OPEN.get());
+
+        GuiItem traderGuiItem = ItemBuilder.from(traderItem).asGuiItem(event -> new BuyItemMenu(player, trader, 0).open());
+        gui.setItem(3,8, traderGuiItem);
+
 
         gui.setItem(4,1, GuiUtil.createBackArrow(player, event -> player.closeInventory()));
     }

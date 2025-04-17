@@ -212,4 +212,8 @@ public class Trader {
         updatePosition();
         getItemManager().updateSellableItems();
     }
+
+    public void removeTodaySellableItem(SellableItem item) {
+        getItemManager().removeTodaySellableItem(item);
+    }
 }

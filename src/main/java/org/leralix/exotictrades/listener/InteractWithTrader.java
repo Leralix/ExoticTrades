@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.leralix.exotictrades.guis.ManageTrader;
-import org.leralix.exotictrades.guis.TradeMenu;
+import org.leralix.exotictrades.guis.SellItemMenu;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
 
@@ -39,7 +39,7 @@ public class InteractWithTrader implements Listener {
             event.setCancelled(true);
         }
         else {
-            new TradeMenu(player, trader).open();
+            new SellItemMenu(player, trader).open();
         }
     }
 

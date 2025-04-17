@@ -89,6 +89,7 @@ language:
   CURRENT_PRICE: "§fPrice : §6{0}"
   TARGET_PRICE: "§fTarget price : §6{0}"
   EXPECTED_NEXT_PRICE: "§fExpected next price : §6{0}"
+  BUY_ITEM_MENU: "Buy items"
   MIN_PRICE: "§fMinimum price : §c{0}"
   MAX_PRICE: "§fMaximum price : §a{0}"
   CURRENT_SELLS: "§fCurrent sells : §b{0}"

@@ -43,4 +43,8 @@ public class SellableItemManager {
     public List<SellableItem> getAllSellableItems() {
         return sellableItems;
     }
+
+    public void removeTodaySellableItem(SellableItem item) {
+        todaySellableItems.remove(item);
+    }
 }

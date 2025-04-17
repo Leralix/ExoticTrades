@@ -5,9 +5,12 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.item.SellableItem;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.HeadUtils;
+import org.leralix.lib.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +18,9 @@ import java.util.List;
 public class BuyItemMenu extends BasicGui {
 
 
-    private Trader trader;
 
     protected BuyItemMenu(Player player, Trader trader, int page) {
         super(player, "Items", 4);
-        this.trader = trader;
 
 
         gui.setDefaultClickAction(event -> event.setCancelled(true));
@@ -30,19 +31,23 @@ public class BuyItemMenu extends BasicGui {
         for(SellableItem item : trader.getTodaySellableItems()){
             int price = item.getPrice();
             ItemStack itemStack = item.getItemStack();
-            HeadUtils.addLore(itemStack, "Price: " + price);
-            HeadUtils.addLore(itemStack, "Click to buy");
+
+            HeadUtils.addLore(itemStack, Lang.PRICE.get(price));
+            HeadUtils.addLore(itemStack, Lang.CLICK_TO_BUY.get());
 
             GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem(
                 event -> {
                     if(EconomyManager.getEconomy().has(player, price)){
                         EconomyManager.getEconomy().withdrawPlayer(player, price);
                         player.getInventory().addItem(itemStack);
-                        player.sendMessage("You bought " + itemStack.getType() + " for " + price + " coins.");
+                        String itemName = itemStack.getType().toString().replace("_", " ").toLowerCase();
                         trader.removeTodaySellableItem(item);
+                        player.sendMessage(Lang.TRANSACTION_SUCCESS.get(itemName, price));
+                        SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                         new BuyItemMenu(player, trader, page).open();
                     } else {
-                        player.sendMessage("You don't have enough coins to buy this item.");
+                        player.sendMessage(Lang.NOT_ENOUGH_MONEY.get(price));
+                        SoundUtil.playSound(player, SoundEnum.MINOR_BAD);
                     }
                 }
             );

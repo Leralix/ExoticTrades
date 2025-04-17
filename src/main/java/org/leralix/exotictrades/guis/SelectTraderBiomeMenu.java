@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.TraderBiome;
-import org.leralix.lib.utils.HeadUtils;
 
 public class SelectTraderBiomeMenu extends BasicGui {
     public SelectTraderBiomeMenu(Player player, Trader trader) {
@@ -26,11 +25,5 @@ public class SelectTraderBiomeMenu extends BasicGui {
         }
 
         gui.setItem(3,1, GuiUtil.createBackArrow(player, event -> new ManageTrader(player, trader).open()));
-
-
-
-
     }
-
-
 }

@@ -81,7 +81,7 @@ language:
   NEW_TRADER_POSITION_REGISTERED: "New trader position registered at : §6{0}"
   TRADER_FIXED_POSITION: "§f[x:§6{0}§f,y:§6{1}§f,z:§6{2}§f,§6{3}§f]"
   TRADER_RANDOM_POSITION: "§fTrader spawn zone is between [{0},{1}] and [{2},{3}]"
-  TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fTrader can spawn in {0} locations"
+  TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fTrader can spawn in §6{0}§f locations"
   ##Manage position
   NUMBER_OF_DAYS_BEFORE_NEXT_POSITION: "§fCurrent delay between position switch : §6{0}§f hours"
 
@@ -95,6 +95,11 @@ language:
   CURRENT_SELLS: "§fCurrent sells : §b{0}"
   CURRENT_BUYS: "§fCurrent demand : §9{0}"
 
+  #Sell item menu
+  PRICE: "§fPrice : §6{0}{MONEY_CHAR}"
+  CLICK_TO_BUY: "§fClick to buy"
+  TRANSACTION_SUCCESS: "Successfully bought {0} for {1}{MONEY_CHAR}"
+  NOT_ENOUGH_MONEY: "You don't have enough coins to buy this item."
 
   ##Player market information
   MARKET_INFO: "Market information"

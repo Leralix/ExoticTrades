@@ -64,6 +64,9 @@ public enum Lang {
     MAX_PRICE,
     CURRENT_SELLS,
     CURRENT_BUYS,
+    PRICE,
+    CLICK_TO_BUY,
+    TRANSACTION_SUCCESS,
     EXPECTED_NEXT_PRICE,
     BUY_ITEM_MENU,
     MARKET_INFO,
@@ -94,7 +97,7 @@ public enum Lang {
     SHEPHERD,
     TOOLSMITH,
     WEAPONSMITH,
-    ;
+    NOT_ENOUGH_MONEY;
 
 
     private static final EnumMap<Lang, String> translations = new EnumMap<>(Lang.class);

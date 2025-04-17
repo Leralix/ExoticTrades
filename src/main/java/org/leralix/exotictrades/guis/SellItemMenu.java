@@ -18,7 +18,9 @@ import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.HeadUtils;
+import org.leralix.lib.utils.SoundUtil;
 
 import java.util.*;
 
@@ -145,6 +147,7 @@ public class SellItemMenu extends BasicGui {
                 double total = StockMarketManager.sellMarketItems(getAllMarketItem());
 
                 player.sendMessage(Lang.SOLD_MARKET_ITEM_SUCCESS.get(total));
+                SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                 EconomyManager.getEconomy().depositPlayer(player, total);
                 gui.setCloseGuiAction(null);
                 event.setCancelled(true);

@@ -16,6 +16,7 @@ import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ManageTraderItemToSell extends BasicGui{
 
@@ -42,18 +43,27 @@ public class ManageTraderItemToSell extends BasicGui{
     }
 
     private void updateItems() {
-        List<SellableItem> allItems = new ArrayList<>();
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 8; j++){
-                ItemStack item = gui.getInventory().getItem(i * 9 + j);
-                if (item != null) {
-                    SellableItem sellableItem = new SellableItem(item, 10);
-                    allItems.add(sellableItem);
-                }
+        List<SellableItem> previousItems = trader.getItemSold();
+        List<SellableItem> updatedItems = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 8; j++) {
+                ItemStack currentItem = gui.getInventory().getItem(i * 9 + j);
+
+                if (currentItem == null) continue;
+
+                SellableItem matched = previousItems.stream()
+                        .filter(oldItem -> oldItem.getItemStack().isSimilar(currentItem))
+                        .findFirst()
+                        .orElse(null);
+
+                updatedItems.add(Objects.requireNonNullElseGet(matched, () -> new SellableItem(currentItem, 10)));
             }
         }
-        trader.updateItemSold(allItems);
+
+        trader.updateItemSold(updatedItems);
     }
+
 
     @Override
     public void open() {

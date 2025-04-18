@@ -39,7 +39,7 @@ public class BuyItemMenu extends BasicGui {
                 event -> {
                     if(EconomyManager.getEconomy().has(player, price)){
                         EconomyManager.getEconomy().withdrawPlayer(player, price);
-                        player.getInventory().addItem(itemStack);
+                        player.getInventory().addItem(item.getItemStack());
                         String itemName = itemStack.getType().toString().replace("_", " ").toLowerCase();
                         trader.removeTodaySellableItem(item);
                         player.sendMessage(Lang.TRANSACTION_SUCCESS.get(itemName, price));

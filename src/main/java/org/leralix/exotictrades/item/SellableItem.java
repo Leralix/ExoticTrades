@@ -6,7 +6,7 @@ import org.leralix.exotictrades.storage.adapters.ItemStackAdapter;
 
 public class SellableItem {
     private final JsonElement itemJsonElement;
-    private final int price;
+    private int price;
 
     public SellableItem(ItemStack itemJsonElement, int price) {
 
@@ -22,5 +22,9 @@ public class SellableItem {
 
     public int getPrice() {
         return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

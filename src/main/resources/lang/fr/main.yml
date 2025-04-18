@@ -1,0 +1,100 @@
+language:
+  #Général
+  EXOTIC_TRADE_STRING: "§6[ExoticTrade]§f "
+  LANGUAGE_SUCCESSFULLY_LOADED: "Langue chargée avec succès"
+  #Erreurs courantes
+  SYNTAX_ERROR: "§cErreur de syntaxe"
+
+  #Commandes
+  COMMAND_GENERIC_SUCCESS: "Commande exécutée avec succès"
+  ADMIN_SPAWN_RARE_ITEM: "Faire apparaître un objet rare"
+  ITEM_NOT_FOUND: "Objet introuvable"
+
+  #Objet rare
+  ITEM_RARE_STONE: "Pierre précieuse"
+  ITEM_RARE_WOOD: "Bois exotique"
+  ITEM_RARE_CROP: "Culture exotique"
+  ITEM_RARE_SOUL: "Âme"
+  ITEM_RARE_FISH: "Poisson exotique"
+  RARE_ITEM_DESC_1: "Peut être vendu à un marchand"
+
+  #Biomes :
+  PLAINS: "§aPlaines"
+  DESERT: "§aDésert"
+  SAVANNA: "§aSavane"
+  SNOW: "§aNeige"
+  TAIGA: "§aTaïga"
+  JUNGLE: "§aJungle"
+  SWAMP: "§aMarais"
+
+  #Professions
+  NONE: "§aSans métier"
+  FARMER: "§aAgriculteur"
+  LIBRARIAN: "§aBibliothécaire"
+  BUTCHER: "§aBoucher"
+  NITWIT: "§aSimplet"
+  ARMORER: "§aArmurier"
+  CARTOGRAPHER: "§aCartographe"
+  CLERIC: "§aClerc"
+  FISHERMAN: "§aPêcheur"
+  FLETCHER: "§aFabricant de flèches"
+  LEATHERWORKER: "§aTravailleur du cuir"
+  MASON: "§aMaçon"
+  SHEPHERD: "§aBerger"
+  TOOLSMITH: "§aForgeron d'outils"
+  WEAPONSMITH: "§aForgeron d'armes"
+
+  #Interface utilisateur
+  ##Commun
+  GUI_PREVIOUS_PAGE: "Page précédente"
+  GUI_NEXT_PAGE: "Page suivante"
+  GUI_BACK_ARROW: "Retour"
+  CLICK_TO_SELECT: "§fCliquez pour sélectionner"
+  SELL_BUTTON: "Vendre"
+  CONFIRM_BUTTON: "Confirmer"
+  NO_ITEM_OR_WRONG: "§fAucun objet ou objet incorrect"
+  QUANTITY_ITEM_TO_SELL: "§f{0} §f: §6{1} §f(§8{2}§f x §8{3}§f)"
+  SOLD_MARKET_ITEM_SUCCESS: "Objets vendus avec succès pour {0}"
+  CLICK_TO_OPEN: "§fCliquez pour ouvrir"
+  CLICK_TO_DELETE: "§fCliquez pour supprimer"
+  LEFT_CLICK_TO_MANAGE: "§fClic gauche pour gérer"
+  CLICK_TO_MANAGE: "§fCliquez pour gérer"
+  CLICK_TO_SWAP: "§fCliquez pour changer l'état"
+  CLICK_TO_MODIFY: "§fCliquez pour modifier"
+  ##Menu principal
+  TRADER_MENU: "Menu du marchand"
+  MARKET_MENU: "Menu du marché"
+  ##Menu marchand
+  NEW_TRADER: "Nouveau marchand"
+  CLICK_TO_CREATE: "Cliquez pour créer"
+  RIGHT_CLICK_TO_TELEPORT: "Clic droit pour se téléporter"
+  CURRENT_BIOME: "§aBiome actuel : {0}"
+  CURRENT_PROFESSION: "§aProfession actuelle : {0}"
+  DELETE_TRADER: "Supprimer le marchand"
+  CURRENT_NAME: "Nom actuel : {0}"
+  MANAGE_POSITION: "Gérer la position"
+  MANAGE_ITEM_TO_SELL: "Gérer les objets à vendre"
+  SELECT_ITEM_TO_SELL: "Sélectionner les objets à échanger"
+  CURRENT_STATE_ENABLE: "§fÉtat actuel : §aactivé"
+  CURRENT_STATE_DISABLE: "§fÉtat actuel : §cdésactivé"
+  WRITE_POSITION_OF_TRADER_OR_HERE: "Indiquez la position du marchand au format \"§6x;y;z§f\" ou \"§6here§f\""
+  NEW_TRADER_POSITION_REGISTERED: "Nouvelle position du marchand enregistrée à : §6{0}"
+  TRADER_FIXED_POSITION: "§f[x:§6{0}§f,y:§6{1}§f,z:§6{2}§f,§6{3}§f]"
+  TRADER_RANDOM_POSITION: "§fZone d’apparition du marchand entre [{0},{1}] et [{2},{3}]"
+  TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fLe marchand peut apparaître dans §6{0}§f emplacements"
+  ##Gérer la position
+  NUMBER_OF_DAYS_BEFORE_NEXT_POSITION: "§fDélai actuel entre les changements de position : §6{0}§f heures"
+
+  ##Menu du marché
+  CURRENT_PRICE: "§fPrix : §6{0}"
+  TARGET_PRICE: "§fPrix cible : §6{0}"
+  EXPECTED_NEXT_PRICE: "§fProchain prix attendu : §6{0}"
+  BUY_ITEM_MENU: "Acheter des objets"
+  MIN_PRICE: "§fPrix minimum : §c{0}"
+  MAX_PRICE: "§fPrix maximum : §a{0}"
+  CURRENT_SELLS: "§fVentes actuelles : §b{0}"
+  CURRENT_BUYS: "§fDemande actuelle : §9{0}"
+
+  #Menu de vente
+  PRICE: "§fPrix : §6{0}{MONEY_CHAR}"
+  CLICK_TO_BUY: "§fCliquez pour acheter"

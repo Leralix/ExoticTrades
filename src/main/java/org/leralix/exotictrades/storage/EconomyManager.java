@@ -31,4 +31,8 @@ public class EconomyManager {
     public static Economy getEconomy() {
         return economy;
     }
+
+    public static String getCurrencySymbol() {
+        return economy.currencyNameSingular();
+    }
 }

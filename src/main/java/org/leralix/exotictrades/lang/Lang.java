@@ -3,6 +3,7 @@ package org.leralix.exotictrades.lang;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -64,6 +65,8 @@ public enum Lang {
     MAX_PRICE,
     CURRENT_SELLS,
     CURRENT_BUYS,
+    MANAGE_ITEM_PRICE,
+    CLICK_TO_INTERACT,
     PRICE,
     CLICK_TO_BUY,
     TRANSACTION_SUCCESS,
@@ -145,15 +148,23 @@ public enum Lang {
 
     public String get(Object... placeholders) {
         String translation = translations.get(this);
-        if (translation != null) {
-            translation = ChatColor.translateAlternateColorCodes('§', translation);
-            for (int i = 0; i < placeholders.length; i++) {
-                String val = placeholders[i] == null ? "null" : placeholders[i].toString();
-                translation = translation.replace("{" + i + "}",val);
-            }
-            return translation;
+
+        if (translation == null)
+            return this.name();
+
+        translation = ChatColor.translateAlternateColorCodes('§', translation);
+        for (int i = 0; i < placeholders.length; i++) {
+            String val = placeholders[i] == null ? "null" : placeholders[i].toString();
+            translation = translation.replace("{" + i + "}",val);
         }
-        return this.name();
+        if(translation.contains("{MONEY_CHAR}")) {
+            String moneyChar = EconomyManager.getCurrencySymbol();
+            if(moneyChar == null) {
+                moneyChar = "$";
+            }
+            translation = translation.replace("{MONEY_CHAR}", moneyChar);
+        }
+        return translation;
     }
 
 

@@ -94,6 +94,8 @@ language:
   MAX_PRICE: "§fMaximum price : §a{0}"
   CURRENT_SELLS: "§fCurrent sells : §b{0}"
   CURRENT_BUYS: "§fCurrent demand : §9{0}"
+  MANAGE_ITEM_PRICE: "§aManage item price"
+  CLICK_TO_INTERACT: "§fClick to interact"
 
   #Sell item menu
   PRICE: "§fPrice : §6{0}{MONEY_CHAR}"

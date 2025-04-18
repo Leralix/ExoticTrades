@@ -78,9 +78,8 @@ public class FixedPosition implements TraderPosition {
                 Lang.NUMBER_OF_DAYS_BEFORE_NEXT_POSITION.get(trader.getPosition().getNumberOfDaysBeforeNextPosition()),
                 Lang.CLICK_TO_MODIFY.get());
 
-        GuiItem setTraderTime = ItemBuilder.from(selectNumberOfPosition).asGuiItem(event -> {
-            PlayerChatListenerStorage.register(player, new RegisterTraderTimeBetweenPosition(player, trader));
-        });
+        GuiItem setTraderTime = ItemBuilder.from(selectNumberOfPosition).asGuiItem(event ->
+                PlayerChatListenerStorage.register(player, new RegisterTraderTimeBetweenPosition(player, trader)));
 
         gui.setItem(gui.getRows(), 3, addPositionButton);
         gui.setItem(3, 5, setTraderTime);

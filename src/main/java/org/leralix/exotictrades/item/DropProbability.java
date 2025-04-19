@@ -26,7 +26,7 @@ public class DropProbability implements LootProbability {
 
         int fortuneLevel = itemUsed.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
         double chanceCap = baseChance + (fortuneModifier * fortuneLevel);
-        int chanceRolled = RandomUtil.getRandom().nextInt() * 100;
+        int chanceRolled = RandomUtil.getRandom().nextInt(100);
 
         if(chanceRolled <= chanceCap){
             return MarketItemStorage.getRareItem(rareItemID);

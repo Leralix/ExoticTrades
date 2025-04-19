@@ -30,7 +30,10 @@ public class StockMarketManager{
     private static HashMap<MarketItemKey, StockMarket> marketItems;
 
     public static void init(){
-        marketItems = new HashMap<>();
+
+        if(marketItems == null)
+            marketItems = new HashMap<>();
+
         Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
         ConfigurationSection section = defaultConfiguration.getConfigurationSection("stockMarket");
         if(section == null)

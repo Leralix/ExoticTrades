@@ -9,7 +9,8 @@ public class AdminCommandManager extends CommandManager {
         super("exotictrades.admin.commands");
         addSubCommand(new GetRareItem());
         addSubCommand(new OpenGui());
-        addSubCommand(new SkipOneHour());
+        addSubCommand(new NextDay());
+        addSubCommand(new NextHour());
         addSubCommand(new UpdateTradersPosition());
         addSubCommand(new MainHelpCommand(this));
     }

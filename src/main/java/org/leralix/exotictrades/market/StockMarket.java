@@ -82,6 +82,7 @@ public class StockMarket {
 
     private double getEstimatedPriceDown(double percent) {
         double ratio = (percent - 1.0)/(constants.percentForMinPrice() - 1.0);
+        ratio = Math.min(1.0, ratio);
         return constants.basePrice() - (constants.basePrice() - constants.minPrice()) * ratio;
     }
 

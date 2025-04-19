@@ -210,6 +210,10 @@ public class Trader {
 
     public void nextHour() {
         updatePosition();
+
+    }
+
+    public void nextDay() {
         getItemManager().updateSellableItems();
     }
 

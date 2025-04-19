@@ -21,6 +21,10 @@ public class SellableItemManager {
     }
 
     public void updateSellableItems() {
+        if(sellableItems.isEmpty()){ // No items to sell
+            return;
+        }
+
         todaySellableItems.clear();
         for (int i = 0; i < nbDailySellableItems; i++) {
             int randomIndex = RandomUtil.getRandom().nextInt(sellableItems.size());

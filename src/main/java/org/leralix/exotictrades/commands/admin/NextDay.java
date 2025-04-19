@@ -3,22 +3,22 @@ package org.leralix.exotictrades.commands.admin;
 import org.bukkit.command.CommandSender;
 import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.traders.DailyTasks;
+import org.leralix.exotictrades.traders.HourlyTasks;
 import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.SubCommand;
 
+import java.util.Collections;
 import java.util.List;
 
-public class UpdateTradersPosition extends SubCommand {
-
-
+public class NextDay extends SubCommand {
     @Override
     public String getName() {
-        return "updateTradersPosition";
+        return "nextday";
     }
 
     @Override
     public String getDescription() {
-        return "Update the position of all traders";
+        return "skip an hour in the stock market";
     }
 
     @Override
@@ -28,12 +28,12 @@ public class UpdateTradersPosition extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/extrade updateTradersPosition";
+        return "/extrade nextday";
     }
 
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String s, String[] strings) {
-        return List.of();
+        return Collections.emptyList();
     }
 
     @Override

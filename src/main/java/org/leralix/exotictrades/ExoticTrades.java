@@ -14,6 +14,8 @@ import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.storage.VillagerHeadStorage;
+import org.leralix.exotictrades.traders.DailyTasks;
+import org.leralix.exotictrades.traders.HourlyTasks;
 import org.leralix.exotictrades.util.NumberUtil;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.lib.utils.config.ConfigTag;
@@ -89,6 +91,9 @@ public final class ExoticTrades extends JavaPlugin {
 
     private void initTasks() {
         TemporalMarketTask.scheduleMovingAverageTask();
+        DailyTasks.scheduleTasks();
+        HourlyTasks.scheduleDailyTaskTask();
+
     }
 
     @Override

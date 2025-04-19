@@ -2,22 +2,23 @@ package org.leralix.exotictrades.commands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.leralix.exotictrades.lang.Lang;
-import org.leralix.exotictrades.market.StockMarketManager;
+import org.leralix.exotictrades.traders.DailyTasks;
+import org.leralix.exotictrades.traders.HourlyTasks;
 import org.leralix.exotictrades.util.StringUtil;
 import org.leralix.lib.commands.SubCommand;
 
 import java.util.Collections;
 import java.util.List;
 
-public class SkipOneHour extends SubCommand {
+public class NextHour extends SubCommand {
     @Override
     public String getName() {
-        return "skipHour";
+        return "nexthour";
     }
 
     @Override
     public String getDescription() {
-        return "skip an hour in the stock market";
+        return "skip a day in the stock market";
     }
 
     @Override
@@ -27,7 +28,7 @@ public class SkipOneHour extends SubCommand {
 
     @Override
     public String getSyntax() {
-        return "/extrade skipHour";
+        return "/extrade nextday";
     }
 
     @Override
@@ -37,7 +38,7 @@ public class SkipOneHour extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        StockMarketManager.updateMovingAverage();
+        HourlyTasks.update();
         commandSender.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

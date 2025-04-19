@@ -35,7 +35,6 @@ public class SellHistory {
     }
 
     public void updateTimeLength(int timeLength) {
-
         if(salesHistory == null){
             salesHistory = new LinkedList<>();
         }

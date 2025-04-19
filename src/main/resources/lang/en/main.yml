@@ -7,6 +7,7 @@ language:
 
   #Commands
   COMMAND_GENERIC_SUCCESS: "Command executed successfully"
+  NEW_TIME_BETWEEN_POSITION_SET: "New time between trader position set to {0} hours"
   ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
   ITEM_NOT_FOUND: "Item not found"
 

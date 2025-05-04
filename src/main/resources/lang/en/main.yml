@@ -59,6 +59,7 @@ language:
   CLICK_TO_OPEN: "§fClick to open"
   CLICK_TO_DELETE: "§fClick to delete"
   LEFT_CLICK_TO_MANAGE: "§fLeft click to manage"
+  LEFT_CLICK_TO_TELEPORT: "§fLeft click to teleport"
   CLICK_TO_MANAGE: "§fClick to manage"
   CLICK_TO_SWAP: "§fClick to change state"
   CLICK_TO_MODIFY: "§fClick to modify"

@@ -1,16 +1,9 @@
 package org.leralix.exotictrades.guis;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Material;
+
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.lang.Lang;
-import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.exotictrades.traders.position.FixedPosition;
-import org.leralix.exotictrades.traders.position.TraderPosition;
-import org.leralix.lib.utils.HeadUtils;
 
 public class ManageTraderPosition extends BasicGui {
     Trader trader;

@@ -1,0 +1,104 @@
+language:
+  #ทั่วไป
+  EXOTIC_TRADE_STRING: "§6[ExoticTrade]§f "
+  LANGUAGE_SUCCESSFULLY_LOADED: "โหลดภาษาสำเร็จแล้ว"
+  #ข้อผิดพลาดทั่วไป
+  SYNTAX_ERROR: "§cข้อผิดพลาดทางไวยากรณ์"
+
+  #คำสั่ง
+  COMMAND_GENERIC_SUCCESS: "ดำเนินการคำสั่งสำเร็จ"
+  ADMIN_SPAWN_RARE_ITEM: "สร้างไอเทมหายาก"
+  ITEM_NOT_FOUND: "ไม่พบไอเทม"
+
+  #ไอเทมหายาก
+  ITEM_RARE_STONE: "หินมีค่า"
+  ITEM_RARE_WOOD: "ไม้หายาก"
+  ITEM_RARE_CROP: "พืชผลหายาก"
+  ITEM_RARE_SOUL: "วิญญาณ"
+  ITEM_RARE_FISH: "ปลาหายาก"
+  RARE_ITEM_DESC_1: "สามารถขายให้กับพ่อค้าได้"
+
+  #ไบโอม:
+  PLAINS: "§aทุ่งหญ้า"
+  DESERT: "§aทะเลทราย"
+  SAVANNA: "§aสะวันนา"
+  SNOW: "§aหิมะ"
+  TAIGA: "§aป่าสนไทก้า"
+  JUNGLE: "§aป่าดงดิบ"
+  SWAMP: "§aหนองน้ำ"
+
+  #อาชีพ
+  NONE: "§aไม่มีอาชีพ"
+  FARMER: "§aเกษตรกร"
+  LIBRARIAN: "§aบรรณารักษ์"
+  BUTCHER: "§aคนขายเนื้อ"
+  NITWIT: "§aคนโง่"
+  ARMORER: "§aช่างเกราะ"
+  CARTOGRAPHER: "§aนักทำแผนที่"
+  CLERIC: "§aนักบวช"
+  FISHERMAN: "§aชาวประมง"
+  FLETCHER: "§aช่างทำธนู"
+  LEATHERWORKER: "§aช่างหนัง"
+  MASON: "§aช่างก่อสร้าง"
+  SHEPHERD: "§aคนเลี้ยงแกะ"
+  TOOLSMITH: "§aช่างเครื่องมือ"
+  WEAPONSMITH: "§aช่างอาวุธ"
+
+  #ไอเทม GUI
+  ##ทั่วไป
+  GUI_PREVIOUS_PAGE: "หน้าก่อนหน้า"
+  GUI_NEXT_PAGE: "หน้าถัดไป"
+  GUI_BACK_ARROW: "ย้อนกลับ"
+  CLICK_TO_SELECT: "§fคลิกเพื่อเลือก"
+  SELL_BUTTON: "ขาย"
+  CONFIRM_BUTTON: "ยืนยัน"
+  NO_ITEM_OR_WRONG: "§fไม่มีไอเทมหรือไอเทมไม่ถูกต้อง"
+  QUANTITY_ITEM_TO_SELL: "§f{0} §f: §6{1} §f(§8{2}§f x §8{3}§f)"
+  SOLD_MARKET_ITEM_SUCCESS: "ขายไอเทมสำเร็จสำหรับ {0}"
+  CLICK_TO_OPEN: "§fคลิกเพื่อเปิด"
+  CLICK_TO_DELETE: "§fคลิกเพื่อลบ"
+  LEFT_CLICK_TO_MANAGE: "§fคลิกซ้ายเพื่อจัดการ"
+  CLICK_TO_MANAGE: "§fคลิกเพื่อจัดการ"
+  CLICK_TO_SWAP: "§fคลิกเพื่อเปลี่ยนสถานะ"
+  CLICK_TO_MODIFY: "§fคลิกเพื่อแก้ไข"
+  ##เมนูหลัก
+  TRADER_MENU: "เมนูพ่อค้า"
+  MARKET_MENU: "เมนูตลาด"
+  ##เมนูพ่อค้า
+  NEW_TRADER: "พ่อค้าใหม่"
+  CLICK_TO_CREATE: "คลิกเพื่อสร้าง"
+  RIGHT_CLICK_TO_TELEPORT: "คลิกขวาเพื่อเทเลพอร์ต"
+  CURRENT_BIOME: "§aไบโอมปัจจุบัน : {0}"
+  CURRENT_PROFESSION: "§aอาชีพปัจจุบัน : {0}"
+  DELETE_TRADER: "ลบพ่อค้า"
+  CURRENT_NAME: "ชื่อปัจจุบัน : {0}"
+  MANAGE_POSITION: "จัดการตำแหน่ง"
+  SELECT_ITEM_TO_SELL: "เลือกไอเทมเพื่อแลกเปลี่ยน"
+  CURRENT_STATE_ENABLE: "§fสถานะปัจจุบัน : §aเปิดใช้งาน"
+  CURRENT_STATE_DISABLE: "§fสถานะปัจจุบัน : §cปิดใช้งาน"
+  WRITE_POSITION_OF_TRADER_OR_HERE: "เขียนตำแหน่งของพ่อค้าในรูปแบบ \"§6x;y;z§f\" หรือ \"§6here\""
+  NEW_TRADER_POSITION_REGISTERED: "ลงทะเบียนตำแหน่งพ่อค้าใหม่ที่ : §6{0}"
+  TRADER_FIXED_POSITION: "§f[x:§6{0}§f,y:§6{1}§f,z:§6{2}§f,§6{3}§f]"
+  TRADER_RANDOM_POSITION: "§fพื้นที่เกิดพ่อค้าอยู่ระหว่าง [{0},{1}] และ [{2},{3}]"
+  TRADER_CAN_SPAWN_IN_X_LOCATIONS: "§fพ่อค้าสามารถเกิดได้ใน {0} ตำแหน่ง"
+  ##จัดการตำแหน่ง
+  NUMBER_OF_DAYS_BEFORE_NEXT_POSITION: "§fความล่าช้าปัจจุบันระหว่างการเปลี่ยนตำแหน่ง : §6{0}"
+
+  ##เมนูตลาด
+  CURRENT_PRICE: "§fราคา : §6{0}"
+  EXPECTED_NEXT_PRICE: "§fราคาที่คาดการณ์ต่อไป : §6{0}"
+  MIN_PRICE: "§fราคาขั้นต่ำ : §c{0}"
+  MAX_PRICE: "§fราคาสูงสุด : §a{0}"
+  CURRENT_SELLS: "§fการขายปัจจุบัน : §b{0}"
+  CURRENT_BUYS: "§fความต้องการปัจจุบัน : §9{0}"
+
+  ##ข้อมูลตลาดของผู้เล่น
+  MARKET_INFO: "ข้อมูลตลาด"
+
+  #เมนูตำแหน่งพ่อค้า
+  ADD_POSITION : "§aเพิ่มตำแหน่ง"
+  CLICK_TO_ADD_POSITION: "§fคลิกเพื่อลงทะเบียนตำแหน่งใหม่"
+  #เหตุการณ์
+  WRITE_CANCEL_TO_CANCEL: "เขียน {0} เพื่อยกเลิก"
+  CANCEL_WORD: "ยกเลิก"
+  CANCELLED_ACTION: "ยกเลิกการดำเนินการแล้ว"

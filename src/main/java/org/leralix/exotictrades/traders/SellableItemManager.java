@@ -36,13 +36,10 @@ public class SellableItemManager {
         return todaySellableItems;
     }
 
-    public void setSellableItems(List<SellableItem> sellableItems) {
-        this.sellableItems = sellableItems;
-    }
-
     public void setNbDailySellableItems(int nbDailySellableItems) {
         this.nbDailySellableItems = nbDailySellableItems;
     }
+
 
     public List<SellableItem> getAllSellableItems() {
         return sellableItems;
@@ -50,5 +47,14 @@ public class SellableItemManager {
 
     public void removeTodaySellableItem(SellableItem item) {
         todaySellableItems.remove(item);
+    }
+
+    public void removeSellableItem(SellableItem sellableItem) {
+        sellableItems.remove(sellableItem);
+        todaySellableItems.remove(sellableItem);
+    }
+
+    public void addSellableItem(SellableItem sellableItem) {
+        sellableItems.add(sellableItem);
     }
 }

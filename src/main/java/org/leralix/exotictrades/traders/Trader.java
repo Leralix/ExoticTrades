@@ -192,10 +192,6 @@ public class Trader {
         return sellableItemManager;
     }
 
-    public void updateItemSold(List<SellableItem> itemStacks){
-        getItemManager().setSellableItems(itemStacks);
-    }
-
     public List<SellableItem> getItemSold() {
         return getItemManager().getAllSellableItems();
     }
@@ -221,4 +217,11 @@ public class Trader {
         getItemManager().removeTodaySellableItem(item);
     }
 
+    public void removeSellableItem(SellableItem sellableItem) {
+        getItemManager().removeSellableItem(sellableItem);
+    }
+
+    public void addSellableItem(SellableItem sellableItem) {
+        getItemManager().addSellableItem(sellableItem);
+    }
 }

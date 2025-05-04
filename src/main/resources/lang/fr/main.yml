@@ -73,7 +73,6 @@ language:
   DELETE_TRADER: "Supprimer le marchand"
   CURRENT_NAME: "Nom actuel : {0}"
   MANAGE_POSITION: "Gérer la position"
-  MANAGE_ITEM_TO_SELL: "Gérer les objets à vendre"
   SELECT_ITEM_TO_SELL: "Sélectionner les objets à échanger"
   CURRENT_STATE_ENABLE: "§fÉtat actuel : §aactivé"
   CURRENT_STATE_DISABLE: "§fÉtat actuel : §cdésactivé"

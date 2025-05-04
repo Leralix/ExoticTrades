@@ -1,22 +1,19 @@
 package org.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.SellableItem;
 import org.leralix.exotictrades.lang.Lang;
+import org.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import org.leralix.exotictrades.listener.chat.events.ChangeItemPrice;
 import org.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ManageTraderItemToSell extends BasicGui{
 
@@ -28,42 +25,14 @@ public class ManageTraderItemToSell extends BasicGui{
         this.trader = trader;
         this.page = 0;
 
-        GuiAction<InventoryDragEvent> actionDrag = event -> {
-            event.setCancelled(false);
-            Bukkit.getScheduler().runTask(ExoticTrades.getPlugin(), this::updateItems);
-        };
-
-        GuiAction<InventoryClickEvent> action = event -> {
-            event.setCancelled(false);
-            Bukkit.getScheduler().runTask(ExoticTrades.getPlugin(), this::updateItems);
-        };
-
-        gui.setDefaultClickAction(action);
-        gui.setDragAction(actionDrag);
-    }
-
-    private void updateItems() {
-        List<SellableItem> previousItems = trader.getItemSold();
-        List<SellableItem> updatedItems = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 8; j++) {
-                ItemStack currentItem = gui.getInventory().getItem(i * 9 + j);
-
-                if (currentItem == null) continue;
-
-                SellableItem matched = previousItems.stream()
-                        .filter(oldItem -> oldItem.getItemStack().isSimilar(currentItem))
-                        .findFirst()
-                        .orElse(null);
-
-                updatedItems.add(Objects.requireNonNullElseGet(matched, () -> new SellableItem(currentItem, 10)));
+        gui.setDefaultClickAction(event ->  {
+            if(event.getClickedInventory() == null) return;
+            if(event.getClickedInventory().getType() != InventoryType.PLAYER) {
+                event.setCancelled(true);
             }
-        }
-
-        trader.updateItemSold(updatedItems);
+        });
+        gui.setDragAction(event ->  event.setCancelled(true));
     }
-
 
     @Override
     public void open() {
@@ -73,8 +42,23 @@ public class ManageTraderItemToSell extends BasicGui{
     private void openGui() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for(SellableItem itemStack : trader.getItemSold()){
-            guiItems.add(new GuiItem(itemStack.getItemStack()));
+        for(SellableItem sellableItem : trader.getItemSold()){
+            ItemStack itemStack = sellableItem.getItemStack();
+
+            HeadUtils.addLore(itemStack,
+                    Lang.PRICE.get(sellableItem.getPrice()),
+                    Lang.CLICK_TO_MODIFY.get(),
+                    Lang.RIGHT_CLICK_TO_DELETE.get());
+
+            GuiItem guiItem = ItemBuilder.from(itemStack).asGuiItem(event -> {
+                if (event.isLeftClick()) {
+                    PlayerChatListenerStorage.register(player, new ChangeItemPrice(trader, sellableItem));
+                } else if (event.isRightClick()) {
+                    trader.removeSellableItem(sellableItem);
+                    new ManageTraderItemToSell(player, trader).open();
+                }
+            });
+            guiItems.add(guiItem);
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player,
@@ -83,12 +67,17 @@ public class ManageTraderItemToSell extends BasicGui{
                 p -> {this.page--; open();
         });
 
-        ItemStack managePriceButton = HeadUtils.makeSkullURL(Lang.MANAGE_ITEM_PRICE.get(), "https://textures.minecraft.net/texture/95fd67d56ffc53fb360a17879d9b5338d7332d8f129491a5e17e8d6e8aea6c3a",
-                Lang.CLICK_TO_INTERACT.get());
+        ItemStack managePriceButton = HeadUtils.makeSkullURL(Lang.ADD_NEW_SELLABLE_ITEM.get(), "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1",
+                Lang.DRAG_AND_DROP.get());
 
         gui.setItem(4, 4, ItemBuilder.from(managePriceButton).asGuiItem(event -> {
-            new ManageTraderItemToSellPrice(player, trader).open();
-            event.setCancelled(true);
+            ItemStack newItem = event.getCursor();
+            if (newItem == null) {
+                player.sendMessage(Lang.NO_ITEM_OR_WRONG.get());
+                return;
+            }
+            trader.addSellableItem(new SellableItem(newItem, 100));
+            new ManageTraderItemToSell(player, trader).open();
         }));
 
         gui.open(player);

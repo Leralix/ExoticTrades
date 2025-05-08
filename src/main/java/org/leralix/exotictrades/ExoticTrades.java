@@ -30,7 +30,7 @@ public final class ExoticTrades extends JavaPlugin {
 
     private static ExoticTrades plugin;
     long dateOfStart = System.currentTimeMillis();
-    private final PluginVersion pluginVersion = new PluginVersion(0, 3, 0);
+    private final PluginVersion pluginVersion = new PluginVersion(0, 3, 1);
     private final PluginVersion minimumSupportingMapPlugin = new PluginVersion(0, 1, 0);
 
 

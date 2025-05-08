@@ -10,6 +10,9 @@
 ##      Default       ##
 ########################
 
+#Remove all vanilla villager interactions
+removeVanillaVillagerInteractions: false
+
 #Set the default number of digits for the market prices.
 nbDigits: 2
 #Set the number of hours sold items are kept in memory for every market item. Integer only.

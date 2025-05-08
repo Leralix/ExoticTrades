@@ -9,14 +9,27 @@ import org.leralix.exotictrades.guis.ManageTrader;
 import org.leralix.exotictrades.guis.SellItemMenu;
 import org.leralix.exotictrades.storage.TraderStorage;
 import org.leralix.exotictrades.traders.Trader;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 public class InteractWithTrader implements Listener {
 
+    private final boolean blockVanillaTrade;
+
+    public InteractWithTrader() {
+        this.blockVanillaTrade = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("removeVanillaVillagerInteractions", false);
+    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEntityEvent event){
         Player player = event.getPlayer();
         if (event.getRightClicked() instanceof Villager villager) {
+
+            if(blockVanillaTrade){
+                event.setCancelled(true);
+                return;
+            }
+
             for(String tag : villager.getScoreboardTags()){
                 if(tag.startsWith("exoticTrade_")){
                     handleTraderInteraction(event, villager, tag, player);

@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
 import org.leralix.exotictrades.item.MarketItem;
 import org.leralix.exotictrades.item.SellableItem;
+import org.leralix.exotictrades.lang.Lang;
 import org.leralix.exotictrades.storage.MarketItemKey;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
@@ -19,6 +20,8 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.lib.utils.HeadUtils;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,7 @@ public class Trader {
     public Trader(String id, Location position){
         this.id = id;
         this.position = new Vector3DWithOrientation(position);
+        this.name = Lang.TRADER_BASE_NAME.get();
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
         this.positionHandler = new FixedPosition(this.position);

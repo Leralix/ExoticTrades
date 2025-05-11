@@ -4,6 +4,7 @@ language:
   LANGUAGE_SUCCESSFULLY_LOADED: "Language successfully loaded"
   TRADER_BASE_NAME : "Trader"
   #Common errors
+  COMMAND_WORLD_NOT_FOUND: "§cWorld <{0}> not found"
   SYNTAX_ERROR: "§cSyntax error"
 
   #Commands

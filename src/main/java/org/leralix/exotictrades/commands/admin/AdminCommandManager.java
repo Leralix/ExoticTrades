@@ -8,6 +8,7 @@ public class AdminCommandManager extends CommandManager {
     public AdminCommandManager(){
         super("exotictrades.admin.commands");
         addSubCommand(new GetRareItem());
+        addSubCommand(new DropRareItem());
         addSubCommand(new OpenGui());
         addSubCommand(new NextDay());
         addSubCommand(new NextHour());

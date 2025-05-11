@@ -2,6 +2,7 @@ package org.leralix.exotictrades.traders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
@@ -47,8 +48,7 @@ public class Trader {
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
         this.positionHandler = new FixedPosition(this.position);
-        this.acceptedMarketItem = new ArrayList<>();
-        this.acceptedMarketItem.addAll(MarketItemStorage.getAllMarketItemsKey());
+        this.acceptedMarketItem = new ArrayList<>(MarketItemStorage.getAllMarketItemsKey());
         this.sellableItemManager = new SellableItemManager(2);
         spawnTrader();
     }
@@ -102,7 +102,13 @@ public class Trader {
 
 
     private Optional<Villager> getVillager() {
-        for(Villager villager : Bukkit.getWorld("world").getEntitiesByClass(Villager.class)){
+
+        World world = Bukkit.getWorld(getPosition().getCurrentPosition().getWorld().getName());
+        if(world == null){
+            return Optional.empty();
+        }
+
+        for(Villager villager : world.getEntitiesByClass(Villager.class)){
             if (villager.getScoreboardTags().contains("exoticTrade_" + id)){
                 return Optional.of(villager);
             }
@@ -170,6 +176,7 @@ public class Trader {
         for(MarketItemKey key : acceptedMarketItem){
             result.add(MarketItemStorage.getMarketItem(key));
         }
+        result.remove(null);
         return result;
     }
 

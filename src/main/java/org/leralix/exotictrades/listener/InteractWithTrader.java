@@ -27,7 +27,6 @@ public class InteractWithTrader implements Listener {
 
             if(blockVanillaTrade){
                 event.setCancelled(true);
-                return;
             }
 
             for(String tag : villager.getScoreboardTags()){

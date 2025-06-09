@@ -40,6 +40,6 @@ public class OpenGui extends PlayerSubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        new MainMenu(player).open();
+        new MainMenu(player);
     }
 }

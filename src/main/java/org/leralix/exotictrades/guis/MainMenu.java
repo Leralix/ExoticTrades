@@ -25,5 +25,6 @@ public class MainMenu extends BasicGui {
         gui.setItem(2,7, marketMenuButton);
 
         gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.open(player);
     }
 }

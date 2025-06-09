@@ -50,7 +50,7 @@ public class TraderStorage {
         return Collections.unmodifiableCollection(traders.values());
     }
 
-    private static void updateTraderPosition() {
+    public static void updateTraderPosition() {
         for(Trader trader : traders.values()){
             Vector2D chunkVector = trader.getChunkPosition();
             if(traderPosition.containsKey(chunkVector)){

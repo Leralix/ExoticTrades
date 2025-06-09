@@ -45,7 +45,7 @@ public class MarketItem {
             return ChatColor.RED + "▼" + price;
         }
         else{
-            return ChatColor.WHITE + "->" + price;
+            return ChatColor.GRAY + "▶" + price;
         }
     }
 

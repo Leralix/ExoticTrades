@@ -77,7 +77,7 @@ public class StockMarket {
 
     double getTargetPrice() {
         double percent = getPercentSold();
-        return percent > 1 ? getEstimatedPriceDown(percent) : getEstimatedPriceUp(percent);
+        return NumberUtil.roundWithDigits(percent > 1 ? getEstimatedPriceDown(percent) : getEstimatedPriceUp(percent));
     }
 
     private double getEstimatedPriceDown(double percent) {
@@ -120,7 +120,7 @@ public class StockMarket {
             itemMeta.setDisplayName(ChatColor.GREEN + marketItem.getName());
         }
         itemMeta.setLore(Arrays.asList(
-                Lang.CURRENT_PRICE.get(currentPrice),
+                Lang.CURRENT_PRICE.get(getCurrentPrice()),
                 Lang.TARGET_PRICE.get(getTargetPrice()),
                 Lang.EXPECTED_NEXT_PRICE.get(getPriceNextHour()),
                 Lang.MIN_PRICE.get(constants.minPrice()),
@@ -139,7 +139,7 @@ public class StockMarket {
     }
 
     public double getCurrentPrice() {
-        return currentPrice;
+        return NumberUtil.roundWithDigits(currentPrice);
     }
 
     public double getMinPrice() {

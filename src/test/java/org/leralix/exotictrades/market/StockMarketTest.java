@@ -31,7 +31,7 @@ class StockMarketTest {
                 7);
 
         assertEquals(1.0, stockMarket.getDemand());
-        assertEquals(50, stockMarket.getCurrentPrice());
+        assertEquals(basePrice, stockMarket.getCurrentPrice());
         assertEquals(0.0, stockMarket.getPercentSold());
         assertEquals(75.0, stockMarket.getPriceNextHour());
 

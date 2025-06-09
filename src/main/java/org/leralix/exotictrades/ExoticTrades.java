@@ -9,7 +9,6 @@ import org.leralix.exotictrades.listener.*;
 import org.leralix.exotictrades.listener.chat.ChatListener;
 import org.leralix.exotictrades.market.PlayerConnectionStorage;
 import org.leralix.exotictrades.market.StockMarketManager;
-import org.leralix.exotictrades.market.TemporalMarketTask;
 import org.leralix.exotictrades.storage.EconomyManager;
 import org.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.exotictrades.storage.TraderStorage;
@@ -30,7 +29,7 @@ public final class ExoticTrades extends JavaPlugin {
 
     private static ExoticTrades plugin;
     long dateOfStart = System.currentTimeMillis();
-    private final PluginVersion pluginVersion = new PluginVersion(0, 3, 1);
+    private final PluginVersion pluginVersion = new PluginVersion(0, 4, 0);
     private final PluginVersion minimumSupportingMapPlugin = new PluginVersion(0, 1, 0);
 
 
@@ -91,9 +90,8 @@ public final class ExoticTrades extends JavaPlugin {
     }
 
     private void initTasks() {
-        TemporalMarketTask.scheduleMovingAverageTask();
         DailyTasks.scheduleTasks();
-        HourlyTasks.scheduleDailyTaskTask();
+        HourlyTasks.scheduleTasks();
 
     }
 

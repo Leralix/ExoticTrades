@@ -2,8 +2,8 @@ package org.leralix.exotictrades.traders;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.exotictrades.ExoticTrades;
+import org.leralix.exotictrades.market.StockMarketManager;
 import org.leralix.exotictrades.storage.TraderStorage;
-import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -16,7 +16,7 @@ public class HourlyTasks {
 
     }
 
-    public static void scheduleDailyTaskTask() {
+    public static void scheduleTasks() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -28,12 +28,14 @@ public class HourlyTasks {
                     update();
                 }
             }
-        }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
+        }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L);
     }
 
     public static void update() {
         for(Trader trader : TraderStorage.getAll()){
             trader.nextHour();
         }
+        TraderStorage.updateTraderPosition();
+        StockMarketManager.updateMovingAverage();
     }
 }

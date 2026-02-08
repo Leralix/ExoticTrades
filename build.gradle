@@ -3,7 +3,7 @@ plugins {
     id "com.gradleup.shadow" version "8.3.6"
 }
 
-group = 'org.leralix'
+group = 'io.github.leralix'
 version = '0.4.0'
 
 compileJava.options.encoding = 'UTF-8'
@@ -28,6 +28,8 @@ repositories {
 tasks.shadowJar {
     archiveClassifier.set('')
     relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
+    relocate 'org.bstats', 'io.github.leralix.bstat'
+
 }
 
 dependencies {

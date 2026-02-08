@@ -98,6 +98,7 @@ public final class ExoticTrades extends JavaPlugin {
 
         logger.warning("[ExoticTrade] -Registering API");
         ExtradeAPI.register(new ExtradeImpl(plugin));
+        logger.warning("[ExoticTrade] -Registering BStat");
         initBStats();
 
         logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
@@ -114,20 +115,21 @@ public final class ExoticTrades extends JavaPlugin {
     @Override
     public void onDisable() {
         if(!pluginLoadedSuccessfully){
-            getLogger().info("[ExoticTrade] Not saving data because plugin was closed less than 30s after launch");
+            getLogger().info("[ExoticTrade] Not saving data because plugin failed during setup");
             getLogger().info("[ExoticTrade] Plugin disabled");
             return;
         }
         TraderStorage.save();
         PlayerConnectionStorage.save();
         StockMarketManager.save();
+        getLogger().info("[ExoticTrade] Plugin disabled");
     }
 
     private void initBStats() {
         try {
             new Metrics(this, 29409);
         } catch (IllegalStateException e) {
-            getLogger().log(Level.WARNING, "[TaN] Failed to submit stats to bStats");
+            getLogger().log(Level.WARNING, "[ExoticTrade] Failed to submit stats to bStats", e);
         }
     }
 

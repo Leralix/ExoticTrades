@@ -2,12 +2,12 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import io.github.leralix.exotictrades.lang.Lang;
-import org.leralix.lib.utils.HeadUtils;
 
 public class MainMenu extends BasicGui {
 

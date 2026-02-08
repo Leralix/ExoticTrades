@@ -3,6 +3,7 @@ package io.github.leralix.exotictrades.guis;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +20,6 @@ import io.github.leralix.exotictrades.storage.MarketItemKey;
 import io.github.leralix.exotictrades.storage.MarketItemStorage;
 import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.HeadUtils;
 import org.leralix.lib.utils.SoundUtil;
 
 import java.util.*;

@@ -4,14 +4,17 @@ import io.github.leralix.ExtradeAPI;
 import io.github.leralix.getters.ExTraderManager;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.api.getters.ExTraderManagerImpl;
+import org.bukkit.plugin.Plugin;
 import org.leralix.lib.data.PluginVersion;
 
 public class ExtradeImpl extends ExtradeAPI {
 
-    ExTraderManagerImpl exTraderManager;
+    private final ExTraderManagerImpl exTraderManager;
+    private final ExoticTrades pluginInstance;
 
-    public ExtradeImpl() {
+    public ExtradeImpl(ExoticTrades pluginInstance) {
         this.exTraderManager = new ExTraderManagerImpl();
+        this.pluginInstance = pluginInstance;
     }
 
     @Override
@@ -21,6 +24,6 @@ public class ExtradeImpl extends ExtradeAPI {
 
     @Override
     public PluginVersion getMinimumSupportingMapPlugin() {
-        return ExoticTrades.getMinimumSupportingMapPlugin();
+        return pluginInstance.getMinimumSupportingMapPlugin();
     }
 }

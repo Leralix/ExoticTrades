@@ -4,13 +4,13 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import io.github.leralix.exotictrades.lang.Lang;
-import org.leralix.lib.utils.HeadUtils;
 
 import java.util.List;
 import java.util.function.Consumer;

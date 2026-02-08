@@ -2,6 +2,7 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.traders.position.RandomPosition;
 import io.github.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class OpenBlockAllowedToSpawnTrader extends BasicGui {
             gui.addItem(guiItem);
         }
 
-        GuiItem fillerItem = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, " ")).asGuiItem( e -> e.setCancelled(true));
+        GuiItem fillerItem = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, " ")).asGuiItem(e -> e.setCancelled(true));
         gui.getFiller().fillBottom(fillerItem);
 
 

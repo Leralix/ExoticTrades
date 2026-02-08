@@ -2,12 +2,12 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.storage.TraderStorage;
 import io.github.leralix.exotictrades.traders.Trader;
-import org.leralix.lib.utils.HeadUtils;
 
 public class ManageTraders extends BasicGui {
 

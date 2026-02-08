@@ -2,6 +2,7 @@ package io.github.leralix.exotictrades.traders.position;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -16,7 +17,6 @@ import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Zone2D;
 import org.leralix.lib.utils.RandomUtil;
-import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

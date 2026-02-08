@@ -3,6 +3,7 @@ package io.github.leralix.exotictrades.traders.position;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,6 @@ import io.github.leralix.exotictrades.listener.chat.RegisterNewTraderPosition;
 import io.github.leralix.exotictrades.listener.chat.events.RegisterTraderTimeBetweenPosition;
 import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;

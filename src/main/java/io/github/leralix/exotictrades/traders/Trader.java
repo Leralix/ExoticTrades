@@ -1,5 +1,6 @@
 package io.github.leralix.exotictrades.traders;
 
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -20,7 +21,6 @@ import io.github.leralix.exotictrades.traders.position.FixedPosition;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
-import org.leralix.lib.utils.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;

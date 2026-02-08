@@ -18,38 +18,42 @@ import java.util.*;
 
 public class TraderStorage {
 
-    private TraderStorage() {
-        throw new IllegalStateException("Utility class");
+    private Map<String, Trader> traders;
+    private final Map<Vector2D, List<Trader>> traderPosition;
+    private int nextID;
+    private MarketItemStorage marketItemStorage;
+
+
+    public TraderStorage(){
+        this.traders = new HashMap<>();
+        this.traderPosition = new HashMap<>();
+        this.nextID = 0;
     }
 
-    private static Map<String, Trader> traders = new HashMap<>();
-    private static final Map<Vector2D, List<Trader>> traderPosition = new HashMap<>();
-    private static int nextID = 0;
 
-
-    public static void register(Location location) {
+    public void register(Location location) {
         String id = "T" + nextID;
-        Trader trader = new Trader(id, location);
+        Trader trader = new Trader(id, location, marketItemStorage.getAllMarketItemsKey());
         traders.put(trader.getID(), trader);
         nextID++;
         updateTraderPosition();
         save();
     }
 
-    public static Trader get(String id) {
+    public Trader get(String id) {
         return traders.get(id);
     }
 
-    public static Trader get(Villager villager) {
+    public Trader get(Villager villager) {
         Optional<String> id = villager.getScoreboardTags().stream().filter(tag -> tag.startsWith("exoticTrade_")).findFirst();
         return id.map(s -> traders.get(s)).orElse(null);
     }
 
-    public static Collection<Trader> getAll() {
+    public Collection<Trader> getAll() {
         return Collections.unmodifiableCollection(traders.values());
     }
 
-    public static void updateTraderPosition() {
+    public void updateTraderPosition() {
         for(Trader trader : traders.values()){
             Vector2D chunkVector = trader.getChunkPosition();
             if(traderPosition.containsKey(chunkVector)){
@@ -62,13 +66,13 @@ public class TraderStorage {
         }
     }
 
-    public static List<Trader> getTradersInChunk(Chunk chunk){
+    public List<Trader> getTradersInChunk(Chunk chunk){
         if(!traderPosition.containsKey(new Vector2D(chunk)))
             return Collections.emptyList();
         return traderPosition.get(new Vector2D(chunk));
     }
 
-    public static void save() {
+    public void save() {
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(TraderPosition.class, new TraderPositionTypeAdapter())
@@ -108,7 +112,7 @@ public class TraderStorage {
 
     }
 
-    public static void load(){
+    public void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
                 .registerTypeAdapter(TraderPosition.class, new TraderPositionTypeAdapter())
@@ -137,7 +141,7 @@ public class TraderStorage {
     }
 
 
-    public static void delete(Trader trader) {
+    public void delete(Trader trader) {
         traders.remove(trader.getID());
         updateTraderPosition();
         save();

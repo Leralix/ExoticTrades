@@ -12,11 +12,17 @@ import java.util.GregorianCalendar;
 
 public class HourlyTasks {
 
-    private HourlyTasks() {
+    private final TraderStorage traderStorage;
 
+    private final StockMarketManager stockMarketManager;
+
+
+    public HourlyTasks(TraderStorage traderStorage, StockMarketManager stockMarketManager) {
+        this.traderStorage = traderStorage;
+        this.stockMarketManager = stockMarketManager;
     }
 
-    public static void scheduleTasks() {
+    public void scheduleTasks() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -31,11 +37,11 @@ public class HourlyTasks {
         }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L);
     }
 
-    public static void update() {
-        for(Trader trader : TraderStorage.getAll()){
+    public void update() {
+        for(Trader trader : traderStorage.getAll()){
             trader.nextHour();
         }
-        TraderStorage.updateTraderPosition();
-        StockMarketManager.updateMovingAverage();
+        traderStorage.updateTraderPosition();
+        stockMarketManager.updateMovingAverage();
     }
 }

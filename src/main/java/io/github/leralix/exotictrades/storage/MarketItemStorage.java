@@ -4,6 +4,7 @@ import io.github.leralix.exotictrades.item.*;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -15,38 +16,39 @@ import java.util.*;
 
 public class MarketItemStorage {
 
-    private MarketItemStorage() {
-    }
+    private final Map<Material, List<DropProbability>> blockDropProbability;
+    private final Map<EntityType, List<KillProbability>> entityDropProbability;
+    private final Map<Material, List<FishProbability>> entityFishProbability;
+
+    private final Map<String, RareItem> rareItemsByName;
+    private final Map<MarketItemKey, MarketItem> marketItemByKey;
+    private final Map<Integer, RareItem> rareItems;
+    private final Map<Integer, MarketItem> marketItems;
+
+    public MarketItemStorage(FileConfiguration fileConfiguration){
+        this.blockDropProbability = new EnumMap<>(Material.class);
+        this.entityDropProbability = new EnumMap<>(EntityType.class);
+        this.entityFishProbability = new EnumMap<>(Material.class);
+
+        this.rareItemsByName = new HashMap<>();
+        this.marketItemByKey = new HashMap<>();
+        this.rareItems = new HashMap<>();
+        this.marketItems = new HashMap<>();
 
 
 
-    private static final Map<Material, List<DropProbability>> blockDropProbability = new EnumMap<>(Material.class);
-    private static final Map<EntityType, List<KillProbability>> entityDropProbability = new EnumMap<>(EntityType.class);
-    private static final Map<Material, List<FishProbability>> entityFishProbability = new EnumMap<>(Material.class);
-
-
-    private static final Map<String, RareItem> rareItemsByName = new HashMap<>();
-    private static final Map<MarketItemKey, MarketItem> marketItemByKey = new HashMap<>();
-    private static final Map<Integer, RareItem> rareItems = new HashMap<>();
-    private static final Map<Integer, MarketItem> marketItems = new HashMap<>();
-
-
-
-    public static void init(){
-        marketItemByKey.clear();
-        blockDropProbability.clear();
-        entityDropProbability.clear();
-        entityFishProbability.clear();
-
-        Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
-
-        ConfigurationSection section = defaultConfiguration.getConfigurationSection("rareRessources");
+        ConfigurationSection section = fileConfiguration.getConfigurationSection("rareRessources");
         if(section != null){
             for (String resourceKey : section.getKeys(false)) {
                 ConfigurationSection resourceSection = section.getConfigurationSection(resourceKey);
 
-                if (resourceSection == null) continue;
-                if(!resourceSection.getBoolean("enabled")) continue;
+                if (resourceSection == null){
+                    continue;
+                }
+
+                if(!resourceSection.getBoolean("enabled")){
+                    continue;
+                }
 
                 int id = resourceKey.hashCode();
                 String name = resourceSection.getString("name");
@@ -60,7 +62,6 @@ public class MarketItemStorage {
 
                 ConfigurationSection dropChanceSection = resourceSection.getConfigurationSection("dropChance");
                 if (dropChanceSection != null) {
-                    // Vérifier si ce sont des blocs
                     if (dropChanceSection.contains("blocks")) {
                         ConfigurationSection blocksSection = dropChanceSection.getConfigurationSection("blocks");
                         blocksSection.getKeys(false).forEach(blockName -> {
@@ -81,7 +82,6 @@ public class MarketItemStorage {
                         });
                     }
 
-                    // Vérifier si ce sont des entités
                     if (dropChanceSection.contains("entities")) {
                         ConfigurationSection entitiesSection = dropChanceSection.getConfigurationSection("entities");
                         entitiesSection.getKeys(false).forEach(entityName -> {
@@ -129,7 +129,7 @@ public class MarketItemStorage {
         }
 
 
-        ConfigurationSection marketItemSection = defaultConfiguration.getConfigurationSection("marketItem");
+        ConfigurationSection marketItemSection = fileConfiguration.getConfigurationSection("marketItem");
         if (marketItemSection != null) {
             for (String resourceKey : marketItemSection.getKeys(false)) {
                 Material material = Material.valueOf(marketItemSection.getString(resourceKey));
@@ -141,11 +141,11 @@ public class MarketItemStorage {
 
     }
 
-    public static RareItem getRareItem(int rareItemID) {
+    public RareItem getRareItem(int rareItemID) {
         return rareItems.get(rareItemID);
     }
 
-    public static List<RareItem> getRareItemsDropped(Material blockType, ItemStack itemUsed){
+    public List<RareItem> getRareItemsDropped(Material blockType, ItemStack itemUsed){
         List<RareItem> items = new ArrayList<>();
         if(blockDropProbability.containsKey(blockType)){
             blockDropProbability.get(blockType).forEach(dropProbability -> {
@@ -158,7 +158,7 @@ public class MarketItemStorage {
         return items;
     }
 
-    public static List<RareItem> getRareItemsDropped(EntityType entityType, ItemStack itemUsed){
+    public List<RareItem> getRareItemsDropped(EntityType entityType, ItemStack itemUsed){
         List<RareItem> items = new ArrayList<>();
         if(entityDropProbability.containsKey(entityType)){
             entityDropProbability.get(entityType).forEach(killProbability -> {
@@ -171,33 +171,33 @@ public class MarketItemStorage {
         return items;
     }
 
-    public static MarketItem getMarketItem(MarketItemKey key) {
+    public MarketItem getMarketItem(MarketItemKey key) {
         return marketItemByKey.get(key);
     }
 
-    public static List<RareItem> getAllRareItems() {
+    public List<RareItem> getAllRareItems() {
         return new ArrayList<>(rareItems.values());
     }
 
-    public static List<MarketItem> getAllMarketItems() {
+    public List<MarketItem> getAllMarketItems() {
         return new ArrayList<>(marketItems.values());
     }
-    public static MarketItem getMarketItem(String name) {
+    public MarketItem getMarketItem(String name) {
         return rareItemsByName.get(name);
     }
 
-    public static MarketItem getMarketItem(int marketID){
+    public MarketItem getMarketItem(int marketID){
         if(marketItems.containsKey(marketID)){
             return marketItems.get(marketID);
         }
         return null;
     }
 
-    public static Collection<MarketItemKey> getAllMarketItemsKey() {
+    public Collection<MarketItemKey> getAllMarketItemsKey() {
         return marketItemByKey.keySet();
     }
 
-    public static List<RareItem> getRareItemFished(Material type, PlayerFishEvent event) {
+    public List<RareItem> getRareItemFished(Material type, PlayerFishEvent event) {
         List<RareItem> items = new ArrayList<>();
         if(entityFishProbability.containsKey(type)){
             entityFishProbability.get(type).forEach(fishProbability -> {

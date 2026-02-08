@@ -1,6 +1,9 @@
 package io.github.leralix.exotictrades.util;
 
 import com.google.gson.JsonParser;
+import io.github.leralix.exotictrades.storage.VillagerHeadStorage;
+import io.github.leralix.exotictrades.traders.TraderBiome;
+import io.github.leralix.exotictrades.traders.TraderWork;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,6 +22,12 @@ import java.util.*;
  * The class used to manage every head related commands
  */
 public class HeadUtils {
+
+    public static VillagerHeadStorage villagerHeadStorageSingleton;
+
+    public static void init(VillagerHeadStorage villagerHeadStorage){
+        villagerHeadStorageSingleton = villagerHeadStorage;
+    }
 
     /**
      * Create a player head {@link ItemStack}.
@@ -90,6 +99,11 @@ public class HeadUtils {
      */
     public static ItemStack makeSkullB64(final String name, final String base64EncodedString, List<String> lore) {
         return makeSkullURL(name,getUrlFromBase64_2(base64EncodedString),lore);
+    }
+
+    public static ItemStack makeSkullURL(final String name, TraderBiome traderBiome, TraderWork traderWork){
+        String url = villagerHeadStorageSingleton.getURL(traderBiome, traderWork);
+        return makeSkullURL(name, url);
     }
 
     public static ItemStack makeSkullURL(final String name, final String url, String... lore) {

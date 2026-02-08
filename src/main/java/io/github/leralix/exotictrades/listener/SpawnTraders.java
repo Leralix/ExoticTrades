@@ -12,12 +12,17 @@ import java.util.List;
 
 public class SpawnTraders implements Listener {
 
+    private final TraderStorage traderStorage;
+
+    public SpawnTraders(TraderStorage traderStorage){
+        this.traderStorage = traderStorage;
+    }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
 
-        List<Trader> traderInChunk = TraderStorage.getTradersInChunk(chunk);
+        List<Trader> traderInChunk = traderStorage.getTradersInChunk(chunk);
 
         for(Trader trader : traderInChunk){
             String traderID = trader.getID();

@@ -1,5 +1,6 @@
 package io.github.leralix.exotictrades.commands.admin;
 
+import io.github.leralix.exotictrades.storage.TraderStorage;
 import org.bukkit.command.CommandSender;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.traders.DailyTasks;
@@ -10,6 +11,11 @@ import java.util.List;
 
 public class UpdateTradersPosition extends SubCommand {
 
+    private final DailyTasks dailyTasks;
+
+    public UpdateTradersPosition(DailyTasks dailyTasks){
+        this.dailyTasks = dailyTasks;
+    }
 
     @Override
     public String getName() {
@@ -38,7 +44,7 @@ public class UpdateTradersPosition extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        DailyTasks.update();
+        dailyTasks.update();
         commandSender.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

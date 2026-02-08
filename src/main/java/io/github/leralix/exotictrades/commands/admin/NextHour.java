@@ -10,6 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class NextHour extends SubCommand {
+
+    private final HourlyTasks hourlyTasks;
+
+    public NextHour(HourlyTasks hourlyTasks){
+        this.hourlyTasks = hourlyTasks;
+    }
+
     @Override
     public String getName() {
         return "nexthour";
@@ -37,7 +44,7 @@ public class NextHour extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        HourlyTasks.update();
+        hourlyTasks.update();
         commandSender.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

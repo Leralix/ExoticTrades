@@ -16,6 +16,12 @@ import java.util.List;
 
 public class DropRareItem extends SubCommand {
 
+    private final MarketItemStorage marketItemStorage;
+
+    public DropRareItem(MarketItemStorage marketItemStorage){
+        this.marketItemStorage = marketItemStorage;
+    }
+
     @Override
     public String getName() {
         return "drop";
@@ -39,7 +45,7 @@ public class DropRareItem extends SubCommand {
     public List<String> getTabCompleteSuggestions(CommandSender sender, String lowerCase, String[] args){
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
-            List<RareItem> rareItemList = MarketItemStorage.getAllRareItems();
+            List<RareItem> rareItemList = marketItemStorage.getAllRareItems();
             for (RareItem rareItem : rareItemList) {
                 suggestions.add(rareItem.getName().replace(" ", "_"));
             }
@@ -66,7 +72,7 @@ public class DropRareItem extends SubCommand {
         }
 
         String itemName = args[1].replace("_", " ");
-        MarketItem marketItem = MarketItemStorage.getMarketItem(itemName);
+        MarketItem marketItem = marketItemStorage.getMarketItem(itemName);
 
         if (marketItem == null) {
             sender.sendMessage(StringUtil.getPluginString() + Lang.ITEM_NOT_FOUND.get());

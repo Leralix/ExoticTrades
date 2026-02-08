@@ -13,6 +13,7 @@ import io.github.leralix.exotictrades.storage.MarketItemKey;
 import io.github.leralix.exotictrades.storage.adapters.MarketItemKeyAdapter;
 import io.github.leralix.exotictrades.storage.MarketItemStorage;
 import io.github.leralix.exotictrades.storage.adapters.RuntimeTypeAdapterFactory;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
@@ -24,18 +25,12 @@ import java.util.List;
 
 public class StockMarketManager{
 
-    private StockMarketManager() {
-    }
+    private HashMap<MarketItemKey, StockMarket> marketItems;
 
-    private static HashMap<MarketItemKey, StockMarket> marketItems;
+    public StockMarketManager(FileConfiguration fileConfiguration, MarketItemStorage marketItemStorage) {
+        marketItems = new HashMap<>();
 
-    public static void init(){
-
-        if(marketItems == null)
-            marketItems = new HashMap<>();
-
-        Configuration defaultConfiguration = ConfigUtil.getCustomConfig(ConfigTag.MAIN);
-        ConfigurationSection section = defaultConfiguration.getConfigurationSection("stockMarket");
+        ConfigurationSection section = fileConfiguration.getConfigurationSection("stockMarket");
         if(section == null)
             return;
         for (String resourceKey : section.getKeys(false)) {
@@ -43,16 +38,16 @@ public class StockMarketManager{
 
             if (resourceSection == null) continue;
 
-            resourceSection.addDefault("movingAverage", defaultConfiguration.getInt("defaultMovingAverage", 24));
-            resourceSection.addDefault("minPrice", defaultConfiguration.getDouble("defaultMinPrice", 0));
-            resourceSection.addDefault("percentForMinPrice", defaultConfiguration.getDouble("defaultPercentForMinPrice", 0));
-            resourceSection.addDefault("maxPrice", defaultConfiguration.getDouble("defaultMaxPrice", 500));
-            resourceSection.addDefault("percentForMaxPrice", defaultConfiguration.getDouble("defaultPercentForMaxPrice", 0));
-            resourceSection.addDefault("basePrice", defaultConfiguration.getDouble("defaultBasePrice", 50));
-            resourceSection.addDefault("volatility", defaultConfiguration.getDouble("defaultVolatility", 1));
-            resourceSection.addDefault("demandMultiplier", defaultConfiguration.getDouble("defaultDemandMultiplier", 1));
+            resourceSection.addDefault("movingAverage", fileConfiguration.getInt("defaultMovingAverage", 24));
+            resourceSection.addDefault("minPrice", fileConfiguration.getDouble("defaultMinPrice", 0));
+            resourceSection.addDefault("percentForMinPrice", fileConfiguration.getDouble("defaultPercentForMinPrice", 0));
+            resourceSection.addDefault("maxPrice", fileConfiguration.getDouble("defaultMaxPrice", 500));
+            resourceSection.addDefault("percentForMaxPrice", fileConfiguration.getDouble("defaultPercentForMaxPrice", 0));
+            resourceSection.addDefault("basePrice", fileConfiguration.getDouble("defaultBasePrice", 50));
+            resourceSection.addDefault("volatility", fileConfiguration.getDouble("defaultVolatility", 1));
+            resourceSection.addDefault("demandMultiplier", fileConfiguration.getDouble("defaultDemandMultiplier", 1));
 
-            MarketItem marketItem = MarketItemStorage.getMarketItem(resourceKey.hashCode());
+            MarketItem marketItem = marketItemStorage.getMarketItem(resourceKey.hashCode());
 
             if(marketItem == null)
                 continue;
@@ -66,22 +61,22 @@ public class StockMarketManager{
             double basePrice = resourceSection.getDouble("basePrice");
             double demandMultiplier = resourceSection.getDouble("demandMultiplier");
 
-            StockMarketManager.registerOrUpdateMarketItem(marketItem, movingAverage, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, volatility, demandMultiplier, basePrice);
+            registerOrUpdateMarketItem(marketItem, movingAverage, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, volatility, demandMultiplier, basePrice);
         }
     }
 
-    public static void updateMovingAverage() {
+    public void updateMovingAverage() {
         for(StockMarket stockMarket : marketItems.values()){
             stockMarket.updateMovingAverage();
         }
     }
 
-    public static List<StockMarket> getAllStocks() {
+    public List<StockMarket> getAllStocks() {
         return Collections.list(Collections.enumeration(marketItems.values()));
     }
 
 
-    public static double sellMarketItems(List<MarketItemStack> marketItemStackList) {
+    public double sellMarketItems(List<MarketItemStack> marketItemStackList) {
         double total = 0;
         for(MarketItemStack marketItemStack : marketItemStackList){
             StockMarket specificMarket = getStockMarket(MarketItemKey.of(marketItemStack));
@@ -91,11 +86,11 @@ public class StockMarketManager{
         return total;
     }
 
-    private static StockMarket getStockMarket(MarketItemKey marketItemKey) {
+    private StockMarket getStockMarket(MarketItemKey marketItemKey) {
         return marketItems.get(marketItemKey);
     }
 
-    public static void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice,double percentForMaxPrice, double minPrice, double percentForMinPrice, double volatility,double demandMultiplier, double basePrice) {
+    public void registerOrUpdateMarketItem(MarketItem marketItem, int timeLength, double maxPrice,double percentForMaxPrice, double minPrice, double percentForMinPrice, double volatility,double demandMultiplier, double basePrice) {
         MarketItemKey marketItemKey = MarketItemKey.of(marketItem);
         if(marketItems.containsKey(marketItemKey)){
             marketItems.get(marketItemKey).updateConstants(basePrice, maxPrice, percentForMaxPrice, minPrice, percentForMinPrice, demandMultiplier, volatility, timeLength);
@@ -106,7 +101,7 @@ public class StockMarketManager{
     }
 
 
-    public static void save() {
+    public void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting()
         .registerTypeAdapterFactory(
@@ -146,7 +141,7 @@ public class StockMarketManager{
 
     }
 
-    public static void load(){
+    public void load(){
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(MarketItemKey.class, new MarketItemKeyAdapter())
@@ -170,7 +165,7 @@ public class StockMarketManager{
         marketItems = gson.fromJson(reader, type);
     }
 
-    public static StockMarket getMarketFor(MarketItemKey marketItemKey) {
+    public StockMarket getMarketFor(MarketItemKey marketItemKey) {
         return marketItems.get(marketItemKey);
     }
 }

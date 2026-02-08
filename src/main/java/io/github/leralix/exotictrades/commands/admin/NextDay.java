@@ -10,6 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class NextDay extends SubCommand {
+
+    private final DailyTasks dailyTasks;
+
+    public NextDay(DailyTasks dailyTasks){
+        this.dailyTasks = dailyTasks;
+    }
+
     @Override
     public String getName() {
         return "nextday";
@@ -37,7 +44,7 @@ public class NextDay extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        DailyTasks.update();
+        dailyTasks.update();
         commandSender.sendMessage(StringUtil.getPluginString() + Lang.COMMAND_GENERIC_SUCCESS.get());
     }
 }

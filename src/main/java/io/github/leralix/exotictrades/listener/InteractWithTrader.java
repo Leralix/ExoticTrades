@@ -16,8 +16,11 @@ public class InteractWithTrader implements Listener {
 
     private final boolean blockVanillaTrade;
 
-    public InteractWithTrader() {
+    private final TraderStorage traderStorage;
+
+    public InteractWithTrader(TraderStorage traderStorage) {
         this.blockVanillaTrade = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("removeVanillaVillagerInteractions", false);
+        this.traderStorage = traderStorage;
     }
 
     @EventHandler
@@ -38,10 +41,10 @@ public class InteractWithTrader implements Listener {
         }
     }
 
-    private static void handleTraderInteraction(PlayerInteractEntityEvent event, Villager villager, String tag, Player player) {
+    private void handleTraderInteraction(PlayerInteractEntityEvent event, Villager villager, String tag, Player player) {
         event.setCancelled(true);
         String id = tag.split("_")[1];
-        Trader trader = TraderStorage.get(id);
+        Trader trader = traderStorage.get(id);
         if(trader == null){
             villager.remove();
             return;

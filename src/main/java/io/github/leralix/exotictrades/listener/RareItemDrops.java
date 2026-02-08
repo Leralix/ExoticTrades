@@ -21,6 +21,12 @@ import java.util.List;
 
 public class RareItemDrops implements Listener {
 
+    private final MarketItemStorage marketItemStorage;
+
+    public RareItemDrops(MarketItemStorage marketItemStorage){
+        this.marketItemStorage = marketItemStorage;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreakBlock(BlockBreakEvent event){
 
@@ -45,7 +51,7 @@ public class RareItemDrops implements Listener {
         }
 
 
-        List<RareItem> rareItems = MarketItemStorage.getRareItemsDropped(type,item);
+        List<RareItem> rareItems = marketItemStorage.getRareItemsDropped(type,item);
         for(RareItem rareItem : rareItems){
             block.getWorld().dropItem(block.getLocation(), rareItem.getItemStack(1));
         }
@@ -61,7 +67,7 @@ public class RareItemDrops implements Listener {
 
         EntityType type = event.getEntityType();
         ItemStack item = killer.getInventory().getItem(killer.getInventory().getHeldItemSlot());
-        List<RareItem> rareItems = MarketItemStorage.getRareItemsDropped(type,item);
+        List<RareItem> rareItems = marketItemStorage.getRareItemsDropped(type,item);
         for(RareItem rareItem : rareItems){
             event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), rareItem.getItemStack(1));
         }
@@ -87,7 +93,7 @@ public class RareItemDrops implements Listener {
             return;
         Item fish = (Item)event.getCaught();
 
-        List<RareItem> rareItems = MarketItemStorage.getRareItemFished(fish.getItemStack().getType(),event);
+        List<RareItem> rareItems = marketItemStorage.getRareItemFished(fish.getItemStack().getType(),event);
 
         for(RareItem rareItem : rareItems){
 

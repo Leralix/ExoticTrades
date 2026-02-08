@@ -8,9 +8,15 @@ import io.github.leralix.exotictrades.market.PlayerConnectionStorage;
 
 public class PlayerCounter implements Listener {
 
+    private final PlayerConnectionStorage playerConnectionStorage;
+
+    public PlayerCounter(PlayerConnectionStorage playerConnectionStorage){
+        this.playerConnectionStorage = playerConnectionStorage;
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PlayerConnectionStorage.newConnection(event.getPlayer().getUniqueId());
+        playerConnectionStorage.newConnection(event.getPlayer().getUniqueId());
     }
 
 }

@@ -9,13 +9,13 @@ public class NumberUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    private static int nbDigits;
+    private static int nbDigitsStatic;
 
-    public static void init(){
-        nbDigits = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("nbDigits", 2);
+    public static void init(int nbDigits){
+        nbDigitsStatic = nbDigits;
     }
 
     public static double roundWithDigits(double value){
-        return Math.round(value * Math.pow(10, nbDigits)) / Math.pow(10, nbDigits);
+        return Math.round(value * Math.pow(10, nbDigitsStatic)) / Math.pow(10, nbDigitsStatic);
     }
 }

@@ -13,6 +13,12 @@ import java.util.List;
 
 public class GetRareItem extends PlayerSubCommand {
 
+    private final MarketItemStorage marketItemStorage;
+
+    public GetRareItem(MarketItemStorage marketItemStorage){
+        this.marketItemStorage = marketItemStorage;
+    }
+
     @Override
     public String getName() {
         return "get";
@@ -36,7 +42,7 @@ public class GetRareItem extends PlayerSubCommand {
 
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
-            List<RareItem> rareItemList = MarketItemStorage.getAllRareItems();
+            List<RareItem> rareItemList = marketItemStorage.getAllRareItems();
             for (RareItem rareItem : rareItemList) {
                 suggestions.add(rareItem.getName().replace(" ", "_"));
             }
@@ -55,7 +61,7 @@ public class GetRareItem extends PlayerSubCommand {
         }
 
         String itemName = args[1].replace("_", " ");
-        MarketItem marketItem = MarketItemStorage.getMarketItem(itemName);
+        MarketItem marketItem = marketItemStorage.getMarketItem(itemName);
 
         if (marketItem == null) {
             player.sendMessage(StringUtil.getPluginString() + Lang.ITEM_NOT_FOUND.get());

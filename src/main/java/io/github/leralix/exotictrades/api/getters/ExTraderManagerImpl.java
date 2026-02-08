@@ -8,6 +8,11 @@ import java.util.List;
 
 public class ExTraderManagerImpl implements ExTraderManager {
 
+    private TraderStorage traderStorage;
+
+    public ExTraderManagerImpl(TraderStorage traderStorage){
+        this.traderStorage = traderStorage;
+    }
 
     @Override
     public ExTrader getTrader(String s) {
@@ -16,7 +21,7 @@ public class ExTraderManagerImpl implements ExTraderManager {
 
     @Override
     public List<ExTrader> getTraders() {
-        return TraderStorage.getAll().stream()
+        return traderStorage.getAll().stream()
                 .map(ExTraderWrapper::of)
                 .map(ExTrader.class::cast)
                 .toList();

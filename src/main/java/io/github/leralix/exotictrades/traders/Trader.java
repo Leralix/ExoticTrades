@@ -23,6 +23,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +40,14 @@ public class Trader {
 
 
 
-    public Trader(String id, Location position){
+    public Trader(String id, Location position, Collection<MarketItemKey> marketItemKeys){
         this.id = id;
         this.position = new Vector3DWithOrientation(position);
         this.name = Lang.TRADER_BASE_NAME.get();
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
         this.positionHandler = new FixedPosition(this.position);
-        this.acceptedMarketItem = new ArrayList<>(MarketItemStorage.getAllMarketItemsKey());
+        this.acceptedMarketItem = new ArrayList<>(marketItemKeys);
         this.sellableItemManager = new SellableItemManager(2);
         spawnTrader();
     }
@@ -121,8 +122,7 @@ public class Trader {
     }
 
     public ItemStack getIcon(){
-        String url = VillagerHeadStorage.getURL(biomeType, workType);
-        return HeadUtils.makeSkullURL(id, url);
+        return HeadUtils.makeSkullURL(id, biomeType, workType);
     }
 
     public String getID() {

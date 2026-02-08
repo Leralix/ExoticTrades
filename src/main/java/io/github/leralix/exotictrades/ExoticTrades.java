@@ -2,6 +2,7 @@ package io.github.leralix.exotictrades;
 
 import io.github.leralix.ExtradeAPI;
 import io.github.leralix.exotictrades.listener.*;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,69 +48,75 @@ public final class ExoticTrades extends JavaPlugin {
      */
     private final PluginVersion minimumSupportingMapPlugin = new PluginVersion(0, 1, 0);
 
+    private MarketItemStorage marketItemStorage;
+    private VillagerHeadStorage villagerHeadStorage;
+
+    private TraderStorage traderStorage;
+    private PlayerConnectionStorage playerConnectionStorage;
+    private StockMarketManager stockMarketManager;
 
     @Override
     public void onEnable() {
         plugin = this;
         Logger logger = getLogger();
-        getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
-        logger.log(Level.INFO, "[ExoticTrade] -Loading plugin");
+        logger.info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
+        logger.log(Level.INFO,"[ExoticTrade] -Loading plugin");
+        logger.log(Level.INFO,"[ExoticTrade] -Loading language");
 
-        var file = ConfigUtil.saveAndUpdateResource(this, "lang.yml", Collections.emptyList());
-        ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
-        String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
+        var langConfigFile = ConfigUtil.saveAndUpdateResource(this, "lang.yml", Collections.emptyList());
+        String lang = langConfigFile.getString("language", "en");
 
-        EconomyManager.setupEconomy();
 
         Lang.loadTranslations(lang);
-        getLogger().info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
+        logger.log(Level.INFO, Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
-        logger.warning("[ExoticTrade] -Loading data");
-        List<String> blackListedWords = new ArrayList<>();
-        blackListedWords.add("rareRessources");
-        blackListedWords.add("stockMarket");
-        blackListedWords.add("marketItem");
+        logger.log(Level.INFO,"[ExoticTrade] -Loading data");
+        List<String> blackListedWords = List.of(
+                "rareRessources",
+                "stockMarket",
+                "marketItem"
+        );
 
-        ConfigUtil.saveAndUpdateResource(this, "config.yml", blackListedWords);
-        ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
+        var configFile = ConfigUtil.saveAndUpdateResource(this, "config.yml", blackListedWords);
+        EconomyManager.setupEconomy();
 
-        MarketItemStorage.init();
-        VillagerHeadStorage.init();
+        this.marketItemStorage = new MarketItemStorage(configFile);
+        this.villagerHeadStorage = new VillagerHeadStorage(configFile);
 
-        TraderStorage.load();
-        PlayerConnectionStorage.load();
+        this.traderStorage = new TraderStorage();
+        this.playerConnectionStorage = new PlayerConnectionStorage();
 
-        StockMarketManager.load();
-        StockMarketManager.init();
-        NumberUtil.init();
+        this.stockMarketManager = new StockMarketManager(configFile, marketItemStorage);
+        this.stockMarketManager.load();
+        NumberUtil.init(configFile.getInt("nbDigits", 2));
 
-        getServer().getPluginManager().registerEvents(new InteractWithTrader(), this);
+        getServer().getPluginManager().registerEvents(new InteractWithTrader(traderStorage), this);
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
-        getServer().getPluginManager().registerEvents(new RareItemDrops(), this);
-        getServer().getPluginManager().registerEvents(new SpawnTraders(), this);
-        getServer().getPluginManager().registerEvents(new PlayerCounter(), this);
+        getServer().getPluginManager().registerEvents(new RareItemDrops(marketItemStorage), this);
+        getServer().getPluginManager().registerEvents(new SpawnTraders(traderStorage), this);
+        getServer().getPluginManager().registerEvents(new PlayerCounter(playerConnectionStorage), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
 
 
-        initTasks();
+        HeadUtils.init(villagerHeadStorage);
+
+        DailyTasks dailyTasks = new DailyTasks(traderStorage);
+        dailyTasks.scheduleTasks();
+        HourlyTasks hourlyTasks = new HourlyTasks(traderStorage, stockMarketManager);
+        hourlyTasks.scheduleTasks();
+
 
         logger.warning("[ExoticTrade] -Loading listeners");
-        getCommand("extrade").setExecutor(new AdminCommandManager());
+        getCommand("extrade").setExecutor(new AdminCommandManager(hourlyTasks, dailyTasks, marketItemStorage));
 
         logger.warning("[ExoticTrade] -Registering API");
-        ExtradeAPI.register(new ExtradeImpl(plugin));
+        ExtradeAPI.register(new ExtradeImpl(plugin, traderStorage));
         logger.warning("[ExoticTrade] -Registering BStat");
         initBStats();
 
         logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
         pluginLoadedSuccessfully = true;
         getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
-    }
-
-    private void initTasks() {
-        DailyTasks.scheduleTasks();
-        HourlyTasks.scheduleTasks();
-
     }
 
     @Override
@@ -119,9 +126,9 @@ public final class ExoticTrades extends JavaPlugin {
             getLogger().info("[ExoticTrade] Plugin disabled");
             return;
         }
-        TraderStorage.save();
-        PlayerConnectionStorage.save();
-        StockMarketManager.save();
+        traderStorage.save();
+        playerConnectionStorage.save();
+        stockMarketManager.save();
         getLogger().info("[ExoticTrade] Plugin disabled");
     }
 

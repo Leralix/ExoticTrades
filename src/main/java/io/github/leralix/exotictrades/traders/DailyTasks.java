@@ -11,11 +11,13 @@ import java.util.GregorianCalendar;
 
 public class DailyTasks {
 
-    private DailyTasks() {
+    private final TraderStorage traderStorage;
 
+    public DailyTasks(TraderStorage traderStorage) {
+        this.traderStorage = traderStorage;
     }
 
-    public static void scheduleTasks() {
+    public void scheduleTasks() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -31,8 +33,8 @@ public class DailyTasks {
         }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
     }
 
-    public static void update() {
-        for(Trader trader : TraderStorage.getAll()){
+    public void update() {
+        for(Trader trader : traderStorage.getAll()){
             trader.nextDay();
         }
     }

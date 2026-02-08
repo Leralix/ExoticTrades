@@ -1,10 +1,9 @@
 package io.github.leralix.exotictrades.lang;
 
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.storage.EconomyManager;
-import org.leralix.lib.utils.config.ConfigTag;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.io.File;
@@ -126,12 +125,7 @@ public enum Lang {
 
         File file = new File(specificLangFolder, "main.yml");
 
-        boolean replace = ConfigUtil.getCustomConfig(ConfigTag.LANG).getBoolean("autoUpdateLangFiles",true);
-
-
-        if(!file.exists() || replace) {
-            ExoticTrades.getPlugin().saveResource("lang/" + fileTag + "/main.yml", true);
-        }
+        ConfigUtil.saveAndUpdateResource(ExoticTrades.getPlugin(), "lang/" + fileTag + "/main.yml");
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Lang key : Lang.values()) {

@@ -1,15 +1,15 @@
 package io.github.leralix.exotictrades.market;
 
 
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import io.github.leralix.exotictrades.item.MarketItem;
 import io.github.leralix.exotictrades.item.RareItem;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.util.NumberUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class StockMarket {
     private final MarketItem marketItem;
@@ -52,6 +52,7 @@ public class StockMarket {
 
     /**
      * Get the expected demand of the ressource.
+     *
      * @return the quantity of item to be sold
      */
     public double getDemand() {
@@ -59,13 +60,14 @@ public class StockMarket {
         return uniquePlayerCount * constants.demandMultiplier();
     }
 
-    public double getPercentSold(){
+    public double getPercentSold() {
         double demand = getDemand();
         return sellHistory.getTotalSales() / demand;
     }
 
     /**
      * Compute the price at the next update
+     *
      * @return the estimated new price
      */
     public double getPriceNextHour() {
@@ -81,19 +83,19 @@ public class StockMarket {
     }
 
     private double getEstimatedPriceDown(double percent) {
-        double ratio = (percent - 1.0)/(constants.percentForMinPrice() - 1.0);
+        double ratio = (percent - 1.0) / (constants.percentForMinPrice() - 1.0);
         ratio = Math.min(1.0, ratio);
         return constants.basePrice() - (constants.basePrice() - constants.minPrice()) * ratio;
     }
 
     private double getEstimatedPriceUp(double percent) {
-        double ratio =  (1.0 - percent)/(1.0 - constants.percentForMaxPrice());
+        double ratio = (1.0 - percent) / (1.0 - constants.percentForMaxPrice());
         ratio = Math.min(1.0, ratio);
         return constants.basePrice() + (constants.maxPrice() - constants.basePrice()) * ratio;
     }
 
 
-    public double sell(int amount){
+    public double sell(int amount) {
         updateHistory(amount);
         return NumberUtil.roundWithDigits(currentPrice * amount);
     }
@@ -108,14 +110,14 @@ public class StockMarket {
         this.currentPrice = getPriceNextHour();
     }
 
-    public ItemStack getItemStack(){
+    public ItemStack getItemStack() {
         return marketItem.getItemStack(1);
     }
 
     public ItemStack getMarketInfo() {
         ItemStack itemStack = getItemStack();
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(marketItem instanceof RareItem){
+        if (marketItem instanceof RareItem) {
             itemMeta.setCustomModelData(marketItem.getModelData());
             itemMeta.setDisplayName(ChatColor.GREEN + marketItem.getName());
         }

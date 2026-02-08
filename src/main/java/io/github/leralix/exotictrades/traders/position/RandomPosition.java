@@ -2,18 +2,19 @@ package io.github.leralix.exotictrades.traders.position;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import io.github.leralix.exotictrades.guis.ManageTraderPosition;
+import io.github.leralix.exotictrades.guis.OpenBlockAllowedToSpawnTrader;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import io.github.leralix.exotictrades.listener.chat.events.RegisterZoneListener;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.guis.ManageTraderPosition;
-import io.github.leralix.exotictrades.guis.OpenBlockAllowedToSpawnTrader;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
-import io.github.leralix.exotictrades.listener.chat.events.RegisterZoneListener;
-import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Zone2D;
 import org.leralix.lib.utils.RandomUtil;
@@ -124,12 +125,12 @@ public class RandomPosition implements TraderPosition {
     }
 
     @Override
-    public void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page) {
+    public void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page, StorageForGui storage) {
         ItemStack spawnZoneItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Spawn Zone", "Click to manage");
-        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader, this))));
+        gui.setItem(2, 2, ItemBuilder.from(spawnZoneItem).asGuiItem(event -> PlayerChatListenerStorage.register(player, new RegisterZoneListener(trader, this, storage))));
 
         ItemStack blockAllowedItem = HeadUtils.createCustomItemStack(Material.GRASS_BLOCK, "Block Allowed", "Click to choose");
-        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, this).open()));
+        gui.setItem(2, 4, ItemBuilder.from(blockAllowedItem).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, this, storage).open()));
 
 
 

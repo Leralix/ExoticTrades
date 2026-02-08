@@ -3,10 +3,6 @@ package io.github.leralix.exotictrades.traders.position;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import io.github.leralix.exotictrades.util.HeadUtils;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import io.github.leralix.exotictrades.guis.GuiUtil;
 import io.github.leralix.exotictrades.guis.ManageTrader;
 import io.github.leralix.exotictrades.guis.ManageTraderPosition;
@@ -14,7 +10,12 @@ import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.listener.chat.RegisterNewTraderPosition;
 import io.github.leralix.exotictrades.listener.chat.events.RegisterTraderTimeBetweenPosition;
+import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
+import io.github.leralix.exotictrades.util.HeadUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.position.Vector3D;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class FixedPosition implements TraderPosition {
     }
 
     @Override
-    public void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page) {
+    public void addGuiItems(Gui gui, ManageTraderPosition manageTraderPosition, Player player, Trader trader, int page, StorageForGui storage) {
 
         List<GuiItem> guiItems = new ArrayList<>();
         for(Vector3D position : positions){
@@ -65,9 +66,9 @@ public class FixedPosition implements TraderPosition {
         }
 
         GuiUtil.createIterator(gui,guiItems, page, player,
-                p -> new ManageTrader(player, trader).open(),
-                p -> new ManageTraderPosition(player, trader, page + 1).open(),
-                p -> new ManageTraderPosition(player, trader, page - 1).open());
+                p -> new ManageTrader(player, trader, storage).open(),
+                p -> new ManageTraderPosition(player, trader, page + 1, storage).open(),
+                p -> new ManageTraderPosition(player, trader, page - 1, storage).open());
 
         ItemStack addPosition = HeadUtils.makeSkullB64(Lang.ADD_POSITION.get(), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0=",
                 Lang.CLICK_TO_ADD_POSITION.get());
@@ -79,7 +80,7 @@ public class FixedPosition implements TraderPosition {
                 Lang.CLICK_TO_MODIFY.get());
 
         GuiItem setTraderTime = ItemBuilder.from(selectNumberOfPosition).asGuiItem(event ->
-                PlayerChatListenerStorage.register(player, new RegisterTraderTimeBetweenPosition(player, trader)));
+                PlayerChatListenerStorage.register(player, new RegisterTraderTimeBetweenPosition(trader, storage)));
 
         gui.setItem(gui.getRows(), 3, addPositionButton);
         gui.setItem(3, 5, setTraderTime);

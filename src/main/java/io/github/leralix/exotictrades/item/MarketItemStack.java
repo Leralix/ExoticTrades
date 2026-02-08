@@ -23,8 +23,8 @@ public class MarketItemStack {
         return quantity;
     }
 
-    public String getDescription() {
-        double price = StockMarketManager.getMarketFor(MarketItemKey.of(item)).getCurrentPrice();
+    public String getDescription(StockMarketManager stockMarketManager) {
+        double price = stockMarketManager.getMarketFor(MarketItemKey.of(item)).getCurrentPrice();
         return Lang.QUANTITY_ITEM_TO_SELL.get(item.getName(), NumberUtil.roundWithDigits(quantity * price), quantity, price);
     }
 }

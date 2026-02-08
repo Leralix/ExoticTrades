@@ -2,7 +2,6 @@ package io.github.leralix.exotictrades.item;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.storage.MarketItemStorage;
 import org.leralix.lib.utils.RandomUtil;
 
 public class DropProbability implements LootProbability {
@@ -19,7 +18,8 @@ public class DropProbability implements LootProbability {
         this.rareItemID = rareItemID;
     }
 
-    public RareItem shouldDrop(ItemStack itemUsed){
+    @Override
+    public Integer shouldDrop(ItemStack itemUsed){
         if(!allowSilkTouch && itemUsed.containsEnchantment(Enchantment.SILK_TOUCH)){
             return null;
         }
@@ -29,7 +29,7 @@ public class DropProbability implements LootProbability {
         int chanceRolled = RandomUtil.getRandom().nextInt(100);
 
         if(chanceRolled <= chanceCap){
-            return MarketItemStorage.getRareItem(rareItemID);
+            return rareItemID;
         }
         return null;
     }

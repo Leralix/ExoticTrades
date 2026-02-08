@@ -3,13 +3,13 @@ package io.github.leralix.exotictrades.storage;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.entity.Villager;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.storage.adapters.TraderPositionTypeAdapter;
 import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.traders.position.TraderPosition;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.entity.Villager;
 import org.leralix.lib.position.Vector2D;
 
 import java.io.*;
@@ -21,7 +21,6 @@ public class TraderStorage {
     private Map<String, Trader> traders;
     private final Map<Vector2D, List<Trader>> traderPosition;
     private int nextID;
-    private MarketItemStorage marketItemStorage;
 
 
     public TraderStorage(){
@@ -31,9 +30,9 @@ public class TraderStorage {
     }
 
 
-    public void register(Location location) {
+    public void register(Location location, Collection<MarketItemKey> acceptedMarketItems) {
         String id = "T" + nextID;
-        Trader trader = new Trader(id, location, marketItemStorage.getAllMarketItemsKey());
+        Trader trader = new Trader(id, location, acceptedMarketItems);
         traders.put(trader.getID(), trader);
         nextID++;
         updateTraderPosition();
@@ -142,6 +141,7 @@ public class TraderStorage {
 
 
     public void delete(Trader trader) {
+        trader.delete();
         traders.remove(trader.getID());
         updateTraderPosition();
         save();

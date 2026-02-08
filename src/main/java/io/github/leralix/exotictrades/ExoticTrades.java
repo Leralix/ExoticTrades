@@ -1,14 +1,10 @@
 package io.github.leralix.exotictrades;
 
 import io.github.leralix.ExtradeAPI;
-import io.github.leralix.exotictrades.listener.*;
-import io.github.leralix.exotictrades.util.HeadUtils;
-import org.bstats.bukkit.Metrics;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import io.github.leralix.exotictrades.api.ExtradeImpl;
 import io.github.leralix.exotictrades.commands.admin.AdminCommandManager;
 import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.listener.*;
 import io.github.leralix.exotictrades.listener.chat.ChatListener;
 import io.github.leralix.exotictrades.market.PlayerConnectionStorage;
 import io.github.leralix.exotictrades.market.StockMarketManager;
@@ -18,12 +14,14 @@ import io.github.leralix.exotictrades.storage.TraderStorage;
 import io.github.leralix.exotictrades.storage.VillagerHeadStorage;
 import io.github.leralix.exotictrades.traders.DailyTasks;
 import io.github.leralix.exotictrades.traders.HourlyTasks;
+import io.github.leralix.exotictrades.util.HeadUtils;
 import io.github.leralix.exotictrades.util.NumberUtil;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
-import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -60,8 +58,8 @@ public final class ExoticTrades extends JavaPlugin {
         plugin = this;
         Logger logger = getLogger();
         logger.info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
-        logger.log(Level.INFO,"[ExoticTrade] -Loading plugin");
-        logger.log(Level.INFO,"[ExoticTrade] -Loading language");
+        logger.log(Level.INFO, "[ExoticTrade] -Loading plugin");
+        logger.log(Level.INFO, "[ExoticTrade] -Loading language");
 
         var langConfigFile = ConfigUtil.saveAndUpdateResource(this, "lang.yml", Collections.emptyList());
         String lang = langConfigFile.getString("language", "en");
@@ -70,7 +68,7 @@ public final class ExoticTrades extends JavaPlugin {
         Lang.loadTranslations(lang);
         logger.log(Level.INFO, Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
 
-        logger.log(Level.INFO,"[ExoticTrade] -Loading data");
+        logger.log(Level.INFO, "[ExoticTrade] -Loading data");
         List<String> blackListedWords = List.of(
                 "rareRessources",
                 "stockMarket",
@@ -84,13 +82,19 @@ public final class ExoticTrades extends JavaPlugin {
         this.villagerHeadStorage = new VillagerHeadStorage(configFile);
 
         this.traderStorage = new TraderStorage();
-        this.playerConnectionStorage = new PlayerConnectionStorage();
+        PlayerConnectionStorage.load();
 
         this.stockMarketManager = new StockMarketManager(configFile, marketItemStorage);
         this.stockMarketManager.load();
         NumberUtil.init(configFile.getInt("nbDigits", 2));
 
-        getServer().getPluginManager().registerEvents(new InteractWithTrader(traderStorage), this);
+        getServer().getPluginManager().registerEvents(new InteractWithTrader(
+                        traderStorage,
+                        marketItemStorage,
+                        stockMarketManager,
+                        configFile.getBoolean("removeVanillaVillagerInteractions", false)
+                ), this
+        );
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
         getServer().getPluginManager().registerEvents(new RareItemDrops(marketItemStorage), this);
         getServer().getPluginManager().registerEvents(new SpawnTraders(traderStorage), this);
@@ -107,7 +111,7 @@ public final class ExoticTrades extends JavaPlugin {
 
 
         logger.warning("[ExoticTrade] -Loading listeners");
-        getCommand("extrade").setExecutor(new AdminCommandManager(hourlyTasks, dailyTasks, marketItemStorage));
+        getCommand("extrade").setExecutor(new AdminCommandManager(traderStorage, marketItemStorage, stockMarketManager, hourlyTasks, dailyTasks));
 
         logger.warning("[ExoticTrade] -Registering API");
         ExtradeAPI.register(new ExtradeImpl(plugin, traderStorage));
@@ -121,14 +125,14 @@ public final class ExoticTrades extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if(!pluginLoadedSuccessfully){
+        if (!pluginLoadedSuccessfully) {
             getLogger().info("[ExoticTrade] Not saving data because plugin failed during setup");
             getLogger().info("[ExoticTrade] Plugin disabled");
             return;
         }
         traderStorage.save();
-        playerConnectionStorage.save();
         stockMarketManager.save();
+        PlayerConnectionStorage.save();
         getLogger().info("[ExoticTrade] Plugin disabled");
     }
 
@@ -154,5 +158,25 @@ public final class ExoticTrades extends JavaPlugin {
 
     public PluginVersion getMinimumSupportingMapPlugin() {
         return minimumSupportingMapPlugin;
+    }
+
+    public StockMarketManager getStockMarketManager() {
+        return stockMarketManager;
+    }
+
+    public PlayerConnectionStorage getPlayerConnectionStorage() {
+        return playerConnectionStorage;
+    }
+
+    public TraderStorage getTraderStorage() {
+        return traderStorage;
+    }
+
+    public VillagerHeadStorage getVillagerHeadStorage() {
+        return villagerHeadStorage;
+    }
+
+    public MarketItemStorage getMarketItemStorage() {
+        return marketItemStorage;
     }
 }

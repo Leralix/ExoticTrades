@@ -1,5 +1,11 @@
 package io.github.leralix.exotictrades.traders;
 
+import io.github.leralix.exotictrades.ExoticTrades;
+import io.github.leralix.exotictrades.item.MarketItem;
+import io.github.leralix.exotictrades.item.SellableItem;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.storage.MarketItemKey;
+import io.github.leralix.exotictrades.traders.position.FixedPosition;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,15 +15,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import io.github.leralix.exotictrades.ExoticTrades;
-import io.github.leralix.exotictrades.item.MarketItem;
-import io.github.leralix.exotictrades.item.SellableItem;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.storage.MarketItemKey;
-import io.github.leralix.exotictrades.storage.MarketItemStorage;
-import io.github.leralix.exotictrades.storage.TraderStorage;
-import io.github.leralix.exotictrades.storage.VillagerHeadStorage;
-import io.github.leralix.exotictrades.traders.position.FixedPosition;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
@@ -40,14 +37,14 @@ public class Trader {
 
 
 
-    public Trader(String id, Location position, Collection<MarketItemKey> marketItemKeys){
+    public Trader(String id, Location position, Collection<MarketItemKey> acceptedMarketItems){
         this.id = id;
         this.position = new Vector3DWithOrientation(position);
         this.name = Lang.TRADER_BASE_NAME.get();
         this.biomeType = TraderBiome.PLAINS;
         this.workType = TraderWork.FARMER;
         this.positionHandler = new FixedPosition(this.position);
-        this.acceptedMarketItem = new ArrayList<>(marketItemKeys);
+        this.acceptedMarketItem = new ArrayList<>(acceptedMarketItems);
         this.sellableItemManager = new SellableItemManager(2);
         spawnTrader();
     }
@@ -149,7 +146,6 @@ public class Trader {
 
     public void delete() {
        getVillager().ifPresent(Entity::remove);
-       TraderStorage.delete(this);
     }
 
 
@@ -169,13 +165,8 @@ public class Trader {
         return positionHandler == null;
     }
 
-    public List<MarketItem> getMarketItems() {
-        List<MarketItem> result = new ArrayList<>();
-        for(MarketItemKey key : acceptedMarketItem){
-            result.add(MarketItemStorage.getMarketItem(key));
-        }
-        result.remove(null);
-        return result;
+    public List<MarketItemKey> getMarketItemsKey() {
+        return acceptedMarketItem;
     }
 
     public void addMarketItem(MarketItem marketItem){

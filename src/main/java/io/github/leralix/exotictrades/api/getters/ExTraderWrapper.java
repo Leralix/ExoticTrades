@@ -1,22 +1,32 @@
 package io.github.leralix.exotictrades.api.getters;
 
+import io.github.leralix.exotictrades.item.MarketItem;
+import io.github.leralix.exotictrades.market.StockMarket;
+import io.github.leralix.exotictrades.market.StockMarketManager;
+import io.github.leralix.exotictrades.storage.MarketItemKey;
+import io.github.leralix.exotictrades.storage.MarketItemStorage;
+import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.interfaces.ExRareItem;
 import io.github.leralix.interfaces.ExTrader;
-import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.position.Vector3D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExTraderWrapper implements ExTrader {
 
     private final Trader trader;
+    private final StockMarketManager stockMarketManager;
+    private final MarketItemStorage marketItemStorage;
 
-    private ExTraderWrapper(Trader trader){
+    private ExTraderWrapper(Trader trader, StockMarketManager stockMarketManager, MarketItemStorage marketItemStorage){
         this.trader = trader;
+        this.stockMarketManager = stockMarketManager;
+        this.marketItemStorage = marketItemStorage;
     }
 
-    public static Object of(Trader trader) {
-        return new ExTraderWrapper(trader);
+    public static Object of(Trader trader, StockMarketManager stockMarketManager, MarketItemStorage marketItemStorage) {
+        return new ExTraderWrapper(trader, stockMarketManager, marketItemStorage);
     }
 
     @Override
@@ -31,10 +41,15 @@ public class ExTraderWrapper implements ExTrader {
 
     @Override
     public List<ExRareItem> getItemsSold() {
-        return trader.getMarketItems().stream()
-                .map(ExRareItemImpl::of)
-                .map(ExRareItem.class::cast)
-                .toList();
+
+        List<ExRareItem> itemsSold = new ArrayList<>();
+        for (MarketItemKey marketItemKey : trader.getMarketItemsKey()){
+            MarketItem marketItem = marketItemStorage.getMarketItem(marketItemKey);
+            StockMarket stockMarket = stockMarketManager.getMarketFor(MarketItemKey.of(marketItem));
+
+            itemsSold.add(ExRareItemImpl.of(marketItem, stockMarket));
+        }
+        return itemsSold;
     }
 
     @Override

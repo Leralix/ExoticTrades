@@ -78,6 +78,7 @@ language:
   DELETE_TRADER: "Delete trader"
   CURRENT_NAME: "Current name : {0}"
   MANAGE_POSITION: "Manage position"
+  MANAGE_ITEM_TO_SELL: "Manage items to sell"
   ADD_NEW_SELLABLE_ITEM: "Add a new sellable item"
   DRAG_AND_DROP: "Drag and drop items here"
   SELECT_ITEM_TO_SELL: "Select items to trade"

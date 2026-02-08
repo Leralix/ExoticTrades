@@ -1,8 +1,12 @@
 package io.github.leralix.exotictrades.commands.admin;
 
-import org.bukkit.entity.Player;
 import io.github.leralix.exotictrades.guis.MainMenu;
 import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.market.StockMarketManager;
+import io.github.leralix.exotictrades.storage.MarketItemStorage;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.storage.TraderStorage;
+import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 
 import java.util.ArrayList;
@@ -11,6 +15,12 @@ import java.util.List;
 
 public class OpenGui extends PlayerSubCommand {
 
+    private final StorageForGui storage;
+
+    public OpenGui(TraderStorage traderStorage, MarketItemStorage marketItemStorage, StockMarketManager stockMarketManager){
+
+        this.storage = new StorageForGui(traderStorage, marketItemStorage, stockMarketManager);
+    }
     @Override
     public String getName() {
         return "gui";
@@ -40,6 +50,6 @@ public class OpenGui extends PlayerSubCommand {
     }
     @Override
     public void perform(Player player, String[] args) {
-        new MainMenu(player);
+        new MainMenu(player, storage);
     }
 }

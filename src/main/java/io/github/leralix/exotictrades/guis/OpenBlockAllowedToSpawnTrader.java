@@ -2,14 +2,15 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.ExoticTrades;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
+import io.github.leralix.exotictrades.traders.position.RandomPosition;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.ExoticTrades;
-import io.github.leralix.exotictrades.traders.position.RandomPosition;
-import io.github.leralix.exotictrades.traders.Trader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,8 @@ public class OpenBlockAllowedToSpawnTrader extends BasicGui {
 
     private final RandomPosition randomPosition;
 
-    public OpenBlockAllowedToSpawnTrader(Player player, Trader trader, RandomPosition randomPosition) {
-        super(player, "Block Allowed", 6);
+    public OpenBlockAllowedToSpawnTrader(Player player, Trader trader, RandomPosition randomPosition, StorageForGui storage) {
+        super(player, "Block Allowed", 6, storage);
         this.randomPosition = randomPosition;
 
         gui.setDefaultClickAction(event ->
@@ -27,7 +28,7 @@ public class OpenBlockAllowedToSpawnTrader extends BasicGui {
         );
 
         for(Material material : randomPosition.getAuthorizedBlocks()){
-            GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, randomPosition).open());
+            GuiItem guiItem = ItemBuilder.from(HeadUtils.createCustomItemStack(material, " ")).asGuiItem(event -> new OpenBlockAllowedToSpawnTrader(player, trader, randomPosition, storage).open());
             gui.addItem(guiItem);
         }
 
@@ -37,7 +38,7 @@ public class OpenBlockAllowedToSpawnTrader extends BasicGui {
 
 
 
-        gui.setItem(6,1, GuiUtil.createBackArrow(player, event -> new ManageTraderPosition(player, trader).open()));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, event -> new ManageTraderPosition(player, trader, storage).open()));
     }
 
     private void reloadAuthorizedBlocks() {

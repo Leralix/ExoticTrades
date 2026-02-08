@@ -2,21 +2,22 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
+import io.github.leralix.exotictrades.listener.chat.events.RenameTraderChatListener;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
-import io.github.leralix.exotictrades.listener.chat.events.RenameTraderChatListener;
-import io.github.leralix.exotictrades.traders.Trader;
 
 public class ManageTrader extends BasicGui {
 
     private final Trader trader;
 
-    public ManageTrader(Player player, Trader trader) {
-        super(player, "Manage Trader", 3);
+    public ManageTrader(Player player, Trader trader, StorageForGui storage) {
+        super(player, "Manage Trader", 3, storage);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
         this.trader = trader;
 
@@ -25,21 +26,21 @@ public class ManageTrader extends BasicGui {
 
 
         ItemStack biomeItem = trader.getBiomeType().getIcon(Lang.CURRENT_BIOME.get(trader.getBiomeType().getName()), Lang.CLICK_TO_MANAGE);
-        GuiItem biomeGuiItem = ItemBuilder.from(biomeItem).asGuiItem(event -> new SelectTraderBiomeMenu(player, trader).open());
+        GuiItem biomeGuiItem = ItemBuilder.from(biomeItem).asGuiItem(event -> new SelectTraderBiomeMenu(player, trader, storage).open());
 
         ItemStack workItem = trader.getWorkType().getIcon(Lang.CURRENT_PROFESSION.get(trader.getWorkType().getName()), Lang.CLICK_TO_MANAGE);
-        GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> new SelectTraderProfessionMenu(player, trader).open());
+        GuiItem workGuiItem = ItemBuilder.from(workItem).asGuiItem(event -> new SelectTraderProfessionMenu(player, trader, storage).open());
 
         ItemStack renameTraderItem = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.CURRENT_NAME.get(trader.getName()), Lang.CLICK_TO_SELECT.get());
         GuiItem renameTraderGuiItem = ItemBuilder.from(renameTraderItem).asGuiItem(event -> {
             player.closeInventory();
-            PlayerChatListenerStorage.register(player, new RenameTraderChatListener(trader));
+            PlayerChatListenerStorage.register(player, new RenameTraderChatListener(trader, storage));
         });
 
         ItemStack deleteTraderItem = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.DELETE_TRADER.get(), Lang.CLICK_TO_DELETE.get());
         GuiItem deleteTraderGuiItem = ItemBuilder.from(deleteTraderItem).asGuiItem(event -> {
-            trader.delete();
-            new ManageTraders(player).open();
+            storage.traderStorage().delete(trader);
+            new ManageTraders(player, storage).open();
         });
 
         String positionInfo = getSpawnZoneInfo();
@@ -47,15 +48,15 @@ public class ManageTrader extends BasicGui {
                 positionInfo,
                 Lang.CLICK_TO_MANAGE.get()
         );
-        GuiItem managePositionGuiItem = ItemBuilder.from(managePosition).asGuiItem(event -> new ManageTraderPosition(player, trader).open());
+        GuiItem managePositionGuiItem = ItemBuilder.from(managePosition).asGuiItem(event -> new ManageTraderPosition(player, trader, storage).open());
 
         ItemStack sellingItem = HeadUtils.createCustomItemStack(Material.BARREL, Lang.MANAGE_ITEM_TO_SELL.get(),
                 Lang.CLICK_TO_MANAGE.get());
-        GuiItem manageItemToSellGuiItem = ItemBuilder.from(sellingItem).asGuiItem(event -> new ManageTraderItemToSell(player, trader).open());
+        GuiItem manageItemToSellGuiItem = ItemBuilder.from(sellingItem).asGuiItem(event -> new ManageTraderItemToSell(player, trader, storage).open());
 
         ItemStack selectedMarketItems = HeadUtils.createCustomItemStack(Material.CHEST, Lang.SELECT_ITEM_TO_SELL.get(),
                 Lang.LEFT_CLICK_TO_MANAGE.get());
-        GuiItem selectMarketItemsButton = ItemBuilder.from(selectedMarketItems).asGuiItem(event -> new ManageTraderAuthorized(player, trader, 0).open());
+        GuiItem selectMarketItemsButton = ItemBuilder.from(selectedMarketItems).asGuiItem(event -> new ManageTraderAuthorized(player, trader, storage).open());
 
 
         gui.setItem(1, 5, villagerGuiItem);
@@ -70,7 +71,7 @@ public class ManageTrader extends BasicGui {
 
 
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new ManageTraders(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, event -> new ManageTraders(player, storage).open()));
     }
 
     private String getSpawnZoneInfo() {

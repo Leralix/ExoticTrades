@@ -1,21 +1,21 @@
 package io.github.leralix.exotictrades.api.getters;
 
-import io.github.leralix.interfaces.ExRareItem;
 import io.github.leralix.exotictrades.item.MarketItem;
 import io.github.leralix.exotictrades.market.StockMarket;
+import io.github.leralix.interfaces.ExRareItem;
 
 public class ExRareItemImpl implements ExRareItem {
 
     private final MarketItem marketItem;
     private final StockMarket stockMarket;
 
-    private ExRareItemImpl(MarketItem marketItem) {
+    private ExRareItemImpl(MarketItem marketItem, StockMarket stockMarket) {
         this.marketItem = marketItem;
-        this.stockMarket = marketItem.getStockMarket();
+        this.stockMarket = stockMarket;
     }
 
-    public static ExRareItemImpl of(MarketItem marketItem) {
-        return new ExRareItemImpl(marketItem);
+    public static ExRareItemImpl of(MarketItem marketItem, StockMarket stockMarket) {
+        return new ExRareItemImpl(marketItem, stockMarket);
     }
 
 

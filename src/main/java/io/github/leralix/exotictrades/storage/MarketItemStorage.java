@@ -2,15 +2,12 @@ package io.github.leralix.exotictrades.storage;
 
 import io.github.leralix.exotictrades.item.*;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.util.*;
 
@@ -149,9 +146,9 @@ public class MarketItemStorage {
         List<RareItem> items = new ArrayList<>();
         if(blockDropProbability.containsKey(blockType)){
             blockDropProbability.get(blockType).forEach(dropProbability -> {
-                RareItem item = dropProbability.shouldDrop(itemUsed);
-                if(item != null){
-                    items.add(item);
+                Integer itemID = dropProbability.shouldDrop(itemUsed);
+                if(itemID != null){
+                    items.add(getRareItem(itemID));
                 }
             });
         }
@@ -162,9 +159,9 @@ public class MarketItemStorage {
         List<RareItem> items = new ArrayList<>();
         if(entityDropProbability.containsKey(entityType)){
             entityDropProbability.get(entityType).forEach(killProbability -> {
-                RareItem item = killProbability.shouldDrop(itemUsed);
-                if(item != null){
-                    items.add(item);
+                Integer itemID = killProbability.shouldDrop(itemUsed);
+                if(itemID != null){
+                    items.add(getRareItem(itemID));
                 }
             });
         }
@@ -201,9 +198,9 @@ public class MarketItemStorage {
         List<RareItem> items = new ArrayList<>();
         if(entityFishProbability.containsKey(type)){
             entityFishProbability.get(type).forEach(fishProbability -> {
-                RareItem item = fishProbability.shouldDrop(event.getPlayer().getInventory().getItemInMainHand());
+                Integer item = fishProbability.shouldDrop(event.getPlayer().getInventory().getItemInMainHand());
                 if(item != null){
-                    items.add(item);
+                    items.add(getRareItem(item));
                     if(fishProbability.shouldReplaceReward()){
                         Entity entityType = event.getCaught();
                         if(entityType != null){

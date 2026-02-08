@@ -3,6 +3,14 @@ package io.github.leralix.exotictrades.guis;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.ExoticTrades;
+import io.github.leralix.exotictrades.item.MarketItem;
+import io.github.leralix.exotictrades.item.MarketItemStack;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.storage.EconomyManager;
+import io.github.leralix.exotictrades.storage.MarketItemKey;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,19 +18,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.ExoticTrades;
-import io.github.leralix.exotictrades.item.MarketItem;
-import io.github.leralix.exotictrades.item.MarketItemStack;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.market.StockMarketManager;
-import io.github.leralix.exotictrades.storage.EconomyManager;
-import io.github.leralix.exotictrades.storage.MarketItemKey;
-import io.github.leralix.exotictrades.storage.MarketItemStorage;
-import io.github.leralix.exotictrades.traders.Trader;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SellItemMenu extends BasicGui {
 
@@ -30,8 +32,8 @@ public class SellItemMenu extends BasicGui {
     private final Map<Integer, Integer> rareItems = new HashMap<>();
     private final Trader trader;
 
-    public SellItemMenu(Player player, Trader trader) {
-        super(player, "Trader", 4);
+    public SellItemMenu(Player player, Trader trader, StorageForGui storage) {
+        super(player, "Trader", 4, storage);
         this.trader = trader;
         setupGui();
 
@@ -66,7 +68,7 @@ public class SellItemMenu extends BasicGui {
         ItemStack traderItem = HeadUtils.makeSkullURL(Lang.BUY_ITEM_MENU.get(), "https://textures.minecraft.net/texture/cc1b2f592cfc8d372dcf5fd44eed69dddc64601d7846d72619f70511d8043a89",
                 Lang.CLICK_TO_OPEN.get());
 
-        GuiItem traderGuiItem = ItemBuilder.from(traderItem).asGuiItem(event -> new BuyItemMenu(player, trader, 0).open());
+        GuiItem traderGuiItem = ItemBuilder.from(traderItem).asGuiItem(event -> new BuyItemMenu(player, trader, 0, storage).open());
         gui.setItem(3,8, traderGuiItem);
 
 
@@ -77,7 +79,7 @@ public class SellItemMenu extends BasicGui {
         ItemStack marketInfo = HeadUtils.makeSkullURL(Lang.MARKET_INFO.get(), "https://textures.minecraft.net/texture/ab69967163c743ddb1f083566757576b9e63ac380cc150f518b33dc4e91ef712",
                 Lang.CLICK_TO_OPEN.get());
         return ItemBuilder.from(marketInfo).asGuiItem(event -> {
-            new MarketInfoMenu(player, trader, 0).open();
+            new MarketInfoMenu(player, trader, 0, storage).open();
             event.setCancelled(true);
         });
     }
@@ -108,7 +110,7 @@ public class SellItemMenu extends BasicGui {
                 }
                 allItems.add(item);
                 MarketItemKey key = MarketItemKey.of(item);
-                MarketItem marketItem = MarketItemStorage.getMarketItem(key);
+                MarketItem marketItem = storage.marketItemStorage().getMarketItem(key);
                 if(marketItem == null){
                     continue;
                 }
@@ -125,7 +127,7 @@ public class SellItemMenu extends BasicGui {
         boolean allItemsAreNotRare = false;
         for(ItemStack item : allItems){
             MarketItemKey key = MarketItemKey.of(item);
-            MarketItem marketItem = MarketItemStorage.getMarketItem(key);
+            MarketItem marketItem = storage.marketItemStorage().getMarketItem(key);
             if(marketItem == null || !trader.canTradeMarketItem(marketItem)){
                 allItemsAreNotRare = true;
                 break;
@@ -139,12 +141,12 @@ public class SellItemMenu extends BasicGui {
         }
         else {
             List<String> description = new ArrayList<>();
-            getAllMarketItem().forEach(item -> description.add(item.getDescription()));
+            getAllMarketItem().forEach(item -> description.add(item.getDescription(storage.stockMarketManager())));
 
             ItemStack confirm = HeadUtils.makeSkullURL(Lang.CONFIRM_BUTTON.get(), "https://textures.minecraft.net/texture/a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756",
                     description);
             confirmButton = ItemBuilder.from(confirm).asGuiItem(event -> {
-                double total = StockMarketManager.sellMarketItems(getAllMarketItem());
+                double total = storage.stockMarketManager().sellMarketItems(getAllMarketItem());
 
                 player.sendMessage(Lang.SOLD_MARKET_ITEM_SUCCESS.get(total));
                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
@@ -160,7 +162,7 @@ public class SellItemMenu extends BasicGui {
     private List<MarketItemStack> getAllMarketItem(){
         List<MarketItemStack> displayMarketItems = new ArrayList<>();
         for(Map.Entry<Integer, Integer> entry : rareItems.entrySet()){
-            MarketItemStack marketItem = new MarketItemStack(MarketItemStorage.getMarketItem(entry.getKey()), entry.getValue());
+            MarketItemStack marketItem = new MarketItemStack(storage.marketItemStorage().getMarketItem(entry.getKey()), entry.getValue());
             displayMarketItems.add(marketItem);
         }
         return displayMarketItems;

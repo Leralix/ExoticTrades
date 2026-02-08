@@ -2,28 +2,34 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.item.MarketItem;
+import io.github.leralix.exotictrades.item.RareItem;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import io.github.leralix.exotictrades.item.MarketItem;
-import io.github.leralix.exotictrades.item.RareItem;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.storage.MarketItemStorage;
-import io.github.leralix.exotictrades.traders.Trader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageTraderAuthorized extends BasicGui {
+public class ManageTraderAuthorized extends IteratorGUI {
 
-    public ManageTraderAuthorized(Player player, Trader trader, int page) {
-        super(player, "Authorized items", 6);
+    private final Trader trader;
+
+    public ManageTraderAuthorized(Player player, Trader trader, StorageForGui storage) {
+        super(player, "Authorized items", 6, storage);
+        this.trader = trader;
         gui.setDefaultClickAction(event -> event.setCancelled(false));
 
+        iterator(getAllMarketItems(), p -> new ManageTrader(player, trader, storage).open());
+    }
 
+    private List<GuiItem> getAllMarketItems() {
         List<GuiItem> allMarketItems = new ArrayList<>();
-        for(MarketItem marketItem : MarketItemStorage.getAllMarketItems()){
+        for(MarketItem marketItem : storage.marketItemStorage().getAllMarketItems()){
             ItemStack itemStack = marketItem.getItemStack(1);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -43,16 +49,10 @@ public class ManageTraderAuthorized extends BasicGui {
                 else {
                     trader.addMarketItem(marketItem);
                 }
-                new ManageTraderAuthorized(player, trader, page).open();
+                new ManageTraderAuthorized(player, trader, storage).open();
             });
             allMarketItems.add(item);
         }
-
-        GuiUtil.createIterator(gui, allMarketItems, page, player,
-                p -> new ManageTrader(player, trader).open(),
-                p -> new ManageTraderAuthorized(player, trader, page + 1).open(),
-                p -> new ManageTraderAuthorized(player, trader, page - 1).open());
-
-
+        return allMarketItems;
     }
 }

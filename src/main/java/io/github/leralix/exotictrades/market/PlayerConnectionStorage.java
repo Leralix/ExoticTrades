@@ -12,13 +12,9 @@ import java.util.UUID;
 
 public class PlayerConnectionStorage {
 
-    private HashMap<UUID, Long> playersConnections;
+    private static HashMap<UUID, Long> playersConnections = new HashMap<>();
 
-    public PlayerConnectionStorage(){
-        playersConnections = new HashMap<>();
-    }
-
-    public void newConnection(UUID playerID){
+    public static void newConnection(UUID playerID){
         if(playersConnections.containsKey(playerID)){
             playersConnections.replace(playerID, System.currentTimeMillis());
         } else {
@@ -26,17 +22,17 @@ public class PlayerConnectionStorage {
         }
     }
 
-    public int getNumberOfConnections(){
+    public static int getNumberOfConnections(){
         updateConnections();
         return playersConnections.size();
     }
 
-    private void updateConnections() {
+    private static void updateConnections() {
         long timeBeforeRemoval = (long) 7 * 24 * 60 * 60 * 1000;
         playersConnections.keySet().removeIf(playerID -> System.currentTimeMillis() - playersConnections.get(playerID) > timeBeforeRemoval);
     }
 
-    public void save() {
+    public static void save() {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File storageFolder = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage");
@@ -70,7 +66,7 @@ public class PlayerConnectionStorage {
 
     }
 
-    public void load(){
+    public static void load(){
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         File file = new File(ExoticTrades.getPlugin().getDataFolder().getAbsolutePath() + "/storage/json/players.json");

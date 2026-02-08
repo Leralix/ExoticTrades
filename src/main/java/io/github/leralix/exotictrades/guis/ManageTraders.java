@@ -2,27 +2,27 @@ package io.github.leralix.exotictrades.guis;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.github.leralix.exotictrades.lang.Lang;
+import io.github.leralix.exotictrades.storage.StorageForGui;
+import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import io.github.leralix.exotictrades.lang.Lang;
-import io.github.leralix.exotictrades.storage.TraderStorage;
-import io.github.leralix.exotictrades.traders.Trader;
 
 public class ManageTraders extends BasicGui {
 
 
-    public ManageTraders(Player player) {
-        super(player, "Traders", 6);
+    public ManageTraders(Player player, StorageForGui storage) {
+        super(player, "Traders", 6, storage);
         gui.setDefaultClickAction(event -> event.setCancelled(true));
 
-        for(Trader trader : TraderStorage.getAll()){
+        for(Trader trader : storage.traderStorage().getAll()){
             ItemStack item = trader.getIcon();
             HeadUtils.addLore(item, Lang.LEFT_CLICK_TO_MANAGE.get(), Lang.RIGHT_CLICK_TO_TELEPORT.get());
 
             GuiItem guiItem = ItemBuilder.from(item).asGuiItem(event -> {
                 if(event.isLeftClick()){
-                    new ManageTrader(player, trader).open();
+                    new ManageTrader(player, trader, storage).open();
                 }
                 else if(event.isRightClick()){
                     player.teleport(trader.getLocation());
@@ -37,12 +37,12 @@ public class ManageTraders extends BasicGui {
                 Lang.CLICK_TO_CREATE.get());
 
         GuiItem addButton = ItemBuilder.from(addItem).asGuiItem(event -> {
-            TraderStorage.register(player.getLocation());
-            new ManageTraders(player).open();
+            storage.traderStorage().register(player.getLocation(), storage.marketItemStorage().getAllMarketItemsKey());
+            new ManageTraders(player, storage).open();
         });
 
         gui.setItem(6,3, addButton);
-        gui.setItem(6,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+        gui.setItem(6,1, GuiUtil.createBackArrow(player, p -> new MainMenu(player, storage).open()));
     }
 
 }

@@ -1,6 +1,6 @@
 name: ExoticTrades
 version: '${version}'
-main: org.leralix.exotictrades.ExoticTrades
+main: io.github.leralix.exotictrades.ExoticTrades
 api-version: '1.19'
 authors: [ Leralix ]
 depend: [SphereLib, Vault]

@@ -16,6 +16,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +84,9 @@ public class ManageTraderItemToSell extends BasicGui {
 
         gui.setItem(4, 3, ItemBuilder.from(addNewSellableItem).asGuiItem(event -> {
             ItemStack newItem = event.getCursor();
-            if (newItem == null) {
+            if (newItem == null || newItem.getType() == Material.AIR) {
                 player.sendMessage(Lang.NO_ITEM_OR_WRONG.get());
+                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
             }
             trader.addSellableItem(new SellableItem(newItem, 100));

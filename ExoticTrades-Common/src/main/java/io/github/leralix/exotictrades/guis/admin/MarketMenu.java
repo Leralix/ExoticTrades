@@ -1,6 +1,8 @@
-package io.github.leralix.exotictrades.guis;
+package io.github.leralix.exotictrades.guis.admin;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import io.github.leralix.exotictrades.guis.BasicGui;
+import io.github.leralix.exotictrades.guis.GuiUtil;
 import io.github.leralix.exotictrades.market.StockMarket;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import org.bukkit.entity.Player;

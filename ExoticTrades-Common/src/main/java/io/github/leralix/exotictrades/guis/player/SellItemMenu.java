@@ -1,9 +1,11 @@
-package io.github.leralix.exotictrades.guis;
+package io.github.leralix.exotictrades.guis.player;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.guis.GuiItem;
 import io.github.leralix.exotictrades.ExoticTrades;
+import io.github.leralix.exotictrades.guis.BasicGui;
+import io.github.leralix.exotictrades.guis.GuiUtil;
 import io.github.leralix.exotictrades.item.MarketItem;
 import io.github.leralix.exotictrades.item.MarketItemStack;
 import io.github.leralix.exotictrades.lang.Lang;

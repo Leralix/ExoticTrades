@@ -2,8 +2,8 @@ package io.github.leralix.exotictrades.traders.position;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
-import io.github.leralix.exotictrades.guis.ManageTraderPosition;
-import io.github.leralix.exotictrades.guis.OpenBlockAllowedToSpawnTrader;
+import io.github.leralix.exotictrades.guis.admin.ManageTraderPosition;
+import io.github.leralix.exotictrades.guis.admin.OpenBlockAllowedToSpawnTrader;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.listener.chat.events.RegisterZoneListener;

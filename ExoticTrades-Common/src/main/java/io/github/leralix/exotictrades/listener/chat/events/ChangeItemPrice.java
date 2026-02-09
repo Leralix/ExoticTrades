@@ -1,6 +1,6 @@
 package io.github.leralix.exotictrades.listener.chat.events;
 
-import io.github.leralix.exotictrades.guis.ManageTraderItemToSell;
+import io.github.leralix.exotictrades.guis.admin.ManageTraderItemToSell;
 import io.github.leralix.exotictrades.item.SellableItem;
 import io.github.leralix.exotictrades.listener.chat.ChatListenerEvent;
 import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;

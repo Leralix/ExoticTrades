@@ -1,7 +1,7 @@
 package io.github.leralix.exotictrades.listener;
 
-import io.github.leralix.exotictrades.guis.ManageTrader;
-import io.github.leralix.exotictrades.guis.SellItemMenu;
+import io.github.leralix.exotictrades.guis.admin.ManageTrader;
+import io.github.leralix.exotictrades.guis.player.SellItemMenu;
 import io.github.leralix.exotictrades.market.StockMarketManager;
 import io.github.leralix.exotictrades.storage.MarketItemStorage;
 import io.github.leralix.exotictrades.storage.StorageForGui;

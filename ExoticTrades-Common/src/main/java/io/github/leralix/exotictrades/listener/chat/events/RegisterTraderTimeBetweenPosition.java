@@ -1,6 +1,6 @@
 package io.github.leralix.exotictrades.listener.chat.events;
 
-import io.github.leralix.exotictrades.guis.ManageTraderPosition;
+import io.github.leralix.exotictrades.guis.admin.ManageTraderPosition;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.listener.chat.ChatListenerEvent;
 import io.github.leralix.exotictrades.storage.StorageForGui;

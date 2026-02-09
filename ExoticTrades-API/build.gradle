@@ -1,0 +1,83 @@
+import com.vanniktech.maven.publish.SonatypeHost
+plugins {
+    id 'java'
+    id 'java-library'
+    id "com.vanniktech.maven.publish" version "0.31.0"
+}
+
+group = 'io.github.leralix.extrade-api'
+version = '0.2.5'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    if (JavaVersion.current() < JavaVersion.VERSION_17) {
+        toolchain.languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
+    signAllPublications()
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "local"
+        url = uri("${rootDir}/../SphereLib/build/repo")
+    }
+
+}
+
+javadoc {
+    options.overview = "src/main/javadoc/overview.html"
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'io.github.leralix:sphere-lib:0.4.4'
+}
+
+
+
+mavenPublishing {
+    coordinates("io.github.leralix", "extrade-api", version)
+
+    pom {
+        name = "Exotic trade API"
+        description = "Public API for Exotic trades plugin"
+        inceptionYear = "2025"
+        url = "https://github.com/Leralix/ExoticTrades"
+        licenses {
+            license {
+                name = "GNU General Public License v3.0"
+                url = "https://www.gnu.org/licenses/gpl-3.0.html"
+                distribution = "https://www.gnu.org/licenses/gpl-3.0.html"
+            }
+        }
+        developers {
+            developer {
+                id = '78090544'
+                name = 'Leralix'
+                email = 'leralix98@gmail.com'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/Leralix/ExoticTrades.git'
+            developerConnection = 'scm:git:ssh://github.com/Leralix/ExoticTrades.git'
+            url = 'https://github.com/Leralix/ExoticTrades'
+        }
+    }
+}

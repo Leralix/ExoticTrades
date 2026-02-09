@@ -1,0 +1,12 @@
+name: ExoticTrades
+version: '${version}'
+main: io.github.leralix.exotictrades.ExoticTrades
+api-version: '1.19'
+authors: [ Leralix ]
+depend: [SphereLib, Vault]
+load: STARTUP
+commands:
+  extrade:
+    description: admin command of exotictrades
+    permission: exotic.admin.command
+    usage: /<command>

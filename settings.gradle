@@ -1,1 +1,3 @@
 rootProject.name = 'ExoticTrades'
+include 'ExoticTrades-API'
+include 'ExoticTrades-Common'

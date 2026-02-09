@@ -82,6 +82,7 @@ public final class ExoticTrades extends JavaPlugin {
         this.villagerHeadStorage = new VillagerHeadStorage(configFile);
 
         this.traderStorage = new TraderStorage();
+        traderStorage.load();
         PlayerConnectionStorage.load();
 
         this.stockMarketManager = new StockMarketManager(configFile, marketItemStorage);

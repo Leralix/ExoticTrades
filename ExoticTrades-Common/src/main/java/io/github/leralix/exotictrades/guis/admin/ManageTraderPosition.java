@@ -1,6 +1,8 @@
-package io.github.leralix.exotictrades.guis;
+package io.github.leralix.exotictrades.guis.admin;
 
 
+import io.github.leralix.exotictrades.guis.BasicGui;
+import io.github.leralix.exotictrades.guis.GuiUtil;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.traders.position.FixedPosition;

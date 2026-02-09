@@ -1,6 +1,6 @@
 package io.github.leralix.exotictrades.commands.admin;
 
-import io.github.leralix.exotictrades.guis.MainMenu;
+import io.github.leralix.exotictrades.guis.admin.MainMenu;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.market.StockMarketManager;
 import io.github.leralix.exotictrades.storage.MarketItemStorage;

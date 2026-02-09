@@ -185,7 +185,7 @@ public class Trader {
         return positionHandler;
     }
 
-    private SellableItemManager getItemManager() {
+    public SellableItemManager getSellableItemManager() {
         if(sellableItemManager == null){
             sellableItemManager = new SellableItemManager(2);
         }
@@ -193,15 +193,11 @@ public class Trader {
     }
 
     public List<SellableItem> getItemSold() {
-        return getItemManager().getAllSellableItems();
+        return getSellableItemManager().getAllSellableItems();
     }
 
     public List<SellableItem> getTodaySellableItems() {
-        return getItemManager().getTodaySellableItems();
-    }
-
-    public void setNumberOfDailySellableItems(int number){
-        getItemManager().setNbDailySellableItems(number);
+        return getSellableItemManager().getTodaySellableItems();
     }
 
     public void nextHour() {
@@ -209,18 +205,18 @@ public class Trader {
     }
 
     public void nextDay() {
-        getItemManager().updateSellableItems();
+        getSellableItemManager().updateSellableItems();
     }
 
     public void removeTodaySellableItem(SellableItem item) {
-        getItemManager().removeTodaySellableItem(item);
+        getSellableItemManager().removeTodaySellableItem(item);
     }
 
     public void removeSellableItem(SellableItem sellableItem) {
-        getItemManager().removeSellableItem(sellableItem);
+        getSellableItemManager().removeSellableItem(sellableItem);
     }
 
     public void addSellableItem(SellableItem sellableItem) {
-        getItemManager().addSellableItem(sellableItem);
+        getSellableItemManager().addSellableItem(sellableItem);
     }
 }

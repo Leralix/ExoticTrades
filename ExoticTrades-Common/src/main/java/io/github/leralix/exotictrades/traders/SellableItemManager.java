@@ -57,4 +57,8 @@ public class SellableItemManager {
     public void addSellableItem(SellableItem sellableItem) {
         sellableItems.add(sellableItem);
     }
+
+    public int getNbDailySellableItems() {
+        return nbDailySellableItems;
+    }
 }

@@ -9,7 +9,8 @@ language:
 
   #Commands
   COMMAND_GENERIC_SUCCESS: "Command executed successfully"
-  NEW_TIME_BETWEEN_POSITION_SET: "New time between trader position set to {0} hours"
+  NEW_TIME_BETWEEN_POSITION_SET: "New time between trader position set to §e{0} hours"
+  NUMBER_OF_ITEM_SOLD_PER_DAY_SET: "Number of items sold by §e{0}§f set to: §e{1}"
   ADMIN_SPAWN_RARE_ITEM: "Spawn a rare item"
   ITEM_NOT_FOUND: "Item not found"
 
@@ -103,6 +104,8 @@ language:
   CURRENT_BUYS: "§fCurrent demand : §9{0}"
   MANAGE_ITEM_PRICE: "§aManage item price"
   CLICK_TO_INTERACT: "§fClick to interact"
+  SET_NUMBER_OF_ITEMS_TO_SELL: "§ASet the daily number of items to sell"
+  SET_NUMBER_OF_ITEMS_TO_SELL_DESC: "§fCurrent number: §e{0}"
 
   #Sell item menu
   PRICE: "§fPrice : §6{0}{MONEY_CHAR}"

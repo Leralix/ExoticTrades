@@ -8,9 +8,11 @@ import io.github.leralix.exotictrades.item.SellableItem;
 import io.github.leralix.exotictrades.lang.Lang;
 import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.listener.chat.events.ChangeItemPrice;
+import io.github.leralix.exotictrades.listener.chat.events.RegisterTraderNumberOfSellableItem;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.util.HeadUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -75,10 +77,10 @@ public class ManageTraderItemToSell extends BasicGui {
                     open();
                 });
 
-        ItemStack managePriceButton = HeadUtils.makeSkullURL(Lang.ADD_NEW_SELLABLE_ITEM.get(), "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1",
+        ItemStack addNewSellableItem = HeadUtils.makeSkullURL(Lang.ADD_NEW_SELLABLE_ITEM.get(), "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1",
                 Lang.DRAG_AND_DROP.get());
 
-        gui.setItem(4, 4, ItemBuilder.from(managePriceButton).asGuiItem(event -> {
+        gui.setItem(4, 3, ItemBuilder.from(addNewSellableItem).asGuiItem(event -> {
             ItemStack newItem = event.getCursor();
             if (newItem == null) {
                 player.sendMessage(Lang.NO_ITEM_OR_WRONG.get());
@@ -87,6 +89,19 @@ public class ManageTraderItemToSell extends BasicGui {
             trader.addSellableItem(new SellableItem(newItem, 100));
             new ManageTraderItemToSell(player, trader, storage).open();
         }));
+
+        ItemStack setNumberOfSellableItemPerDay = HeadUtils.createCustomItemStack(
+                Material.PAPER,
+                Lang.SET_NUMBER_OF_ITEMS_TO_SELL.get(),
+                Lang.SET_NUMBER_OF_ITEMS_TO_SELL_DESC.get(trader.getSellableItemManager().getNbDailySellableItems()),
+                Lang.CLICK_TO_MODIFY.get()
+        );
+
+        gui.setItem(4, 5, ItemBuilder.from(setNumberOfSellableItemPerDay).asGuiItem(event ->
+                PlayerChatListenerStorage.register(player, new RegisterTraderNumberOfSellableItem(trader, storage)))
+        );
+
+
 
         gui.open(player);
     }

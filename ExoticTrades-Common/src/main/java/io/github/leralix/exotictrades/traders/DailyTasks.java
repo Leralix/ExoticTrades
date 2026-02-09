@@ -1,10 +1,8 @@
 package io.github.leralix.exotictrades.traders;
 
-import org.bukkit.scheduler.BukkitRunnable;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.storage.TraderStorage;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -12,9 +10,17 @@ import java.util.GregorianCalendar;
 public class DailyTasks {
 
     private final TraderStorage traderStorage;
+    private final int traderUpdatePositionHour;
+    private final int traderUpdatePositionMinute;
 
-    public DailyTasks(TraderStorage traderStorage) {
+    public DailyTasks(
+            TraderStorage traderStorage,
+            int traderUpdatePositionHour,
+            int traderUpdatePositionMinute
+    ) {
         this.traderStorage = traderStorage;
+        this.traderUpdatePositionHour = traderUpdatePositionHour;
+        this.traderUpdatePositionMinute = traderUpdatePositionMinute;
     }
 
     public void scheduleTasks() {
@@ -23,10 +29,7 @@ public class DailyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int hour = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("traderUpdatePositionHour",0);
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("traderUpdatePositionMinute",0);
-
-                if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) {
+                if (calendar.get(Calendar.HOUR_OF_DAY) == traderUpdatePositionHour && calendar.get(Calendar.MINUTE) == traderUpdatePositionMinute) {
                     update();
                 }
             }

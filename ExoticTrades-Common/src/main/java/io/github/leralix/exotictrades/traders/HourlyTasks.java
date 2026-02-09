@@ -1,11 +1,9 @@
 package io.github.leralix.exotictrades.traders;
 
-import org.bukkit.scheduler.BukkitRunnable;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.market.StockMarketManager;
 import io.github.leralix.exotictrades.storage.TraderStorage;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -16,10 +14,19 @@ public class HourlyTasks {
 
     private final StockMarketManager stockMarketManager;
 
+    private final int traderUpdatePositionMinute;
 
-    public HourlyTasks(TraderStorage traderStorage, StockMarketManager stockMarketManager) {
+
+
+    public HourlyTasks(
+            TraderStorage traderStorage,
+            StockMarketManager stockMarketManager,
+            int traderUpdatePositionMinute
+
+    ) {
         this.traderStorage = traderStorage;
         this.stockMarketManager = stockMarketManager;
+        this.traderUpdatePositionMinute = traderUpdatePositionMinute;
     }
 
     public void scheduleTasks() {
@@ -28,9 +35,7 @@ public class HourlyTasks {
             public void run() {
                 Calendar calendar = new GregorianCalendar();
 
-                int minute = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("traderUpdatePositionMinute",0);
-
-                if (calendar.get(Calendar.MINUTE) == minute) {
+                if (calendar.get(Calendar.MINUTE) == traderUpdatePositionMinute) {
                     update();
                 }
             }
@@ -43,5 +48,6 @@ public class HourlyTasks {
         }
         traderStorage.updateTraderPosition();
         stockMarketManager.updateMovingAverage();
+        traderStorage.save();
     }
 }

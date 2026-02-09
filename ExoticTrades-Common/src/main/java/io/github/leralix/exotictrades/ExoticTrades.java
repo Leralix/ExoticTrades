@@ -105,9 +105,18 @@ public final class ExoticTrades extends JavaPlugin {
 
         HeadUtils.init(villagerHeadStorage);
 
-        DailyTasks dailyTasks = new DailyTasks(traderStorage);
+        DailyTasks dailyTasks = new DailyTasks(
+                traderStorage,
+                configFile.getInt("traderUpdatePositionHour",0),
+                configFile.getInt("traderUpdatePositionMinute",0)
+
+        );
         dailyTasks.scheduleTasks();
-        HourlyTasks hourlyTasks = new HourlyTasks(traderStorage, stockMarketManager);
+        HourlyTasks hourlyTasks = new HourlyTasks(
+                traderStorage,
+                stockMarketManager,
+                configFile.getInt("traderUpdatePositionMinute",0)
+        );
         hourlyTasks.scheduleTasks();
 
 

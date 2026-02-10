@@ -40,7 +40,7 @@ public final class ExoticTrades extends JavaPlugin {
     /**
      * The plugin current version
      */
-    private final PluginVersion pluginVersion = new PluginVersion(0, 4, 0);
+    private final PluginVersion pluginVersion = new PluginVersion(0, 5, 0);
     /**
      * Defines the minimum ExoticTrades-map version needed
      */

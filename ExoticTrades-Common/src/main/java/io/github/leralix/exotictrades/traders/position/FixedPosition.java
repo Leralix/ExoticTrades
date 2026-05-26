@@ -96,7 +96,7 @@ public class FixedPosition implements TraderPosition {
                 position.getZ(),
                 worldName),
                 Lang.LEFT_CLICK_TO_TELEPORT.get(),
-                Lang.RIGHT_CLICK_TO_TELEPORT.get());
+                Lang.RIGHT_CLICK_TO_DELETE.get());
         return ItemBuilder.from(positionItem).asGuiItem(event -> {
             if(event.isLeftClick()){
                 player.teleport(position.getLocation());

@@ -23,7 +23,6 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new OpenGui(traderStorage, marketItemStorage, stockMarketManager));
         addSubCommand(new NextDay(dailyTasks));
         addSubCommand(new NextHour(hourlyTasks));
-        addSubCommand(new UpdateTradersPosition(dailyTasks));
         addSubCommand(new MainHelpCommand(this));
     }
 

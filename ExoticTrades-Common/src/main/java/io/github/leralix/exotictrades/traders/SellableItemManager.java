@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SellableItemManager {
 
-    private List<SellableItem> sellableItems;
+    private final List<SellableItem> sellableItems;
     private final List<SellableItem> todaySellableItems;
     private int nbDailySellableItems;
 

@@ -99,7 +99,7 @@ public final class ExoticTrades extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
         getServer().getPluginManager().registerEvents(new RareItemDrops(marketItemStorage), this);
         getServer().getPluginManager().registerEvents(new SpawnTraders(traderStorage), this);
-        getServer().getPluginManager().registerEvents(new PlayerCounter(playerConnectionStorage), this);
+        getServer().getPluginManager().registerEvents(new PlayerCounter(), this);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
 
 

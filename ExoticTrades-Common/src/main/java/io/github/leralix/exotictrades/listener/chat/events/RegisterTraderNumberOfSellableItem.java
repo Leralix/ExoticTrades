@@ -19,20 +19,22 @@ public class RegisterTraderNumberOfSellableItem extends ChatListenerEvent {
 
 
     @Override
-    protected void execute(Player player, String message) {
+    protected boolean execute(Player player, String message) {
 
         message = message.trim();
         try {
             int nbItems = Integer.parseInt(message);
             if (nbItems < 0) {
                 player.sendMessage("Please enter a valid number");
-                return;
+                return false;
             }
             trader.getSellableItemManager().setNbDailySellableItems(nbItems);
             player.sendMessage(Lang.NUMBER_OF_ITEM_SOLD_PER_DAY_SET.get(trader.getName(), nbItems));
             openGui(player1 -> new ManageTraderItemToSell(player, trader, storage).open(), player);
+            return true;
         } catch (NumberFormatException e) {
             player.sendMessage("Please enter a valid number");
+            return false;
         }
     }
 }

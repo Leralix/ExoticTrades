@@ -1,8 +1,9 @@
 package io.github.leralix.exotictrades.listener.chat;
 
-import org.bukkit.entity.Player;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.lang.Lang;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 
@@ -24,11 +25,23 @@ public class PlayerChatListenerStorage {
         return chatStorage.get(player);
     }
 
-    public static void removePlayer(Player p) {
-        chatStorage.remove(p);
-    }
-
     public static boolean contains(Player player){
         return chatStorage.containsKey(player);
+    }
+
+    public static void execute(Player player, @NotNull String message) {
+        ChatListenerEvent event = chatStorage.get(player);
+        if(event == null){
+            chatStorage.remove(player);
+            return;
+        }
+
+        boolean success = event.execute(player, message);
+        if(success){
+            chatStorage.remove(player);
+        }
+        else {
+            player.sendMessage(ExoticTrades.getNameString() + Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.get()));
+        }
     }
 }

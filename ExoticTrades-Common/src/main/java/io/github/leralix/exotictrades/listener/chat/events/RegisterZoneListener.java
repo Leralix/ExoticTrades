@@ -2,7 +2,6 @@ package io.github.leralix.exotictrades.listener.chat.events;
 
 import io.github.leralix.exotictrades.guis.admin.ManageTraderPosition;
 import io.github.leralix.exotictrades.listener.chat.ChatListenerEvent;
-import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
 import io.github.leralix.exotictrades.traders.position.RandomPosition;
@@ -25,11 +24,10 @@ public class RegisterZoneListener extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
+    public boolean execute(Player player, String message) {
         if(position1 == null){
             position1 = new Vector3D(player.getLocation());
             player.sendMessage("Position 1 set to " + position1);
-            return;
         }
 
         if(position2 == null){
@@ -39,7 +37,7 @@ public class RegisterZoneListener extends ChatListenerEvent {
             randomRandomPosition.setZone(new Zone2D(position1, position2));
 
             openGui(player1 -> new ManageTraderPosition(player, trader, storage).open(),player);
-            PlayerChatListenerStorage.removePlayer(player);
         }
+        return true;
     }
 }

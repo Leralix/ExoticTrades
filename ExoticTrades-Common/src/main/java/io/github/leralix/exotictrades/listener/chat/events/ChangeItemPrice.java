@@ -3,7 +3,6 @@ package io.github.leralix.exotictrades.listener.chat.events;
 import io.github.leralix.exotictrades.guis.admin.ManageTraderItemToSell;
 import io.github.leralix.exotictrades.item.SellableItem;
 import io.github.leralix.exotictrades.listener.chat.ChatListenerEvent;
-import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
 import org.bukkit.entity.Player;
@@ -24,23 +23,23 @@ public class ChangeItemPrice extends ChatListenerEvent {
     }
 
     @Override
-    protected void execute(Player player, String message) {
+    protected boolean execute(Player player, String message) {
 
         message = message.trim();
         try {
             int price = Integer.parseInt(message);
             if(price < 1){
                 player.sendMessage("Please enter a valid number");
-                return;
+                return false;
             }
-            PlayerChatListenerStorage.removePlayer(player);
+
             item.setPrice(price);
             SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
             openGui(p -> new ManageTraderItemToSell(p, trader, storage).open(), player);
+            return true;
         } catch (NumberFormatException e) {
             player.sendMessage("Please enter a valid number");
+            return false;
         }
     }
-
-
 }

@@ -19,20 +19,22 @@ public class RegisterTraderTimeBetweenPosition extends ChatListenerEvent {
     }
 
     @Override
-    protected void execute(Player player, String message) {
+    protected boolean execute(Player player, String message) {
 
         message = message.trim();
         try {
             int time = Integer.parseInt(message);
             if(time < 1){
                 player.sendMessage("Please enter a valid number");
-                return;
+                return false;
             }
             trader.getPosition().setNumberOfDaysBeforeNextPosition(time);
             player.sendMessage(Lang.NEW_TIME_BETWEEN_POSITION_SET.get(time));
             openGui(player1 -> new ManageTraderPosition(player, trader, storage).open(),player);
+            return true;
         } catch (NumberFormatException e) {
             player.sendMessage("Please enter a valid number");
+            return false;
         }
 
     }

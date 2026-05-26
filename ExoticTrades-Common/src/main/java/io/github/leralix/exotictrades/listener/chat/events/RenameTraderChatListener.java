@@ -2,7 +2,6 @@ package io.github.leralix.exotictrades.listener.chat.events;
 
 import io.github.leralix.exotictrades.guis.admin.ManageTrader;
 import io.github.leralix.exotictrades.listener.chat.ChatListenerEvent;
-import io.github.leralix.exotictrades.listener.chat.PlayerChatListenerStorage;
 import io.github.leralix.exotictrades.storage.StorageForGui;
 import io.github.leralix.exotictrades.traders.Trader;
 import org.bukkit.entity.Player;
@@ -17,9 +16,9 @@ public class RenameTraderChatListener extends ChatListenerEvent {
     }
 
     @Override
-    public void execute(Player player, String message) {
-        PlayerChatListenerStorage.removePlayer(player);
+    public boolean execute(Player player, String message) {
         trader.setName(message);
         openGui(player1 -> new ManageTrader(player1, trader, storage).open(), player);
+        return true;
     }
 }

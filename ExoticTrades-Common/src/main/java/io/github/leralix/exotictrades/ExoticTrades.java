@@ -17,11 +17,14 @@ import io.github.leralix.exotictrades.traders.HourlyTasks;
 import io.github.leralix.exotictrades.util.HeadUtils;
 import io.github.leralix.exotictrades.util.NumberUtil;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.lib.utils.config.ConfigUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,8 +53,12 @@ public final class ExoticTrades extends JavaPlugin {
     private VillagerHeadStorage villagerHeadStorage;
 
     private TraderStorage traderStorage;
-    private PlayerConnectionStorage playerConnectionStorage;
     private StockMarketManager stockMarketManager;
+
+    private HourlyTasks hourlyTasks;
+    private DailyTasks dailyTasks;
+
+    private List<Listener> allListeners;
 
     @Override
     public void onEnable() {
@@ -61,9 +68,19 @@ public final class ExoticTrades extends JavaPlugin {
         logger.log(Level.INFO, "[ExoticTrade] -Loading plugin");
         logger.log(Level.INFO, "[ExoticTrade] -Loading language");
 
+        loadPlugin(logger);
+
+        logger.warning("[ExoticTrade] -Registering BStat");
+        initBStats();
+
+        logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
+        pluginLoadedSuccessfully = true;
+        getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
+    }
+
+    private void loadPlugin(Logger logger) {
         var langConfigFile = ConfigUtil.saveAndUpdateResource(this, "lang.yml", Collections.emptyList());
         String lang = langConfigFile.getString("language", "en");
-
 
         Lang.loadTranslations(lang);
         logger.log(Level.INFO, Lang.LANGUAGE_SUCCESSFULLY_LOADED.get());
@@ -89,33 +106,37 @@ public final class ExoticTrades extends JavaPlugin {
         this.stockMarketManager.load();
         NumberUtil.init(configFile.getInt("nbDigits", 2));
 
-        getServer().getPluginManager().registerEvents(new InteractWithTrader(
+        allListeners = new ArrayList<>();
+        allListeners.add(
+                new InteractWithTrader(
                         traderStorage,
                         marketItemStorage,
                         stockMarketManager,
                         configFile.getBoolean("removeVanillaVillagerInteractions", false)
-                ), this
+                )
         );
-        getServer().getPluginManager().registerEvents(new EconomyInitialiser(), this);
-        getServer().getPluginManager().registerEvents(new RareItemDrops(marketItemStorage), this);
-        getServer().getPluginManager().registerEvents(new SpawnTraders(traderStorage), this);
-        getServer().getPluginManager().registerEvents(new PlayerCounter(), this);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        allListeners.add(new EconomyInitialiser());
+        allListeners.add(new RareItemDrops(marketItemStorage));
+        allListeners.add(new SpawnTraders(traderStorage));
+        allListeners.add(new PlayerCounter());
+        allListeners.add(new ChatListener());
 
+        for(Listener listener : allListeners){
+            getServer().getPluginManager().registerEvents(listener, this);
+        }
 
         HeadUtils.init(villagerHeadStorage);
 
-        DailyTasks dailyTasks = new DailyTasks(
+        dailyTasks = new DailyTasks(
                 traderStorage,
-                configFile.getInt("traderUpdatePositionHour",0),
-                configFile.getInt("traderUpdatePositionMinute",0)
-
+                configFile.getInt("traderUpdatePositionHour", 0),
+                configFile.getInt("traderUpdatePositionMinute", 0)
         );
         dailyTasks.scheduleTasks();
-        HourlyTasks hourlyTasks = new HourlyTasks(
+        hourlyTasks = new HourlyTasks(
                 traderStorage,
                 stockMarketManager,
-                configFile.getInt("traderUpdatePositionMinute",0)
+                configFile.getInt("traderUpdatePositionMinute", 0)
         );
         hourlyTasks.scheduleTasks();
 
@@ -125,12 +146,15 @@ public final class ExoticTrades extends JavaPlugin {
 
         logger.warning("[ExoticTrade] -Registering API");
         ExtradeAPI.register(new ExtradeImpl(plugin, traderStorage));
-        logger.warning("[ExoticTrade] -Registering BStat");
-        initBStats();
+    }
 
-        logger.log(Level.INFO, "[ExoticTrade] -Plugin loaded successfully");
-        pluginLoadedSuccessfully = true;
-        getLogger().info("\u001B[33m---------------- ExoticTrade ------------------\u001B[0m");
+    public void reload() {
+        hourlyTasks.cancel();
+        dailyTasks.cancel();
+        for(Listener listener : allListeners){
+            HandlerList.unregisterAll(listener);
+        }
+        loadPlugin(getLogger());
     }
 
     @Override
@@ -172,10 +196,6 @@ public final class ExoticTrades extends JavaPlugin {
 
     public StockMarketManager getStockMarketManager() {
         return stockMarketManager;
-    }
-
-    public PlayerConnectionStorage getPlayerConnectionStorage() {
-        return playerConnectionStorage;
     }
 
     public TraderStorage getTraderStorage() {

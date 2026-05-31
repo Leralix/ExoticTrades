@@ -4,6 +4,7 @@ import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.market.StockMarketManager;
 import io.github.leralix.exotictrades.storage.TraderStorage;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -16,7 +17,7 @@ public class HourlyTasks {
 
     private final int traderUpdatePositionMinute;
 
-
+    private BukkitTask runnable;
 
     public HourlyTasks(
             TraderStorage traderStorage,
@@ -30,7 +31,7 @@ public class HourlyTasks {
     }
 
     public void scheduleTasks() {
-        new BukkitRunnable() {
+        runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 Calendar calendar = new GregorianCalendar();
@@ -49,5 +50,11 @@ public class HourlyTasks {
         traderStorage.updateTraderPosition();
         stockMarketManager.updateMovingAverage();
         traderStorage.save();
+    }
+
+    public void cancel(){
+        if(runnable != null){
+            runnable.cancel();
+        }
     }
 }

@@ -24,6 +24,7 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new NextDay(dailyTasks));
         addSubCommand(new NextHour(hourlyTasks));
         addSubCommand(new MainHelpCommand(this));
+        addSubCommand(new Reload());
     }
 
     @Override

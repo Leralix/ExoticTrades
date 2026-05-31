@@ -28,9 +28,6 @@ public abstract class ExtradeAPI {
      * @param api the TanAPI instance
      */
     public static void register(ExtradeAPI api) {
-        if (instance != null) {
-            throw new IllegalStateException("TanAPI is already initialised !");
-        }
         instance = api;
     }
 

@@ -3,6 +3,7 @@ package io.github.leralix.exotictrades.traders;
 import io.github.leralix.exotictrades.ExoticTrades;
 import io.github.leralix.exotictrades.storage.TraderStorage;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -12,6 +13,7 @@ public class DailyTasks {
     private final TraderStorage traderStorage;
     private final int traderUpdatePositionHour;
     private final int traderUpdatePositionMinute;
+    private BukkitTask runnable;
 
     public DailyTasks(
             TraderStorage traderStorage,
@@ -24,7 +26,7 @@ public class DailyTasks {
     }
 
     public void scheduleTasks() {
-        new BukkitRunnable() {
+        runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 Calendar calendar = new GregorianCalendar();
@@ -33,12 +35,18 @@ public class DailyTasks {
                     update();
                 }
             }
-        }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)
+        }.runTaskTimer(ExoticTrades.getPlugin(), 0L, 1200L); // Exécute toutes les 1200 ticks (1 minute en temps Minecraft)*
     }
 
     public void update() {
         for(Trader trader : traderStorage.getAll()){
             trader.nextDay();
+        }
+    }
+
+    public void cancel(){
+        if(runnable != null){
+            runnable.cancel();
         }
     }
 }

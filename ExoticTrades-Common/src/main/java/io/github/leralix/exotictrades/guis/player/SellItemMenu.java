@@ -67,7 +67,9 @@ public class SellItemMenu extends BasicGui {
 
         gui.setItem(2,8, getMarketInfoButton(trader));
 
-        ItemStack traderItem = HeadUtils.makeSkullURL(Lang.BUY_ITEM_MENU.get(), "https://textures.minecraft.net/texture/cc1b2f592cfc8d372dcf5fd44eed69dddc64601d7846d72619f70511d8043a89",
+        ItemStack traderItem = HeadUtils.makeSkullURL(
+                Lang.BUY_ITEM_MENU.get(), "https://textures.minecraft.net/texture/cc1b2f592cfc8d372dcf5fd44eed69dddc64601d7846d72619f70511d8043a89",
+                Lang.BUY_ITEM_MENU_DESC.get(trader.getSellableItemManager().getTodaySellableItems().size()),
                 Lang.CLICK_TO_OPEN.get());
 
         GuiItem traderGuiItem = ItemBuilder.from(traderItem).asGuiItem(event -> new BuyItemMenu(player, trader, 0, storage).open());

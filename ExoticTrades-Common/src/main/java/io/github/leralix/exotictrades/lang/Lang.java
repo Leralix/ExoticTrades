@@ -8,6 +8,7 @@ import org.leralix.lib.utils.config.ConfigUtil;
 
 import java.io.File;
 import java.util.EnumMap;
+import java.util.List;
 
 public enum Lang {
 
@@ -130,7 +131,7 @@ public enum Lang {
 
         File file = new File(specificLangFolder, "main.yml");
 
-        ConfigUtil.saveAndUpdateResource(ExoticTrades.getPlugin(), "lang/" + fileTag + "/main.yml");
+        ConfigUtil.saveAndUpdateResource(ExoticTrades.getPlugin(), "lang/" + fileTag + "/main.yml", List.of());
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Lang key : Lang.values()) {

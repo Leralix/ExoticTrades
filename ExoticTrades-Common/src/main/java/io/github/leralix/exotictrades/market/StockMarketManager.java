@@ -16,13 +16,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 public class StockMarketManager{
 
-    private HashMap<MarketItemKey, StockMarket> marketItems;
+    private final HashMap<MarketItemKey, StockMarket> marketItems;
 
     public StockMarketManager(FileConfiguration fileConfiguration, MarketItemStorage marketItemStorage) {
         marketItems = new HashMap<>();
@@ -45,9 +45,9 @@ public class StockMarketManager{
             resourceSection.addDefault("demandMultiplier", fileConfiguration.getDouble("defaultDemandMultiplier", 1));
 
             MarketItem marketItem = marketItemStorage.getMarketItem(resourceKey.hashCode());
-
-            if(marketItem == null)
+            if(marketItem == null){
                 continue;
+            }
 
             int movingAverage = resourceSection.getInt("movingAverage");
             double maxPrice = resourceSection.getDouble("maxPrice");
@@ -68,8 +68,8 @@ public class StockMarketManager{
         }
     }
 
-    public List<StockMarket> getAllStocks() {
-        return Collections.list(Collections.enumeration(marketItems.values()));
+    public Collection<StockMarket> getAllStocks() {
+        return marketItems.values();
     }
 
 
@@ -159,7 +159,10 @@ public class StockMarketManager{
             throw new RuntimeException(e);
         }
         Type type = new TypeToken<HashMap<MarketItemKey, StockMarket>>(){}.getType();
-        marketItems = gson.fromJson(reader, type);
+        HashMap<MarketItemKey, StockMarket> loadedMap = gson.fromJson(reader, type);
+        if(loadedMap != null){
+            marketItems.putAll(loadedMap);
+        }
     }
 
     public StockMarket getMarketFor(MarketItemKey marketItemKey) {

@@ -18,7 +18,7 @@ import java.util.*;
 
 public class TraderStorage {
 
-    private Map<String, Trader> traders;
+    private final Map<String, Trader> traders;
     private final Map<Vector2D, List<Trader>> traderPosition;
     private int nextID;
 
@@ -127,7 +127,10 @@ public class TraderStorage {
             throw new RuntimeException(e);
         }
         Type type = new TypeToken<HashMap<String, Trader>>() {}.getType();
-        traders = gson.fromJson(reader, type);
+        Map<String, Trader> loadedTraders = gson.fromJson(reader, type);
+        if(loadedTraders != null){
+            traders.putAll(loadedTraders);
+        }
         int id = 0;
         for (String ids: traders.keySet()) {
             int newID =  Integer.parseInt(ids.substring(1));
